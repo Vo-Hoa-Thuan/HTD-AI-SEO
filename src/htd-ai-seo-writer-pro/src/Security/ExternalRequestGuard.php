@@ -23,6 +23,10 @@ final class ExternalRequestGuard {
 		'api.x.ai',
 		'auth.openai.com',
 		'chatgpt.com',
+		'www.googleapis.com',
+		'searchconsole.googleapis.com',
+		'analyticsdata.googleapis.com',
+		'oauth2.googleapis.com',
 	];
 
 	/** @var string[] */
@@ -43,6 +47,13 @@ final class ExternalRequestGuard {
 		?array $allowlist = null
 	) {
 		$this->allowlist = $allowlist ?? self::DEFAULT_ALLOWLIST;
+	}
+
+	public function addAllowlistedHost(string $host): void {
+		$h = strtolower(trim($host));
+		if ($h !== '' && !in_array($h, self::BLOCKED_DOMAINS, true) && !in_array($h, $this->allowlist, true)) {
+			$this->allowlist[] = $h;
+		}
 	}
 
 	/**

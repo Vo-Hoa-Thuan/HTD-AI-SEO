@@ -1,0 +1,38 @@
+{
+    "pass": 8,
+    "fail": 0,
+    "cases": [
+        {
+            "name": "DB6_01_V060MigrationAndRollback",
+            "status": "PASS"
+        },
+        {
+            "name": "FEAT002_CustomBaseUrlSecurityAndParsing",
+            "status": "PASS"
+        },
+        {
+            "name": "GSC_01_ApiContractAndCsvImport",
+            "status": "PASS"
+        },
+        {
+            "name": "GA4_01_ApiContractAndParsing",
+            "status": "PASS"
+        },
+        {
+            "name": "CAT_01_CategoryAuditAndProposals",
+            "status": "PASS"
+        },
+        {
+            "name": "OPP_01_DetectionAnd6ColumnRoadmap",
+            "status": "PASS"
+        },
+        {
+            "name": "AIO_01_CompetitorAndAISearchObservation",
+            "status": "PASS"
+        },
+        {
+            "name": "GROWTH_01_TechTrafficProtectionAndOneClickAudit",
+            "status": "PASS"
+        }
+    ]
+}

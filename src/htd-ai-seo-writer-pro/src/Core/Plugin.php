@@ -10,10 +10,14 @@ use HTD\AISEO\AI\OutputValidator;
 use HTD\AISEO\AI\ProviderConfiguration;
 use HTD\AISEO\AI\ProviderRegistry;
 use HTD\AISEO\AI\Providers\ClaudeProvider;
+use HTD\AISEO\AI\Providers\CustomOpenAICompatibleProvider;
 use HTD\AISEO\AI\Providers\DeepSeekProvider;
 use HTD\AISEO\AI\Providers\GeminiProvider;
 use HTD\AISEO\AI\Providers\GrokProvider;
 use HTD\AISEO\AI\Providers\OpenAIProvider;
+use HTD\AISEO\Analytics\GA4Adapter;
+use HTD\AISEO\Analytics\GSCAdapter;
+use HTD\AISEO\Analytics\SEODataRepository;
 use HTD\AISEO\Approval\ApprovalEngine;
 use HTD\AISEO\Brand\BrandProfile;
 use HTD\AISEO\Content\ContentDraftRepository;
@@ -22,6 +26,12 @@ use HTD\AISEO\Content\ContentWorkflowEngine;
 use HTD\AISEO\Content\NewUpdateDecisionEngine;
 use HTD\AISEO\Credentials\CredentialVault;
 use HTD\AISEO\Database\Migrator;
+use HTD\AISEO\Growth\CategorySEOEngine;
+use HTD\AISEO\Growth\CompetitorAndAISearchEngine;
+use HTD\AISEO\Growth\GrowthAnalyticsEngine;
+use HTD\AISEO\Growth\OneClickAuditWorkflow;
+use HTD\AISEO\Growth\OpportunityAndRoadmapEngine;
+use HTD\AISEO\Growth\TechnicalAuditAndTrafficGuard;
 use HTD\AISEO\Keyword\KeywordIntelligence;
 use HTD\AISEO\Keyword\KeywordRepository;
 use HTD\AISEO\Logging\Logger;
@@ -130,6 +140,7 @@ final class Plugin {
 			$reg->register(new ClaudeProvider($guard, $models));
 			$reg->register(new DeepSeekProvider($guard, $models));
 			$reg->register(new GrokProvider($guard, $models));
+			$reg->register(new CustomOpenAICompatibleProvider($guard, $models));
 			return $reg;
 		});
 		$this->container->singleton(PromptRenderer::class, static fn(): PromptRenderer => new PromptRenderer());
@@ -240,6 +251,44 @@ final class Plugin {
 		$this->container->singleton(CronScheduler::class, static function (Container $c): CronScheduler {
 			return new CronScheduler($c->get(WorkerEngine::class), $c->get(SettingsRegistry::class), $c->get(Logger::class));
 		});
+		$this->container->singleton(SEODataRepository::class, static function (Container $c): SEODataRepository {
+			global $wpdb;
+			return new SEODataRepository($wpdb, $c->get(Logger::class));
+		});
+		$this->container->singleton(GSCAdapter::class, static function (Container $c): GSCAdapter {
+			return new GSCAdapter($c->get(ExternalRequestGuard::class), $c->get(CredentialVault::class), $c->get(SEODataRepository::class));
+		});
+		$this->container->singleton(GA4Adapter::class, static function (Container $c): GA4Adapter {
+			return new GA4Adapter($c->get(ExternalRequestGuard::class), $c->get(CredentialVault::class), $c->get(SEODataRepository::class));
+		});
+		$this->container->singleton(CategorySEOEngine::class, static function (Container $c): CategorySEOEngine {
+			global $wpdb;
+			return new CategorySEOEngine($wpdb, $c->get(BrandProfile::class), $c->get(MasterProductRepository::class), $c->get(ApprovalEngine::class), $c->get(Logger::class));
+		});
+		$this->container->singleton(OpportunityAndRoadmapEngine::class, static function (): OpportunityAndRoadmapEngine {
+			global $wpdb;
+			return new OpportunityAndRoadmapEngine($wpdb);
+		});
+		$this->container->singleton(CompetitorAndAISearchEngine::class, static function (): CompetitorAndAISearchEngine {
+			global $wpdb;
+			return new CompetitorAndAISearchEngine($wpdb);
+		});
+		$this->container->singleton(TechnicalAuditAndTrafficGuard::class, static fn(): TechnicalAuditAndTrafficGuard => new TechnicalAuditAndTrafficGuard());
+		$this->container->singleton(GrowthAnalyticsEngine::class, static function (): GrowthAnalyticsEngine {
+			global $wpdb;
+			return new GrowthAnalyticsEngine($wpdb);
+		});
+		$this->container->singleton(OneClickAuditWorkflow::class, static function (Container $c): OneClickAuditWorkflow {
+			return new OneClickAuditWorkflow(
+				$c->get(SettingsRegistry::class),
+				$c->get(QueueEngine::class),
+				$c->get(SEODataRepository::class),
+				$c->get(CategorySEOEngine::class),
+				$c->get(OpportunityAndRoadmapEngine::class),
+				$c->get(TechnicalAuditAndTrafficGuard::class),
+				$c->get(Logger::class)
+			);
+		});
 		$this->container->singleton(AdminMenu::class, function (Container $c): AdminMenu {
 			return new AdminMenu($c, $this->modules);
 		});
@@ -267,7 +316,7 @@ final class Plugin {
 		$this->modules->register('publishing', 'ACTIVE', 'PHASE_05', ['content_engine', 'mutation_guard']);
 		$this->modules->register('internal_links', 'ACTIVE', 'PHASE_05', ['content_engine', 'mutation_guard']);
 		$this->modules->register('cron_scheduler', 'ACTIVE', 'PHASE_05', ['queue', 'settings']);
-		$this->modules->register('htd_seo_extensions', 'NOT_IMPLEMENTED', 'PHASE_06', ['woocommerce_seo'], 'COMING_IN_PHASE_06');
+		$this->modules->register('htd_seo_extensions', 'ACTIVE', 'PHASE_06', ['woocommerce_seo', 'cron_scheduler']);
 	}
 
 	public function boot(): void {

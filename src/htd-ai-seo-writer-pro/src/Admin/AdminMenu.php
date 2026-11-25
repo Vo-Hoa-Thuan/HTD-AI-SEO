@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace HTD\AISEO\Admin;
 
 use HTD\AISEO\AI\ProviderConfiguration;
+use HTD\AISEO\Analytics\SEODataRepository;
 use HTD\AISEO\Approval\ApprovalEngine;
 use HTD\AISEO\Brand\BrandProfile;
 use HTD\AISEO\Content\ContentDraftRepository;
@@ -11,6 +12,8 @@ use HTD\AISEO\Core\Container;
 use HTD\AISEO\Core\HealthCheck;
 use HTD\AISEO\Core\ModuleRegistry;
 use HTD\AISEO\Credentials\CredentialVault;
+use HTD\AISEO\Database\Schema;
+use HTD\AISEO\Growth\OneClickAuditWorkflow;
 use HTD\AISEO\Keyword\KeywordRepository;
 use HTD\AISEO\Logging\Logger;
 use HTD\AISEO\Prompt\PromptRegistry;
@@ -52,6 +55,7 @@ final class AdminMenu {
 		add_action('admin_post_htd_ai_seo_save_brand', [$this, 'handleSaveBrand']);
 		add_action('admin_post_htd_ai_seo_add_keyword', [$this, 'handleAddKeyword']);
 		add_action('admin_post_htd_ai_seo_bulk_keywords', [$this, 'handleBulkKeywords']);
+		add_action('admin_post_htd_ai_seo_run_audit', [$this, 'handleRunAudit']);
 	}
 
 	public function addMenus(): void {
@@ -68,6 +72,7 @@ final class AdminMenu {
 
 		$submenus = [
 			['htd-ai-seo-dashboard', 'Dashboard', $cap, [$this, 'renderDashboard']],
+			['htd-ai-seo-growth', 'HTD Growth Center', $cap, [$this, 'renderGrowthCenter']],
 			['htd-ai-seo-keywords', 'Keywords & Audit', $cap, [$this, 'renderKeywords']],
 			['htd-ai-seo-drafts', 'Content Drafts & QA', $cap, [$this, 'renderDrafts']],
 			['htd-ai-seo-rewrite', 'Rewrite Posts', $cap, [$this, 'renderRewrite']],
@@ -259,6 +264,29 @@ final class AdminMenu {
 			$this->container->get(KeywordRepository::class)->bulkAction($ids, $act);
 		}
 		wp_safe_redirect(admin_url('admin.php?page=htd-ai-seo-keywords&updated=1'));
+		exit;
+	}
+
+	public function renderGrowthCenter(): void {
+		global $wpdb;
+		$repo = $this->container->get(SEODataRepository::class);
+		$gscCount = count($repo->latestBySource('gsc_import', 50));
+		$ga4Count = count($repo->latestBySource('ga4', 50));
+		$oppTable = Schema::table($wpdb, 'opportunities');
+		$opps = $wpdb->get_results("SELECT * FROM {$oppTable} ORDER BY priority ASC, id DESC LIMIT 50", ARRAY_A) ?: [];
+		$this->renderTemplate('growth-center', [
+			'gscCount'      => $gscCount,
+			'ga4Count'      => $ga4Count,
+			'settings'      => $this->container->get(SettingsRegistry::class)->all(),
+			'brand'         => $this->container->get(BrandProfile::class)->get(),
+			'opportunities' => $opps,
+		]);
+	}
+
+	public function handleRunAudit(): void {
+		RequestVerifier::verifyAdminAction('htd_ai_seo_run_audit', Capabilities::MANAGE);
+		$this->container->get(OneClickAuditWorkflow::class)->enqueueAuditJob();
+		wp_safe_redirect(admin_url('admin.php?page=htd-ai-seo-growth&audit_queued=1'));
 		exit;
 	}
 

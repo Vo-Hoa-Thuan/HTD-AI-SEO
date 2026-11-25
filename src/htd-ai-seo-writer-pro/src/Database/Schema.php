@@ -344,4 +344,99 @@ final class Schema {
 			) {$charsetCollate};",
 		];
 	}
+
+	/**
+	 * @return array<string, string>
+	 */
+	public static function v060Tables(object $wpdb, string $charsetCollate = ''): array {
+		$p = self::prefix($wpdb);
+		return [
+			'analytics_snapshots' => "CREATE TABLE IF NOT EXISTS {$p}analytics_snapshots (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				source VARCHAR(32) NOT NULL,
+				property VARCHAR(255) NOT NULL,
+				report_type VARCHAR(64) NOT NULL,
+				date_range VARCHAR(64) NOT NULL,
+				provenance VARCHAR(32) NOT NULL DEFAULT 'UNKNOWN',
+				dataset_hash VARCHAR(64) NOT NULL,
+				row_count INT UNSIGNED NOT NULL DEFAULT 0,
+				metrics_json LONGTEXT NOT NULL,
+				imported_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				UNIQUE KEY uniq_dataset (source, report_type, date_range, dataset_hash),
+				KEY idx_source (source, report_type)
+			) {$charsetCollate};",
+
+			'category_audits' => "CREATE TABLE IF NOT EXISTS {$p}category_audits (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				category_slug VARCHAR(120) NOT NULL,
+				category_url VARCHAR(512) NOT NULL,
+				snapshot_json LONGTEXT NOT NULL,
+				audit_json LONGTEXT NOT NULL,
+				proposals_json LONGTEXT NULL,
+				approval_id BIGINT UNSIGNED NULL,
+				status VARCHAR(24) NOT NULL DEFAULT 'AUDITED',
+				created_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				KEY idx_cat_slug (category_slug)
+			) {$charsetCollate};",
+
+			'opportunities' => "CREATE TABLE IF NOT EXISTS {$p}opportunities (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				priority VARCHAR(8) NOT NULL DEFAULT 'P2',
+				opportunity_type VARCHAR(64) NOT NULL,
+				keyword VARCHAR(255) NULL,
+				target_url VARCHAR(512) NULL,
+				metrics_json LONGTEXT NULL,
+				evidence_text TEXT NOT NULL,
+				recommended_action VARCHAR(64) NOT NULL,
+				risk_level VARCHAR(20) NOT NULL DEFAULT 'LOW_RISK',
+				verification_status VARCHAR(32) NOT NULL DEFAULT 'LOCAL_OBSERVED',
+				approval_id BIGINT UNSIGNED NULL,
+				status VARCHAR(24) NOT NULL DEFAULT 'OPEN',
+				created_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				KEY idx_prio_status (priority, status)
+			) {$charsetCollate};",
+
+			'competitor_targets' => "CREATE TABLE IF NOT EXISTS {$p}competitor_targets (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				keyword VARCHAR(255) NOT NULL,
+				htd_url VARCHAR(512) NOT NULL,
+				competitor_url VARCHAR(512) NOT NULL,
+				observation_source VARCHAR(64) NOT NULL DEFAULT 'USER_PROVIDED',
+				observation_json LONGTEXT NULL,
+				observed_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				KEY idx_comp_kw (keyword)
+			) {$charsetCollate};",
+
+			'ai_search_observations' => "CREATE TABLE IF NOT EXISTS {$p}ai_search_observations (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				keyword VARCHAR(255) NOT NULL,
+				search_query VARCHAR(255) NOT NULL,
+				country VARCHAR(10) NOT NULL DEFAULT 'VN',
+				device VARCHAR(20) NOT NULL DEFAULT 'desktop',
+				ai_overview_status VARCHAR(32) NOT NULL DEFAULT 'INSUFFICIENT_DATA',
+				htd_cited TINYINT UNSIGNED NOT NULL DEFAULT 0,
+				cited_urls_json LONGTEXT NULL,
+				evidence_ref VARCHAR(255) NULL,
+				observed_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				KEY idx_aio_kw (keyword)
+			) {$charsetCollate};",
+
+			'growth_experiments' => "CREATE TABLE IF NOT EXISTS {$p}growth_experiments (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				target_url VARCHAR(512) NOT NULL,
+				change_type VARCHAR(64) NOT NULL,
+				approval_receipt VARCHAR(128) NULL,
+				baseline_json LONGTEXT NOT NULL,
+				after_json LONGTEXT NULL,
+				executed_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				KEY idx_growth_url (target_url(191))
+			) {$charsetCollate};",
+		];
+	}
 }

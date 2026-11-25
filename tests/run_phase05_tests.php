@@ -80,10 +80,10 @@ $vault = new CredentialVault();
 
 // SCENARIO G: Upgrade 0.4.0 -> 0.5.0 & Rollback
 p5_test('DB5_01_V050MigrationAndRollback', function () use ($migrator): void {
-	p5_assert($migrator->currentVersion() === '0.5.0', 'DB version is 0.5.0');
+	p5_assert($migrator->currentVersion() === Migrator::TARGET_VERSION, 'DB version matches target');
 	p5_assert($migrator->rollbackVersion('0.5.0') === true, 'Rollback 0.5.0 -> 0.4.0');
 	p5_assert($migrator->currentVersion() === '0.4.0', 'Version is 0.4.0');
-	p5_assert($migrator->migrate() === true, 'Re-upgrade to 0.5.0');
+	p5_assert($migrator->migrate() === true, 'Re-upgrade to target');
 }, $results);
 
 // SCENARIO A: Keyword -> Content -> QA -> Approval -> Idempotent Publishing (with test-double writer)

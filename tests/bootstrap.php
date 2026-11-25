@@ -249,6 +249,12 @@ final class TestWpdb {
 			}
 			return null;
 		}
+		if (preg_match('/SELECT\s+id\s+FROM\s+([a-zA-Z0-9_]+analytics_snapshots)\s+WHERE\s+source\s*=\s*\'([^\']+)\'.*dataset_hash\s*=\s*\'([^\']+)\'/i', $sql, $m)) {
+			foreach ($this->tables[$m[1]] ?? [] as $r) {
+				if (($r['source'] ?? '') === $m[2] && ($r['dataset_hash'] ?? '') === $m[3]) return $r['id'];
+			}
+			return null;
+		}
 		return null;
 	}
 
@@ -331,6 +337,9 @@ final class TestWpdb {
 			}
 			if (preg_match('/module\s*=\s*\'([^\']+)\'/i', $sql, $mm)) {
 				$rows = array_values(array_filter($rows, static fn($r) => ($r['module'] ?? '') === $mm[1]));
+			}
+			if (preg_match('/source\s*=\s*\'([^\']+)\'/i', $sql, $sm2)) {
+				$rows = array_values(array_filter($rows, static fn($r) => ($r['source'] ?? '') === $sm2[1]));
 			}
 			return array_reverse($rows);
 		}

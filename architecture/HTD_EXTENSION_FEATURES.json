@@ -1,12 +1,12 @@
 [
-  {"EXT_ID": "HTD_EXT_001", "NAME": "Keyword-to-URL Mapping", "PHASE": "PHASE_06", "PRIORITY_CATEGORIES": ["camera-hanh-trinh-o-to", "android-box-o-to"], "STATUS": "PLANNED"},
-  {"EXT_ID": "HTD_EXT_002", "NAME": "Search Intent & Keyword Cluster", "PHASE": "PHASE_06", "STATUS": "PLANNED"},
-  {"EXT_ID": "HTD_EXT_003", "NAME": "Cannibalization Detection & NEW/UPDATE Decision", "PHASE": "PHASE_06", "STATUS": "PLANNED"},
-  {"EXT_ID": "HTD_EXT_004", "NAME": "Category SEO (Camera hanh trinh & Android Box)", "PHASE": "PHASE_06", "STATUS": "PLANNED"},
-  {"EXT_ID": "HTD_EXT_005", "NAME": "MASTER PRODUCT HTD Data Validation", "PHASE": "PHASE_06", "STATUS": "PLANNED"},
-  {"EXT_ID": "HTD_EXT_006", "NAME": "Internal Link Recommendation Engine", "PHASE": "PHASE_06", "STATUS": "PLANNED"},
-  {"EXT_ID": "HTD_EXT_007", "NAME": "GSC & GA4 Performance Integration", "PHASE": "PHASE_06", "STATUS": "PLANNED"},
-  {"EXT_ID": "HTD_EXT_008", "NAME": "Competitor Analysis & AI Overview Observation", "PHASE": "PHASE_06", "STATUS": "PLANNED"},
-  {"EXT_ID": "HTD_EXT_009", "NAME": "Content Freshness, Quality & Human Approval Gate", "PHASE": "PHASE_06", "STATUS": "PLANNED"},
-  {"EXT_ID": "HTD_EXT_010", "NAME": "SEO Change History & Rollback", "PHASE": "PHASE_06", "STATUS": "PLANNED"}
+  {"EXT_ID": "HTD_EXT_001", "NAME": "Keyword-to-URL Mapping", "PHASE": "PHASE_04_06", "PRIORITY_CATEGORIES": ["camera-hanh-trinh-o-to", "android-box-o-to"], "STATUS": "IMPLEMENTED_UNIT_VERIFIED", "EVIDENCE": "qa/PHASE_04_TEST_RESULTS.json"},
+  {"EXT_ID": "HTD_EXT_002", "NAME": "Search Intent & Keyword Cluster", "PHASE": "PHASE_04_06", "STATUS": "IMPLEMENTED_UNIT_VERIFIED", "EVIDENCE": "qa/PHASE_04_TEST_RESULTS.json"},
+  {"EXT_ID": "HTD_EXT_003", "NAME": "Cannibalization Detection & NEW/UPDATE Decision", "PHASE": "PHASE_04_06", "STATUS": "IMPLEMENTED_UNIT_VERIFIED", "EVIDENCE": "qa/PHASE_04_TEST_RESULTS.json"},
+  {"EXT_ID": "HTD_EXT_004", "NAME": "Category SEO (Camera hanh trinh & Android Box)", "PHASE": "PHASE_06", "STATUS": "IMPLEMENTED_UNIT_VERIFIED", "EVIDENCE": "qa/PHASE_06_TEST_RESULTS.json"},
+  {"EXT_ID": "HTD_EXT_005", "NAME": "MASTER PRODUCT HTD Data Validation", "PHASE": "PHASE_05_06", "STATUS": "IMPLEMENTED_UNIT_VERIFIED", "EVIDENCE": "qa/PHASE_05_TEST_RESULTS.json"},
+  {"EXT_ID": "HTD_EXT_006", "NAME": "Internal Link Recommendation Engine", "PHASE": "PHASE_04_05", "STATUS": "IMPLEMENTED_UNIT_VERIFIED", "EVIDENCE": "qa/PHASE_05_TEST_RESULTS.json"},
+  {"EXT_ID": "HTD_EXT_007", "NAME": "GSC & GA4 Performance Integration + CSV Import", "PHASE": "PHASE_06", "STATUS": "IMPLEMENTED_MOCK_VERIFIED", "EVIDENCE": "qa/PHASE_06_TEST_RESULTS.json"},
+  {"EXT_ID": "HTD_EXT_008", "NAME": "Competitor Analysis & AI Overview Observation", "PHASE": "PHASE_06", "STATUS": "IMPLEMENTED_UNIT_VERIFIED", "EVIDENCE": "qa/PHASE_06_TEST_RESULTS.json"},
+  {"EXT_ID": "HTD_EXT_009", "NAME": "Content Opportunities, 6-Col Roadmap & Traffic Protection", "PHASE": "PHASE_06", "STATUS": "IMPLEMENTED_UNIT_VERIFIED", "EVIDENCE": "qa/PHASE_06_TEST_RESULTS.json"},
+  {"EXT_ID": "HTD_EXT_010", "NAME": "Growth Analytics, One-Click Audit & Growth Center UI", "PHASE": "PHASE_06", "STATUS": "IMPLEMENTED_UNIT_VERIFIED", "EVIDENCE": "qa/PHASE_06_TEST_RESULTS.json"}
 ]
