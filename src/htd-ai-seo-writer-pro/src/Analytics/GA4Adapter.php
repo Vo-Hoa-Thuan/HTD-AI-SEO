@@ -15,11 +15,150 @@ if (!defined('ABSPATH')) {
  * Never conflates GA4 sessions with GSC clicks or fabricates revenue/causality.
  */
 final class GA4Adapter {
+	public const SCOPE_READONLY = 'https://www.googleapis.com/auth/analytics.readonly';
+	public const STATE_OPTION   = 'htd_ai_seo_ga4_state';
+	public const CRED_TOKENS    = 'ga4_oauth_tokens';
+
 	public function __construct(
 		private readonly ExternalRequestGuard $httpGuard,
 		private readonly CredentialVault $vault,
 		private readonly SEODataRepository $repo
 	) {}
+
+	public function selectProperty(string $propertyId): void {
+		$prop = preg_replace('/[^0-9]/', '', $propertyId) ?? '';
+		if ($prop === '') {
+			throw new \InvalidArgumentException('Valid numeric GA4 property ID is required.');
+		}
+		$this->updateState(['property_id' => $prop]);
+	}
+
+	/**
+	 * @return array<string, mixed>
+	 */
+	public function connectionStatus(): array {
+		$state = function_exists('get_option') ? get_option(self::STATE_OPTION, []) : [];
+		$raw = $this->vault->getSecret(self::CRED_TOKENS);
+		$tokens = is_string($raw) ? json_decode($raw, true) : null;
+		return [
+			'connected'     => is_array($tokens) && !empty($tokens['access_token']),
+			'property_id'   => is_array($state) ? (string) ($state['property_id'] ?? '') : '',
+			'last_sync_utc' => is_array($state) ? ($state['last_sync_utc'] ?? null) : null,
+			'last_end_date' => is_array($state) ? ($state['last_end_date'] ?? null) : null,
+			'last_error'    => is_array($state) ? ($state['last_error'] ?? null) : null,
+			'scope'         => self::SCOPE_READONLY,
+		];
+	}
+
+	public function disconnect(): void {
+		$this->vault->deleteSecret(self::CRED_TOKENS);
+		if (function_exists('delete_option')) {
+			delete_option(self::STATE_OPTION);
+		}
+	}
+
+	public function refreshAccessToken(string $clientId, string $clientSecret): string {
+		$raw = $this->vault->getSecret(self::CRED_TOKENS);
+		$tokens = is_string($raw) ? json_decode($raw, true) : null;
+		$refresh = is_array($tokens) ? (string) ($tokens['refresh_token'] ?? '') : '';
+		if ($refresh === '') {
+			throw new \RuntimeException('GA4 refresh_token is missing; reconnect required.', 401);
+		}
+		$res = $this->httpGuard->request('https://oauth2.googleapis.com/token', [
+			'method'  => 'POST',
+			'headers' => ['Content-Type' => 'application/x-www-form-urlencoded'],
+			'body'    => http_build_query([
+				'refresh_token' => $refresh,
+				'client_id'     => $clientId,
+				'client_secret' => $clientSecret,
+				'grant_type'    => 'refresh_token',
+			]),
+		]);
+		$data = json_decode((string) ($res['body'] ?? ''), true);
+		if ((int) ($res['status'] ?? 0) !== 200 || !is_array($data) || empty($data['access_token'])) {
+			$this->updateState(['last_error' => 'GA4 token refresh failed']);
+			throw new \RuntimeException('GA4 OAuth token refresh failed.', 401);
+		}
+		$tokens['access_token'] = (string) $data['access_token'];
+		$tokens['expires_at'] = time() + max(60, (int) ($data['expires_in'] ?? 3600));
+		$this->vault->storeSecret(self::CRED_TOKENS, (string) json_encode($tokens));
+		return $tokens['access_token'];
+	}
+
+	/**
+	 * Execute paginated, incremental GA4 Data API sync via guarded HTTP API.
+	 *
+	 * @return array{snapshot_id: int, row_count: int, pages_fetched: int, provenance: string}
+	 */
+	public function syncReport(
+		string $propertyId = '',
+		string $startDate = '',
+		string $endDate = '',
+		string $channelFilter = 'Organic Search',
+		int $limit = 1000,
+		int $maxPages = 5
+	): array {
+		$status = $this->connectionStatus();
+		$prop = $propertyId !== '' ? (preg_replace('/[^0-9]/', '', $propertyId) ?? '') : (string) $status['property_id'];
+		if ($prop === '') {
+			throw new \RuntimeException('BLOCKED_BY_CONFIGURATION: No GA4 property selected.', 400);
+		}
+		$raw = $this->vault->getSecret(self::CRED_TOKENS);
+		$tokens = is_string($raw) ? json_decode($raw, true) : null;
+		$accessToken = is_array($tokens) ? (string) ($tokens['access_token'] ?? '') : '';
+		if ($accessToken === '') {
+			throw new \RuntimeException('BLOCKED_BY_CONFIGURATION: GA4 OAuth access token missing.', 401);
+		}
+
+		$end = $endDate !== '' ? $endDate : gmdate('Y-m-d', strtotime('-1 day'));
+		$start = $startDate !== '' ? $startDate : ((string) ($status['last_end_date'] ?? '') ?: gmdate('Y-m-d', strtotime('-28 days')));
+
+		$allRows = [];
+		$pages = 0;
+		$limit = max(1, min(10000, $limit));
+		for ($p = 0; $p < max(1, $maxPages); $p++) {
+			$req = $this->buildRunReportPayload($prop, $start, $end, $accessToken, $channelFilter, $limit, $p * $limit);
+			$res = $this->httpGuard->request($req['url'], [
+				'method'  => $req['method'],
+				'headers' => $req['headers'],
+				'body'    => $req['body'],
+			]);
+			$batch = $this->parseRunReportResponse((int) $res['status'], (string) $res['body']);
+			$pages++;
+			$allRows = array_merge($allRows, $batch);
+			if (count($batch) < $limit) {
+				break;
+			}
+		}
+
+		$snapshotId = $this->repo->saveSnapshot('ga4', $prop, 'organic_landing_pages', "{$start}..{$end}", SEODataRepository::PROVENANCE_LIVE_VERIFIED, $allRows);
+		$this->updateState([
+			'connected'     => true,
+			'property_id'   => $prop,
+			'last_sync_utc' => gmdate('Y-m-d H:i:s'),
+			'last_end_date' => $end,
+			'last_error'    => null,
+		]);
+		return [
+			'snapshot_id'   => $snapshotId,
+			'row_count'     => count($allRows),
+			'pages_fetched' => $pages,
+			'provenance'    => SEODataRepository::PROVENANCE_LIVE_VERIFIED,
+		];
+	}
+
+	/**
+	 * @param array<string, mixed> $patch
+	 */
+	private function updateState(array $patch): void {
+		$cur = function_exists('get_option') ? get_option(self::STATE_OPTION, []) : [];
+		if (!is_array($cur)) {
+			$cur = [];
+		}
+		if (function_exists('update_option')) {
+			update_option(self::STATE_OPTION, array_merge($cur, $patch), false);
+		}
+	}
 
 	/**
 	 * @return array<string, mixed>
@@ -29,7 +168,9 @@ final class GA4Adapter {
 		string $startDate,
 		string $endDate,
 		string $accessToken = '',
-		string $channelFilter = 'Organic Search'
+		string $channelFilter = 'Organic Search',
+		int $limit = 1000,
+		int $offset = 0
 	): array {
 		$prop = preg_replace('/[^0-9]/', '', $propertyId) ?? '';
 		if ($prop === '') {
@@ -47,6 +188,8 @@ final class GA4Adapter {
 				['name' => 'averageSessionDuration'],
 				['name' => 'keyEvents'],
 			],
+			'limit'      => max(1, min(10000, $limit)),
+			'offset'     => max(0, $offset),
 		];
 		if ($channelFilter !== '') {
 			$payload['dimensionFilter'] = [

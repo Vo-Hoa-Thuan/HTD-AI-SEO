@@ -107,10 +107,25 @@ final class RewriteEngine {
 			actionType: 'rewrite_post',
 			targetType: 'post',
 			targetId: $postId,
-			payload: ['draft_id' => $draftId, 'snapshot_id' => $snapshotId, 'post_id' => $postId, 'slug' => $origSlug, 'html_sha256' => hash('sha256', $propHtml)],
+			payload: [
+				'draft_id'           => $draftId,
+				'target_id'          => $postId,
+				'target_status'      => (string) ($proposed['target_status'] ?? 'publish'),
+				'scheduled_date_gmt' => null,
+				'mutation_scope'     => 'wp_post_rewrite',
+				'title'              => $propTitle,
+				'slug'               => $origSlug,
+				'excerpt'            => '',
+				'meta_title'         => (string) ($proposed['meta']['title'] ?? $origTitle),
+				'meta_description'   => (string) ($proposed['meta']['description'] ?? ''),
+				'html_sha256'        => hash('sha256', $propHtml),
+				'snapshot_id'        => $snapshotId,
+				'post_id'            => $postId,
+			],
 			requestedBy: $actorId,
 			previousSnapshot: ['title' => $origTitle, 'slug' => $origSlug, 'url' => $origUrl]
 		);
+		$this->drafts->updateApprovalLink($draftId, $approvalId, 'REVIEW_PENDING');
 
 		$this->logger->log('rewrite', 'rewrite_proposed', 'AUDIT', 'OK', [
 			'post_id'     => $postId,

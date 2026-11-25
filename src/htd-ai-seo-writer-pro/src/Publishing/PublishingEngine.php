@@ -43,6 +43,22 @@ final class PublishingEngine {
 		?string $scheduledDateGmt = null,
 		?callable $wpPostWriter = null
 	): array {
+		if (!in_array($targetStatus, ['draft', 'publish', 'future'], true)) {
+			throw new \InvalidArgumentException("Invalid target status: {$targetStatus}", 400);
+		}
+		if ($targetStatus === 'future' && ($scheduledDateGmt === null || trim($scheduledDateGmt) === '' || strtotime($scheduledDateGmt) === false)) {
+			throw new \InvalidArgumentException('Valid scheduledDateGmt is required when targetStatus is future.', 400);
+		}
+
+		if (function_exists('current_user_can')) {
+			$reqCap = ($targetStatus === 'draft')
+				? \HTD\AISEO\Support\Capabilities::MANAGE
+				: \HTD\AISEO\Support\Capabilities::APPROVE;
+			if (!\HTD\AISEO\Support\Capabilities::currentUserCan($reqCap)) {
+				throw new \RuntimeException("Insufficient capability ({$reqCap}) to execute {$targetStatus} publishing.", 403);
+			}
+		}
+
 		$draft = $this->drafts->find($draftId);
 		if ($draft === null) {
 			throw new \RuntimeException("Draft #{$draftId} not found.", 404);
@@ -57,34 +73,67 @@ final class PublishingEngine {
 			$this->wpdb->prepare("SELECT * FROM {$receiptTable} WHERE idempotency_key = %s LIMIT 1", $idemKey),
 			ARRAY_A
 		);
-		if (is_array($existing) && ($existing['execution_status'] ?? '') === 'EXECUTED') {
-			return [
-				'idempotent_replay' => true,
-				'wp_post_id'        => (int) $existing['wp_post_id'],
-				'status'            => (string) $existing['post_status'],
-			];
+		if (is_array($existing)) {
+			if (($existing['execution_status'] ?? '') === 'EXECUTED') {
+				return [
+					'idempotent_replay' => true,
+					'wp_post_id'        => (int) $existing['wp_post_id'],
+					'status'            => (string) $existing['post_status'],
+				];
+			}
+			if (($existing['execution_status'] ?? '') === 'EXECUTING') {
+				throw new \RuntimeException("Concurrent execution already in progress for key {$idemKey}.", 409);
+			}
 		}
 
-		$actionType = $isAutoPublish ? 'autopublish' : (($draft['job_type'] ?? 'new') === 'rewrite' ? 'rewrite_post' : 'create_draft_post');
+		$jobType = (string) ($draft['job_type'] ?? 'new');
+		if ($isAutoPublish) {
+			$actionType = 'autopublish';
+			$mutationScope = 'wp_post_autopublish';
+		} elseif ($jobType === 'rewrite') {
+			$actionType = 'rewrite_post';
+			$mutationScope = 'wp_post_rewrite';
+		} elseif ($targetStatus === 'draft') {
+			$actionType = 'create_draft_post';
+			$mutationScope = 'wp_post_draft';
+		} elseif ($targetStatus === 'future') {
+			$actionType = 'schedule_post';
+			$mutationScope = 'wp_post_schedule';
+		} else {
+			$actionType = 'publish_post';
+			$mutationScope = 'wp_post_publish';
+		}
+
+		$approvalRow = $this->approvals->find($approvalId);
+		if ($approvalRow !== null && ($approvalRow['action_type'] ?? '') === 'create_draft_post' && $targetStatus !== 'draft') {
+			throw new \RuntimeException('Draft approval (create_draft_post) cannot authorize publish or future status.', 403);
+		}
+
 		$targetPostId = (int) ($draft['target_post_id'] ?? 0);
 		$cleanHtml = Sanitizer::sanitizeAiHtml((string) $draft['html_content']);
+		$metaTitle = (string) ($draft['meta_title'] ?? '');
+		$metaDesc = (string) ($draft['meta_description'] ?? '');
+		$excerpt = (string) ($draft['excerpt'] ?? '');
+
 		$payload = [
-			'draft_id'    => $draftId,
-			'title'       => (string) $draft['title'],
-			'slug'        => (string) ($draft['slug'] ?? ''),
-			'html_sha256' => hash('sha256', $cleanHtml),
+			'draft_id'           => $draftId,
+			'target_id'          => $targetPostId,
+			'target_status'      => $targetStatus,
+			'scheduled_date_gmt' => $targetStatus === 'future' ? $scheduledDateGmt : null,
+			'mutation_scope'     => $mutationScope,
+			'title'              => (string) $draft['title'],
+			'slug'               => (string) ($draft['slug'] ?? ''),
+			'excerpt'            => $excerpt,
+			'meta_title'         => $metaTitle,
+			'meta_description'   => $metaDesc,
+			'html_sha256'        => hash('sha256', $cleanHtml),
 		];
-		if (($draft['job_type'] ?? '') === 'rewrite' && $targetPostId > 0) {
+		if ($jobType === 'rewrite' && $targetPostId > 0) {
 			$snapTable = Schema::table($this->wpdb, 'rewrite_snapshots');
 			$snap = $this->wpdb->get_row($this->wpdb->prepare("SELECT id FROM {$snapTable} WHERE draft_id = %d ORDER BY id DESC LIMIT 1", $draftId), ARRAY_A);
 			if (is_array($snap)) {
-				$payload = [
-					'draft_id'    => $draftId,
-					'snapshot_id' => (int) $snap['id'],
-					'post_id'     => $targetPostId,
-					'slug'        => (string) ($draft['slug'] ?? ''),
-					'html_sha256' => hash('sha256', $cleanHtml),
-				];
+				$payload['snapshot_id'] = (int) $snap['id'];
+				$payload['post_id'] = $targetPostId;
 			}
 		}
 
@@ -168,5 +217,56 @@ final class PublishingEngine {
 			]);
 			throw $e;
 		}
+	}
+
+	/**
+	 * Create a new payload-bound approval request for publishing/scheduling a QA-passed draft.
+	 */
+	public function createPublishApproval(
+		int $draftId,
+		string $targetStatus = 'publish',
+		?string $scheduledDateGmt = null,
+		int $requestedBy = 0
+	): int {
+		if (!in_array($targetStatus, ['draft', 'publish', 'future'], true)) {
+			throw new \InvalidArgumentException("Invalid target status: {$targetStatus}", 400);
+		}
+		if ($targetStatus === 'future' && ($scheduledDateGmt === null || trim($scheduledDateGmt) === '' || strtotime($scheduledDateGmt) === false)) {
+			throw new \InvalidArgumentException('Valid scheduledDateGmt is required for future status.', 400);
+		}
+		$draft = $this->drafts->find($draftId);
+		if ($draft === null) {
+			throw new \RuntimeException("Draft #{$draftId} not found.", 404);
+		}
+		if (($draft['qa_status'] ?? 'NOT_RUN') === 'FAIL') {
+			throw new \RuntimeException("Draft #{$draftId} failed Content QA.", 422);
+		}
+
+		$jobType = (string) ($draft['job_type'] ?? 'new');
+		$actionType = $jobType === 'rewrite'
+			? 'rewrite_post'
+			: ($targetStatus === 'draft' ? 'create_draft_post' : ($targetStatus === 'future' ? 'schedule_post' : 'publish_post'));
+		$mutationScope = $jobType === 'rewrite'
+			? 'wp_post_rewrite'
+			: ($targetStatus === 'draft' ? 'wp_post_draft' : ($targetStatus === 'future' ? 'wp_post_schedule' : 'wp_post_publish'));
+		$targetPostId = (int) ($draft['target_post_id'] ?? 0);
+		$cleanHtml = Sanitizer::sanitizeAiHtml((string) $draft['html_content']);
+
+		$payload = [
+			'draft_id'           => $draftId,
+			'target_id'          => $targetPostId,
+			'target_status'      => $targetStatus,
+			'scheduled_date_gmt' => $targetStatus === 'future' ? $scheduledDateGmt : null,
+			'mutation_scope'     => $mutationScope,
+			'title'              => (string) $draft['title'],
+			'slug'               => (string) ($draft['slug'] ?? ''),
+			'excerpt'            => (string) ($draft['excerpt'] ?? ''),
+			'meta_title'         => (string) ($draft['meta_title'] ?? ''),
+			'meta_description'   => (string) ($draft['meta_description'] ?? ''),
+			'html_sha256'        => hash('sha256', $cleanHtml),
+		];
+		$approvalId = $this->approvals->createRequest($actionType, 'post', $targetPostId, $payload, $requestedBy);
+		$this->drafts->updateApprovalLink($draftId, $approvalId, 'REVIEW_PENDING');
+		return $approvalId;
 	}
 }

@@ -9,18 +9,27 @@
 	</form>
 	<div class="htd-grid">
 		<div class="htd-card">
-			<h3>Data Sources</h3>
-			<p>GSC Snapshots: <strong><?php echo esc_html((string) ($gscCount ?? 0)); ?></strong></p>
-			<p>GA4 Snapshots: <strong><?php echo esc_html((string) ($ga4Count ?? 0)); ?></strong></p>
-			<p>WP_READ_ONLY_MODE: <strong><?php echo !empty($settings['wp_read_only_mode']) ? 'TRUE (SAFE)' : 'FALSE'; ?></strong></p>
+			<h3>GSC &amp; GA4 Sync (Read-Only Scopes)</h3>
+			<p>GSC Snapshots: <strong><?php echo esc_html((string) ($gscCount ?? 0)); ?></strong> | GA4 Snapshots: <strong><?php echo esc_html((string) ($ga4Count ?? 0)); ?></strong></p>
+			<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="margin-bottom:8px;">
+				<?php wp_nonce_field('htd_ai_seo_google_sync'); ?>
+				<input type="hidden" name="action" value="htd_ai_seo_google_sync">
+				<select name="service"><option value="gsc">Google Search Console</option><option value="ga4">Google Analytics 4</option></select>
+				<input type="text" name="property" placeholder="Site URL or GA4 Property ID" class="regular-text">
+				<button type="submit" name="op" value="sync" class="button button-secondary">Sync Now</button>
+				<button type="submit" name="op" value="disconnect" class="button">Disconnect</button>
+			</form>
 		</div>
 		<div class="htd-card">
-			<h3>Priority Categories</h3>
-			<ul>
-				<?php foreach ((array) ($brand['priority_urls'] ?? []) as $u) : ?>
-					<li><code><?php echo esc_html((string) $u); ?></code></li>
-				<?php endforeach; ?>
-			</ul>
+			<h3>Manual GSC CSV Import</h3>
+			<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+				<?php wp_nonce_field('htd_ai_seo_gsc_import'); ?>
+				<input type="hidden" name="action" value="htd_ai_seo_gsc_import">
+				<p><input type="text" name="property" required placeholder="https://htd.net.vn/" class="regular-text">
+				<select name="report_type"><option value="queries">queries</option><option value="pages">pages</option><option value="search_performance">search_performance</option></select></p>
+				<p><textarea name="csv_content" rows="3" class="large-text" required placeholder="query,page,clicks,impressions,ctr,position"></textarea></p>
+				<button type="submit" class="button button-secondary">Validate &amp; Import CSV</button>
+			</form>
 		</div>
 	</div>
 	<h2>SEO Action Center (P0–P3 Opportunities)</h2>

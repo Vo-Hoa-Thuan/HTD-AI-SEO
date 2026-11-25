@@ -140,13 +140,26 @@ final class Plugin {
 			$reg->register(new ClaudeProvider($guard, $models));
 			$reg->register(new DeepSeekProvider($guard, $models));
 			$reg->register(new GrokProvider($guard, $models));
-			$reg->register(new CustomOpenAICompatibleProvider($guard, $models));
+			$customCfg = $c->get(ProviderConfiguration::class)->get('custom');
+			$customBaseUrl = trim((string) ($customCfg['base_url'] ?? ''));
+			$customProvider = new CustomOpenAICompatibleProvider($guard, $models);
+			if ($customBaseUrl !== '') {
+				try {
+					$customProvider->setBaseUrl($customBaseUrl);
+				} catch (\Throwable) {
+					// Keep unconfigured if stored URL fails validation
+				}
+			}
+			$reg->register($customProvider);
 			return $reg;
 		});
 		$this->container->singleton(PromptRenderer::class, static fn(): PromptRenderer => new PromptRenderer());
 		$this->container->singleton(PromptRegistry::class, static fn(Container $c): PromptRegistry => new PromptRegistry($c->get(PromptRenderer::class)));
 		$this->container->singleton(BrandProfile::class, static fn(): BrandProfile => new BrandProfile());
-		$this->container->singleton(TokenBudgetManager::class, static fn(Container $c): TokenBudgetManager => new TokenBudgetManager($c->get(ProviderConfiguration::class)));
+		$this->container->singleton(TokenBudgetManager::class, static fn(Container $c): TokenBudgetManager => new TokenBudgetManager(
+			$c->get(ProviderConfiguration::class),
+			$c->get(ModelRegistry::class)
+		));
 		$this->container->singleton(OutputValidator::class, static fn(): OutputValidator => new OutputValidator());
 		$this->container->singleton(AIOrchestrator::class, static function (Container $c): AIOrchestrator {
 			return new AIOrchestrator(
@@ -180,7 +193,11 @@ final class Plugin {
 				$c->get(ContentDraftRepository::class),
 				$c->get(ContentQAEngine::class),
 				$c->get(ApprovalEngine::class),
-				$c->get(KeywordIntelligence::class)
+				$c->get(KeywordIntelligence::class),
+				$c->get(AIOrchestrator::class),
+				$c->get(ProviderConfiguration::class),
+				$c->get(CredentialVault::class),
+				$c->get(SettingsRegistry::class)
 			);
 		});
 		$this->container->singleton(NewUpdateDecisionEngine::class, static fn(): NewUpdateDecisionEngine => new NewUpdateDecisionEngine());
@@ -246,7 +263,81 @@ final class Plugin {
 			);
 		});
 		$this->container->singleton(WorkerEngine::class, static function (Container $c): WorkerEngine {
-			return new WorkerEngine($c->get(QueueEngine::class), $c->get(SettingsRegistry::class), $c->get(Logger::class));
+			$worker = new WorkerEngine($c->get(QueueEngine::class), $c->get(SettingsRegistry::class), $c->get(Logger::class));
+			$worker->registerHandler('KEYWORD_ANALYSIS', static function (array $payload) use ($c): void {
+				$kw = trim((string) ($payload['keyword'] ?? $payload['primary_keyword'] ?? ''));
+				if ($kw === '') {
+					throw new \InvalidArgumentException('KEYWORD_ANALYSIS requires keyword.');
+				}
+				$c->get(KeywordIntelligence::class)->classifyIntentHeuristic($kw);
+			});
+			$worker->registerHandler('KEYWORD_CLUSTER', static function (array $payload) use ($c): void {
+				$keywords = is_array($payload['keywords'] ?? null) ? $payload['keywords'] : [];
+				$c->get(KeywordIntelligence::class)->clusterByTopic($keywords);
+			});
+			$worker->registerHandler('CONTENT_OUTLINE', static function (array $payload) use ($c): void {
+				$providerId = (string) ($payload['provider_id'] ?? $c->get(SettingsRegistry::class)->get('active_ai_provider', 'openai'));
+				$c->get(AIOrchestrator::class)->executeTask($providerId, 'content_outline', [
+					'keyword'            => (string) ($payload['keyword'] ?? ''),
+					'secondary_keywords' => implode(', ', (array) ($payload['secondary_keywords'] ?? [])),
+					'heading_depth'      => (string) ($payload['heading_depth'] ?? 'H2,H3'),
+				], true);
+			});
+			$worker->registerHandler('CONTENT_GENERATION', static function (array $payload) use ($c): void {
+				$payload['skip_capability_check'] = true;
+				$res = $c->get(ContentWorkflowEngine::class)->runAiWorkflow($payload);
+				if (($res['status'] ?? '') === 'BLOCKED_BY_CONFIGURATION') {
+					throw new \RuntimeException('BLOCKED_BY_CONFIGURATION: ' . ($res['reason'] ?? 'Missing AI configuration'));
+				}
+			});
+			$worker->registerHandler('CONTENT_REWRITE', static function (array $payload) use ($c): void {
+				$c->get(RewriteEngine::class)->proposeRewrite(
+					(array) ($payload['original_post'] ?? []),
+					(array) ($payload['proposed'] ?? []),
+					(int) ($payload['actor_id'] ?? 0)
+				);
+			});
+			$worker->registerHandler('PRODUCT_CONTENT', static function (array $payload) use ($c): void {
+				$c->get(ProductEngine::class)->proposeProductUpdate(
+					(array) ($payload['wc_product'] ?? []),
+					(array) ($payload['proposed'] ?? []),
+					(int) ($payload['actor_id'] ?? 0)
+				);
+			});
+			$worker->registerHandler('IMAGE_GENERATION', static function (array $payload) use ($c): void {
+				$c->get(ImageGenerationService::class)->generateImage(
+					(string) ($payload['provider_id'] ?? 'openai'),
+					(string) ($payload['prompt'] ?? ''),
+					(string) ($payload['size'] ?? '1024x1024')
+				);
+			});
+			$worker->registerHandler('CONTENT_QA', static function (array $payload) use ($c): void {
+				$c->get(ContentQAEngine::class)->evaluate($payload);
+			});
+			$worker->registerHandler('INTERNAL_LINK_ANALYSIS', static function (array $payload) use ($c): void {
+				$c->get(InternalLinkProposalEngine::class)->propose(
+					(string) ($payload['html'] ?? ''),
+					(string) ($payload['keyword'] ?? ''),
+					(array) ($payload['candidates'] ?? [])
+				);
+			});
+			$worker->registerHandler('PUBLISH_APPROVED_CONTENT', static function (array $payload) use ($c): void {
+				$c->get(PublishingEngine::class)->execute(
+					(int) ($payload['draft_id'] ?? 0),
+					(int) ($payload['approval_id'] ?? 0),
+					(string) ($payload['target_status'] ?? 'draft'),
+					(string) ($payload['idempotency_key'] ?? ''),
+					!empty($payload['is_auto_publish']),
+					isset($payload['scheduled_date_gmt']) ? (string) $payload['scheduled_date_gmt'] : null
+				);
+			});
+			$worker->registerHandler('HTD_SEO_AUDIT', static function (array $payload) use ($c): void {
+				$c->get(OneClickAuditWorkflow::class)->runAudit(
+					(array) ($payload['category_snapshots'] ?? []),
+					(array) ($payload['page_snapshots'] ?? [])
+				);
+			});
+			return $worker;
 		});
 		$this->container->singleton(CronScheduler::class, static function (Container $c): CronScheduler {
 			return new CronScheduler($c->get(WorkerEngine::class), $c->get(SettingsRegistry::class), $c->get(Logger::class));
@@ -331,7 +422,9 @@ final class Plugin {
 		}
 
 		$this->migrator()->migrateIfNeeded();
-		$this->container->get(CronScheduler::class)->register();
+		$cron = $this->container->get(CronScheduler::class);
+		$cron->register();
+		$cron->syncWithSettings();
 
 		if (function_exists('is_admin') && is_admin()) {
 			$this->container->get(AdminMenu::class)->register();

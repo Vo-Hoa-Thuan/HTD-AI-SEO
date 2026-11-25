@@ -57,6 +57,59 @@ final class ContentDraftRepository {
 		return $draftId;
 	}
 
+	public function updateApprovalLink(int $draftId, ?int $approvalId, string $status = 'REVIEW_PENDING'): bool {
+		$table = Schema::table($this->wpdb, 'content_drafts');
+		$res = $this->wpdb->update(
+			$table,
+			[
+				'approval_id'    => $approvalId,
+				'status'         => $status,
+				'updated_at_utc' => gmdate('Y-m-d H:i:s'),
+			],
+			['id' => $draftId]
+		);
+		return $res !== false;
+	}
+
+	/**
+	 * Update draft content/SEO fields and invalidate any prior approval link.
+	 *
+	 * @param array<string, mixed> $fields
+	 */
+	public function updateDraftContent(int $draftId, array $fields, int $actorId = 0): bool {
+		$existing = $this->find($draftId);
+		if ($existing === null) {
+			throw new \RuntimeException("Draft #{$draftId} not found.", 404);
+		}
+		$table = Schema::table($this->wpdb, 'content_drafts');
+		$html = isset($fields['html_content'])
+			? Sanitizer::sanitizeAiHtml((string) $fields['html_content'])
+			: (string) $existing['html_content'];
+		$title = isset($fields['title']) ? trim((string) $fields['title']) : (string) $existing['title'];
+
+		$updateData = [
+			'title'            => $title,
+			'h1'               => isset($fields['h1']) ? trim((string) $fields['h1']) : $existing['h1'],
+			'meta_title'       => isset($fields['meta_title']) ? trim((string) $fields['meta_title']) : $existing['meta_title'],
+			'meta_description' => isset($fields['meta_description']) ? trim((string) $fields['meta_description']) : $existing['meta_description'],
+			'excerpt'          => isset($fields['excerpt']) ? trim((string) $fields['excerpt']) : $existing['excerpt'],
+			'html_content'     => $html,
+			'approval_id'      => null,
+			'status'           => 'DRAFT',
+			'updated_at_utc'   => gmdate('Y-m-d H:i:s'),
+		];
+		$res = $this->wpdb->update($table, $updateData, ['id' => $draftId]);
+		if ($res === false) {
+			return false;
+		}
+		$revTable = Schema::table($this->wpdb, 'content_revisions');
+		$revRows = $this->wpdb->get_results($this->wpdb->prepare("SELECT id FROM {$revTable} WHERE draft_id = %d", $draftId), ARRAY_A);
+		$nextRev = (is_array($revRows) ? count($revRows) : 0) + 1;
+		$this->addRevision($draftId, $nextRev, $title, $html, $updateData, 'Manual draft edit', $actorId);
+		$this->logger->log('content', 'draft_updated', 'AUDIT', 'OK', ['draft_id' => $draftId, 'revision' => $nextRev]);
+		return true;
+	}
+
 	/**
 	 * @param array<string, mixed> $structured
 	 */

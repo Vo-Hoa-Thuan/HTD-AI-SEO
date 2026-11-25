@@ -97,7 +97,12 @@ final class AIOrchestrator {
 			throw new AIException(AIError::REQUEST_BLOCKED, 'Duplicate in-flight AI request prevented.', 409);
 		}
 
-		$this->tokens->assertBudgetAvailable($providerId);
+		$inEst = 0;
+		foreach ($messages as $m) {
+			$inEst += TokenBudgetManager::estimateTokens((string) ($m['content'] ?? ''));
+		}
+		$estimatedCost = $this->tokens->estimateRequestCostUsd($providerId, $model, $inEst, $req->maxOutputTokens);
+		$reservationId = $this->tokens->reserveBudget($providerId, $estimatedCost);
 		$apiKey = $this->vault->getSecret((string) ($cfg['cred_ref'] ?? ($providerId . '_api_key'))) ?? '';
 		$provider = $this->providers->get($providerId);
 
@@ -107,10 +112,12 @@ final class AIOrchestrator {
 		try {
 			$attempt = 0;
 			while (true) {
+				$response = null;
 				try {
 					$response = $provider->send($req, $apiKey);
 					$validated = $this->validator->validate($response, $tpl->outputSchema);
-					$this->tokens->recordUsage(
+					$this->tokens->reconcileReservation(
+						$reservationId,
 						$providerId,
 						$model,
 						$tpl->taskType,
@@ -131,8 +138,24 @@ final class AIOrchestrator {
 					]);
 					return ['response' => $response, 'validated' => $validated];
 				} catch (AIException $e) {
+					if ($response !== null) {
+						$this->tokens->recordUsage(
+							$providerId,
+							$model,
+							$tpl->taskType,
+							$response->usage->inputTokens,
+							$response->usage->outputTokens,
+							$response->usage->estimatedCostUsd,
+							false,
+							false
+						);
+					}
 					if ($attempt >= $maxRetries || AIError::isNonRetryable($e->errorCode)) {
-						$this->tokens->recordUsage($providerId, $model, $tpl->taskType, 0, 0, 0.0, false, false);
+						if ($response === null) {
+							$this->tokens->reconcileReservation($reservationId, $providerId, $model, $tpl->taskType, 0, 0, 0.0, false, false);
+						} else {
+							$this->tokens->releaseReservation($reservationId);
+						}
 						$this->logger->log('ai_orchestrator', 'task_failed', 'ERROR', $e->errorCode, [
 							'provider'    => $providerId,
 							'template_id' => $templateId,
@@ -144,6 +167,7 @@ final class AIOrchestrator {
 				}
 			}
 		} finally {
+			$this->tokens->releaseReservation($reservationId);
 			unset($this->inflightFingerprints[$fingerprint]);
 		}
 	}

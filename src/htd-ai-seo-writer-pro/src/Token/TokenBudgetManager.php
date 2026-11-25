@@ -16,10 +16,121 @@ if (!defined('ABSPATH')) {
  * Token estimation, context trimming, budget enforcement, usage accounting, and safe response caching.
  */
 final class TokenBudgetManager {
-	public const USAGE_OPTION = 'htd_ai_seo_ai_usage';
-	public const CACHE_OPTION = 'htd_ai_seo_ai_cache';
+	public const USAGE_OPTION        = 'htd_ai_seo_ai_usage';
+	public const CACHE_OPTION        = 'htd_ai_seo_ai_cache';
+	public const RESERVATIONS_OPTION = 'htd_ai_seo_budget_reservations';
+	private const UNKNOWN_IN_PER_1M  = 5.0;
+	private const UNKNOWN_OUT_PER_1M = 15.0;
 
-	public function __construct(private readonly ProviderConfiguration $providerConfigs) {}
+	public function __construct(
+		private readonly ProviderConfiguration $providerConfigs,
+		private readonly ?\HTD\AISEO\AI\ModelRegistry $models = null
+	) {}
+
+	public function estimateRequestCostUsd(string $providerId, string $model, int $inputTokens, int $maxOutputTokens): float {
+		$cfg = $this->providerConfigs->get($providerId);
+		if ($providerId === 'custom') {
+			$inRate = (float) ($cfg['input_per_1m'] ?? 0.0);
+			$outRate = (float) ($cfg['output_per_1m'] ?? 0.0);
+			if ($inRate > 0.0 || $outRate > 0.0) {
+				return round((($inputTokens / 1_000_000) * $inRate) + (($maxOutputTokens / 1_000_000) * $outRate), 6);
+			}
+		}
+		if ($this->models !== null) {
+			$known = $this->models->estimateCostUsd($providerId, $model, $inputTokens, $maxOutputTokens);
+			if ($known > 0.0) {
+				return $known;
+			}
+		}
+		// Unknown pricing must NOT be treated as free; apply conservative fallback estimate.
+		return round((($inputTokens / 1_000_000) * self::UNKNOWN_IN_PER_1M) + (($maxOutputTokens / 1_000_000) * self::UNKNOWN_OUT_PER_1M), 6);
+	}
+
+	/**
+	 * Atomically reserve estimated budget before sending an outbound AI request.
+	 */
+	public function reserveBudget(string $providerId, float $estimatedUsd, int $ttlSeconds = 180): string {
+		$this->pruneExpiredReservations();
+		$this->assertBudgetAvailable($providerId, $estimatedUsd);
+
+		$reservations = function_exists('get_option') ? get_option(self::RESERVATIONS_OPTION, []) : [];
+		if (!is_array($reservations)) {
+			$reservations = [];
+		}
+		$resId = 'res_' . bin2hex(random_bytes(8));
+		$reservations[$resId] = [
+			'provider_id' => $providerId,
+			'amount_usd'  => round(max(0.0, $estimatedUsd), 6),
+			'expires_at'  => time() + max(30, $ttlSeconds),
+		];
+		if (function_exists('update_option')) {
+			update_option(self::RESERVATIONS_OPTION, $reservations, false);
+		}
+		return $resId;
+	}
+
+	public function releaseReservation(string $reservationId): void {
+		$reservations = function_exists('get_option') ? get_option(self::RESERVATIONS_OPTION, []) : [];
+		if (!is_array($reservations) || !isset($reservations[$reservationId])) {
+			return;
+		}
+		unset($reservations[$reservationId]);
+		if (function_exists('update_option')) {
+			update_option(self::RESERVATIONS_OPTION, $reservations, false);
+		}
+	}
+
+	public function reconcileReservation(
+		string $reservationId,
+		string $providerId,
+		string $model,
+		string $taskType,
+		int $inTok,
+		int $outTok,
+		float $actualCostUsd,
+		bool $success,
+		bool $cacheHit = false
+	): void {
+		$this->releaseReservation($reservationId);
+		$effectiveCost = $actualCostUsd;
+		if ($effectiveCost <= 0.0 && ($inTok > 0 || $outTok > 0)) {
+			$effectiveCost = $this->estimateRequestCostUsd($providerId, $model, $inTok, $outTok);
+		}
+		$this->recordUsage($providerId, $model, $taskType, $inTok, $outTok, $effectiveCost, $success, $cacheHit);
+	}
+
+	private function activeReservedUsd(string $providerId): float {
+		$this->pruneExpiredReservations();
+		$reservations = function_exists('get_option') ? get_option(self::RESERVATIONS_OPTION, []) : [];
+		if (!is_array($reservations)) {
+			return 0.0;
+		}
+		$sum = 0.0;
+		foreach ($reservations as $r) {
+			if (is_array($r) && ($r['provider_id'] ?? '') === $providerId) {
+				$sum += (float) ($r['amount_usd'] ?? 0.0);
+			}
+		}
+		return round($sum, 6);
+	}
+
+	private function pruneExpiredReservations(): void {
+		$reservations = function_exists('get_option') ? get_option(self::RESERVATIONS_OPTION, []) : [];
+		if (!is_array($reservations) || $reservations === []) {
+			return;
+		}
+		$now = time();
+		$changed = false;
+		foreach ($reservations as $id => $r) {
+			if (!is_array($r) || (int) ($r['expires_at'] ?? 0) < $now) {
+				unset($reservations[$id]);
+				$changed = true;
+			}
+		}
+		if ($changed && function_exists('update_option')) {
+			update_option(self::RESERVATIONS_OPTION, $reservations, false);
+		}
+	}
 
 	public static function estimateTokens(string $text): int {
 		$len = function_exists('mb_strlen') ? mb_strlen($text, 'UTF-8') : strlen($text);
@@ -61,8 +172,9 @@ final class TokenBudgetManager {
 		$today = gmdate('Y-m-d');
 		$month = gmdate('Y-m');
 
-		$dailySpent = (float) ($usage['daily'][$today][$providerId]['cost_usd'] ?? 0.0);
-		$monthlySpent = (float) ($usage['monthly'][$month][$providerId]['cost_usd'] ?? 0.0);
+		$reserved = $this->activeReservedUsd($providerId);
+		$dailySpent = (float) ($usage['daily'][$today][$providerId]['cost_usd'] ?? 0.0) + $reserved;
+		$monthlySpent = (float) ($usage['monthly'][$month][$providerId]['cost_usd'] ?? 0.0) + $reserved;
 
 		if ($dailyCap > 0 && ($dailySpent + $estimatedAdditionalUsd) > $dailyCap) {
 			throw new AIException(AIError::BUDGET_EXCEEDED, "Daily budget exceeded for {$providerId}.", 429);

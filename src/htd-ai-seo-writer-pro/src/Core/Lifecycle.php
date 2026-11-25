@@ -22,6 +22,7 @@ final class Lifecycle {
 		$plugin = Plugin::instance();
 		$plugin->migrator()->migrate();
 		$plugin->settings()->ensureDefaults();
+		$plugin->container()->get(\HTD\AISEO\Queue\CronScheduler::class)->syncWithSettings();
 	}
 
 	public static function deactivate(): void {

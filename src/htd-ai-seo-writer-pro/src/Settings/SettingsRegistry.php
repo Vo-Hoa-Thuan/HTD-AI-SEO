@@ -91,7 +91,7 @@ final class SettingsRegistry {
 			],
 			'active_ai_provider' => [
 				'type'        => 'enum',
-				'values'      => ['none', 'openai', 'gemini', 'claude', 'deepseek', 'grok'],
+				'values'      => ['none', 'openai', 'gemini', 'claude', 'deepseek', 'grok', 'custom'],
 				'default'     => 'none',
 				'permission'  => Capabilities::MANAGE_SETTINGS,
 				'description' => 'Configured primary AI provider.',

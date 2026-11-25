@@ -42,6 +42,16 @@ final class CronScheduler {
 		return $schedules;
 	}
 
+	public function syncWithSettings(string $recurrence = 'htd_every_15_min'): void {
+		$enabled = (bool) $this->settings->get('allow_background_content_generation', false);
+		$stopped = (bool) $this->settings->get('emergency_stop', false);
+		if ($enabled && !$stopped) {
+			$this->ensureScheduled($recurrence);
+		} else {
+			self::clearScheduled();
+		}
+	}
+
 	public function ensureScheduled(string $recurrence = 'htd_every_15_min'): void {
 		if (function_exists('wp_next_scheduled') && function_exists('wp_schedule_event')) {
 			if (!wp_next_scheduled(self::HOOK_PROCESS)) {

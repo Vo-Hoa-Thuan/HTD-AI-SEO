@@ -52,12 +52,44 @@ final class CustomOpenAICompatibleProvider extends AbstractProviderAdapter {
 		if (!is_array($parts) || strtolower((string) ($parts['scheme'] ?? '')) !== 'https' || empty($parts['host'])) {
 			throw new AIException(AIError::REQUEST_BLOCKED, 'Custom Base URL must be a valid HTTPS URL.', 400);
 		}
+		if (!empty($parts['user']) || !empty($parts['pass'])) {
+			throw new AIException(AIError::REQUEST_BLOCKED, 'URL userinfo is not allowed in Custom Base URL.', 400);
+		}
+		if (isset($parts['port']) && (int) $parts['port'] !== 443) {
+			throw new AIException(AIError::REQUEST_BLOCKED, 'Only HTTPS port 443 is permitted for Custom Base URL.', 403);
+		}
 		$host = strtolower((string) $parts['host']);
+		if ($host === 'localhost' || str_ends_with($host, '.local') || str_ends_with($host, '.internal')) {
+			throw new AIException(AIError::REQUEST_BLOCKED, "Local/internal host blocked: {$host}", 403);
+		}
+		if (filter_var($host, FILTER_VALIDATE_IP) !== false && filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+			throw new AIException(AIError::REQUEST_BLOCKED, "Private/reserved IP blocked: {$host}", 403);
+		}
 		if ($host === 'softviet.vn' || str_ends_with($host, '.softviet.vn')) {
 			throw new AIException(AIError::REQUEST_BLOCKED, 'SoftViet domains are blocked.', 403);
 		}
 		$this->baseUrl = $trimmed;
 		$this->httpGuard->addAllowlistedHost($host);
+	}
+
+	public function getBaseUrl(): string {
+		return $this->baseUrl;
+	}
+
+	/**
+	 * Execute a minimal connection test against the configured custom endpoint.
+	 *
+	 * @return array{ok: bool, model: string, latency_ms: int}
+	 */
+	public function testConnection(string $apiKey, string $model = 'gpt-4o-mini'): array {
+		$t0 = microtime(true);
+		$req = new AIRequest('custom', $model, [['role' => 'user', 'content' => 'Reply with OK']], 'connection_test', 16, 0.0, 15);
+		$res = $this->send($req, $apiKey);
+		return [
+			'ok'         => $res->rawText !== '',
+			'model'      => $res->model,
+			'latency_ms' => (int) round((microtime(true) - $t0) * 1000),
+		];
 	}
 
 	public function buildHttpPayload(AIRequest $request, string $apiKey): array {

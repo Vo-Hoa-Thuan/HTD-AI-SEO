@@ -25,6 +25,7 @@ final class WorkerEngine {
 		'CONTENT_QA',
 		'INTERNAL_LINK_ANALYSIS',
 		'PUBLISH_APPROVED_CONTENT',
+		'HTD_SEO_AUDIT',
 	];
 
 	/** @var array<string, callable> */
@@ -38,6 +39,13 @@ final class WorkerEngine {
 
 	public function registerHandler(string $jobType, callable $handler): void {
 		$this->handlers[$jobType] = $handler;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function registeredJobTypes(): array {
+		return array_keys($this->handlers);
 	}
 
 	/**
@@ -71,10 +79,11 @@ final class WorkerEngine {
 				if (!isset($this->handlers[$jobType])) {
 					throw new \RuntimeException("No handler registered for job type: {$jobType}");
 				}
-				// Verify lease ownership right before executing
+				// Verify lease ownership and expiry right before executing
 				$fresh = $this->queue->find($jobId);
-				if ($fresh === null || ($fresh['lock_owner'] ?? '') !== $workerId) {
-					throw new \RuntimeException("Stale worker '{$workerId}' lost ownership of job #{$jobId}.");
+				$leaseExp = !empty($fresh['lease_expires_at']) ? strtotime((string) $fresh['lease_expires_at']) : 0;
+				if ($fresh === null || ($fresh['lock_owner'] ?? '') !== $workerId || ($leaseExp > 0 && $leaseExp < time())) {
+					throw new \RuntimeException("Stale worker '{$workerId}' lost ownership or lease expired for job #{$jobId}.");
 				}
 
 				($this->handlers[$jobType])($payload, $job);

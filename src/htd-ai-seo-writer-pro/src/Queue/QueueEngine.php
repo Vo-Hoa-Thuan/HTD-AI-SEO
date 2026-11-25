@@ -218,6 +218,33 @@ final class QueueEngine {
 		return $affected === 1;
 	}
 
+	public function retry(int $jobId): bool {
+		$table = Schema::table($this->wpdb, 'queue');
+		$now = gmdate('Y-m-d H:i:s');
+		$affected = $this->wpdb->query(
+			$this->wpdb->prepare(
+				"UPDATE {$table} SET status = %s, lock_owner = NULL, lease_expires_at = NULL, next_attempt_at = %s, updated_at_utc = %s WHERE id = %d AND status IN (%s, %s, %s)",
+				self::STATUS_PENDING,
+				$now,
+				$now,
+				$jobId,
+				self::STATUS_FAILED,
+				self::STATUS_DEAD_LETTER,
+				self::STATUS_CANCELLED
+			)
+		);
+		return $affected === 1;
+	}
+
+	/**
+	 * @return array<int, array<string, mixed>>
+	 */
+	public function listRecent(int $limit = 30): array {
+		$table = Schema::table($this->wpdb, 'queue');
+		$rows = $this->wpdb->get_results($this->wpdb->prepare("SELECT * FROM {$table} ORDER BY id DESC LIMIT %d", max(1, min(200, $limit))), ARRAY_A);
+		return is_array($rows) ? $rows : [];
+	}
+
 	public function recoverExpiredLeases(): int {
 		$table = Schema::table($this->wpdb, 'queue');
 		$now = gmdate('Y-m-d H:i:s');

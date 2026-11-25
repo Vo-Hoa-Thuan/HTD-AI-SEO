@@ -40,13 +40,21 @@ final class ExternalRequestGuard {
 
 	/** @var string[] */
 	private array $allowlist;
+	/** @var callable|null */
+	private $dnsResolver;
 
 	public function __construct(
 		private readonly SettingsRegistry $settings,
 		private readonly Logger $logger,
-		?array $allowlist = null
+		?array $allowlist = null,
+		?callable $dnsResolver = null
 	) {
 		$this->allowlist = $allowlist ?? self::DEFAULT_ALLOWLIST;
+		$this->dnsResolver = $dnsResolver;
+	}
+
+	public function setDnsResolver(?callable $resolver): void {
+		$this->dnsResolver = $resolver;
 	}
 
 	public function addAllowlistedHost(string $host): void {
@@ -57,9 +65,11 @@ final class ExternalRequestGuard {
 	}
 
 	/**
-	 * Validate URL against HTTPS, SSRF, and allowlist rules without sending a network request.
+	 * Validate URL against HTTPS, userinfo, port, SSRF, DNS resolution, and allowlist rules.
+	 *
+	 * @return string[] Resolved public IP addresses (when DNS resolution runs)
 	 */
-	public function validateUrl(string $url): void {
+	public function validateUrl(string $url, bool $resolveDns = false): array {
 		if ((bool) $this->settings->get('emergency_stop', false)) {
 			throw new \RuntimeException('Outbound requests blocked: EMERGENCY_STOP is active.', 423);
 		}
@@ -71,12 +81,19 @@ final class ExternalRequestGuard {
 		if (!is_array($parts) || empty($parts['scheme']) || empty($parts['host'])) {
 			throw new \InvalidArgumentException('Invalid outbound URL.');
 		}
+		if (!empty($parts['user']) || !empty($parts['pass'])) {
+			throw new \RuntimeException('URL userinfo (user:pass@) is forbidden.', 403);
+		}
+		if (isset($parts['port']) && (int) $parts['port'] !== 443) {
+			throw new \RuntimeException('Unsafe outbound port; only HTTPS port 443 is permitted.', 403);
+		}
 
 		if (strtolower((string) $parts['scheme']) !== 'https') {
 			throw new \RuntimeException('Only HTTPS outbound requests are permitted.', 403);
 		}
 
 		$host = strtolower((string) $parts['host']);
+		$host = trim($host, '[]');
 		foreach (self::BLOCKED_DOMAINS as $blocked) {
 			if ($host === $blocked || str_ends_with($host, '.' . $blocked)) {
 				throw new \RuntimeException("Blocked vendor domain: {$host}", 403);
@@ -98,6 +115,49 @@ final class ExternalRequestGuard {
 		if (!in_array($host, $this->allowlist, true)) {
 			throw new \RuntimeException("Domain not in HTD allowlist: {$host}", 403);
 		}
+
+		if ($resolveDns || $this->dnsResolver !== null) {
+			return $this->resolveAndValidateHost($host);
+		}
+		return [];
+	}
+
+	/**
+	 * Resolve DNS A/AAAA records and block any private, loopback, link-local, or reserved IP (DNS rebinding mitigation).
+	 *
+	 * @return string[]
+	 */
+	public function resolveAndValidateHost(string $host): array {
+		$ips = [];
+		if ($this->dnsResolver !== null) {
+			$ips = (array) ($this->dnsResolver)($host);
+		} elseif (function_exists('dns_get_record')) {
+			$records = @dns_get_record($host, DNS_A | DNS_AAAA);
+			if (is_array($records)) {
+				foreach ($records as $rec) {
+					if (!empty($rec['ip'])) {
+						$ips[] = (string) $rec['ip'];
+					} elseif (!empty($rec['ipv6'])) {
+						$ips[] = (string) $rec['ipv6'];
+					}
+				}
+			}
+		}
+		if ($ips === [] && function_exists('gethostbynamel')) {
+			$v4 = @gethostbynamel($host);
+			if (is_array($v4)) {
+				$ips = $v4;
+			}
+		}
+		if ($ips === []) {
+			throw new \RuntimeException("DNS resolution failed for host: {$host}", 502);
+		}
+		foreach ($ips as $ip) {
+			if (filter_var((string) $ip, FILTER_VALIDATE_IP) === false || $this->isPrivateOrReservedIp((string) $ip)) {
+				throw new \RuntimeException("SSRF/DNS-rebinding blocked: {$host} resolved to unsafe IP {$ip}", 403);
+			}
+		}
+		return $ips;
 	}
 
 	private function isPrivateOrReservedIp(string $ip): bool {
@@ -117,16 +177,18 @@ final class ExternalRequestGuard {
 	public function request(string $url, array $args = []): array {
 		$start = microtime(true);
 		try {
-			$this->validateUrl($url);
+			$this->validateUrl($url, true);
 
 			$timeout = min(self::MAX_TIMEOUT_SECONDS, max(1, (int) ($args['timeout'] ?? 30)));
 			$wpArgs = [
-				'method'      => strtoupper((string) ($args['method'] ?? 'POST')),
-				'timeout'     => $timeout,
-				'redirection' => 0, // Never forward credentials on redirect
-				'sslverify'   => true,
-				'headers'     => is_array($args['headers'] ?? null) ? $args['headers'] : [],
-				'body'        => $args['body'] ?? null,
+				'method'              => strtoupper((string) ($args['method'] ?? 'POST')),
+				'timeout'             => $timeout,
+				'redirection'         => 0, // Never forward credentials on redirect
+				'sslverify'           => true,
+				'reject_unsafe_urls'  => true,
+				'limit_response_size' => self::MAX_RESPONSE_BYTES,
+				'headers'             => is_array($args['headers'] ?? null) ? $args['headers'] : [],
+				'body'                => $args['body'] ?? null,
 			];
 
 			if (!function_exists('wp_remote_request')) {
