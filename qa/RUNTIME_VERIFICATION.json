@@ -1,0 +1,13 @@
+{
+  "docker_daemon": "BLOCKED_RUNTIME (Docker Desktop daemon not started)",
+  "wordpress": "NOT_RUN",
+  "mysql_mariadb": "NOT_RUN",
+  "woocommerce": "NOT_RUN",
+  "rank_math": "NOT_RUN",
+  "php_cli_version": "8.3.36",
+  "php_openssl_aes256gcm": "VERIFIED (tests/php-cli.ini)",
+  "zip_integrity_verified": true,
+  "zip_path": "build/htd-ai-seo-writer-pro-0.7.0-dev.zip",
+  "zip_sha256": "50046f8186d398c52ad882eeeea5e4c470a544f4499da1f9f4d2a25f6412aec5",
+  "zip_size_bytes": 133391
+}

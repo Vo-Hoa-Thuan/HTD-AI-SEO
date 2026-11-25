@@ -1,0 +1,5 @@
+FINDING_ID,SEVERITY,CWE,COMPONENT,LOCATION,EVIDENCE,BLOCKER,STATUS,TEST_REF
+SEC7_001,LOW,CWE-79,HTD Source,templates/*.php,0 unescaped echoes; all forms have wp_nonce_field(),NONE,FIXED_VERIFIED,UI_CONTROL_TEST_MATRIX.csv
+SEC7_002,HIGH,CWE-918,ExternalRequestGuard,src/Security/ExternalRequestGuard.php,"Blocks IPv6 [::1], 10.x, 192.168.x, 169.254.x, hex/int IPs, softviet.vn",NONE,FIXED_VERIFIED,SEC7_01
+SEC7_003,LOW,CWE-532,Logger,src/Logging/Logger.php,"Nested secrets (Bearer, sk-*, AIza*) redacted",NONE,FIXED_VERIFIED,SEC7_02
+SEC7_004,INFO,N/A,SAST/AV Toolchain,Environment,"phpcs, phpstan, semgrep, yara, clamscan, gitleaks not installed",BLK-001,NOT_RUN,BLOCKERS.md

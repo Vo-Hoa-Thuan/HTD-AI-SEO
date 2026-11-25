@@ -1,0 +1,584 @@
+{
+  "total_files": 103,
+  "files": [
+    {
+      "path": "assets/css/admin.css",
+      "size": 649,
+      "sha256": "5a3737792c77207594cfd6fbce4fd125f564dc69949e60437da4532d48f968f4"
+    },
+    {
+      "path": "assets/js/admin.js",
+      "size": 424,
+      "sha256": "fd27837a052a0d710c127a9a20b7ea6b5bb25d767fdfbdcc49f78a41c4007362"
+    },
+    {
+      "path": "composer.json",
+      "size": 294,
+      "sha256": "830c630a22b1462b11b74e0451387f37df35c2b97cad5f71b19b7b54dfb955f0"
+    },
+    {
+      "path": "htd-ai-seo-writer-pro.php",
+      "size": 2451,
+      "sha256": "dda4e87358a99c4d465124e4da70d37be13b9aad78c150de68d67c56c0107c2f"
+    },
+    {
+      "path": "LICENSE",
+      "size": 601,
+      "sha256": "6565c81edf98f9a11f8d6c980b291f15663a89ead7a36cb6e5ba67ad87aa1f07"
+    },
+    {
+      "path": "readme.txt",
+      "size": 335,
+      "sha256": "901e71d50f14fa083e72df7ec1bbcbff4266b210d018b1e93df6dbb1805d086e"
+    },
+    {
+      "path": "src/Admin/AdminMenu.php",
+      "size": 15893,
+      "sha256": "602d7810cfad762beb9e5a0bc9d1dea451fece6ec8410a03298ab730135be3bb"
+    },
+    {
+      "path": "src/AI/AbstractProviderAdapter.php",
+      "size": 4132,
+      "sha256": "46da761e5df6ca085aa27d3f5abcdbee209a72b85a2e2578e125aa9554b5237b"
+    },
+    {
+      "path": "src/AI/AIError.php",
+      "size": 1228,
+      "sha256": "42284f81b99dbb05c6324ee580e2a8b2660fc83903b924cd2efcc4b0bfb76230"
+    },
+    {
+      "path": "src/AI/AIException.php",
+      "size": 462,
+      "sha256": "7b4fcb48c49c5cba679d99551a2069bf664986c0755d46e28f76a988806b435f"
+    },
+    {
+      "path": "src/AI/AIOrchestrator.php",
+      "size": 5283,
+      "sha256": "18db5745466cd45d77dea04ed696878c47069e4d6903dd8d1179a8e921276c5a"
+    },
+    {
+      "path": "src/AI/AIRequest.php",
+      "size": 1282,
+      "sha256": "1ab97a020347dd72a16f100f1155a6bb935f407bd61ae2a821cdb1315aa88e98"
+    },
+    {
+      "path": "src/AI/AIResponse.php",
+      "size": 534,
+      "sha256": "c605d012d175de85d6acd3b71e69bb3ec8c8b8b22ca8c142c50fc1cee91d0138"
+    },
+    {
+      "path": "src/AI/Capability.php",
+      "size": 583,
+      "sha256": "d942b203dc5506358d23ecfa01e6d8ceb5e0ddc82a33332e8f21aaae5fb48a9c"
+    },
+    {
+      "path": "src/AI/ModelRegistry.php",
+      "size": 2535,
+      "sha256": "789a3d9160270c9bcbb6e1171fc7c5270aefa9377e25f1d37d784daa2f1218e5"
+    },
+    {
+      "path": "src/AI/OutputValidator.php",
+      "size": 1901,
+      "sha256": "a3ba2bb410f8e19608c1cfd0b7b2eb267736795e3f09b0464ed0a640edaf1784"
+    },
+    {
+      "path": "src/AI/ProviderConfiguration.php",
+      "size": 3405,
+      "sha256": "62211c59a7eac9cd99afae65b5dcebcdf37debf6adc55bc2aecabd830e30967f"
+    },
+    {
+      "path": "src/AI/ProviderRegistry.php",
+      "size": 916,
+      "sha256": "662086a43aa1c8221822e4656b1f35a5f9dfddb008327d5e190aeaa5ab46055d"
+    },
+    {
+      "path": "src/AI/Providers/ClaudeProvider.php",
+      "size": 2653,
+      "sha256": "8cd199e84a931f2f6f0c499426ec1e74f4ad10998afcb5e49b5842b432c8ba26"
+    },
+    {
+      "path": "src/AI/Providers/CustomOpenAICompatibleProvider.php",
+      "size": 3549,
+      "sha256": "c9456a5cd1c62710bcd1851a37a10cb6a621f41e062599574b31715a7afa4768"
+    },
+    {
+      "path": "src/AI/Providers/DeepSeekProvider.php",
+      "size": 2565,
+      "sha256": "1398855617b6e531cc72f3a582c0905fe0fbfc20b028bd0f96c7c898f0f06c10"
+    },
+    {
+      "path": "src/AI/Providers/GeminiProvider.php",
+      "size": 3418,
+      "sha256": "8b7e9b3cc17d0c00382eebb203653bebe80e54966dffb0aa804734fa2c6f5f34"
+    },
+    {
+      "path": "src/AI/Providers/GrokProvider.php",
+      "size": 2395,
+      "sha256": "23f3b82f5a98f0bbcbc52c0adac310bc011cd480256705e0b0a302a8bbcd21d0"
+    },
+    {
+      "path": "src/AI/Providers/OpenAIProvider.php",
+      "size": 2840,
+      "sha256": "ea40c4a251e9ddf2d2c1fff045c4413f5aec8f48016ad3a151268b00096fdd39"
+    },
+    {
+      "path": "src/AI/UsageMetadata.php",
+      "size": 896,
+      "sha256": "d42424111a6f5c180947b7abf72cde076eda0ee6a304720fed894cde74720cf9"
+    },
+    {
+      "path": "src/Analytics/GA4Adapter.php",
+      "size": 3140,
+      "sha256": "df2bd8a229635a6adbd9e7db3af5452e6f0d2412c581b9da800973c76d90216e"
+    },
+    {
+      "path": "src/Analytics/GSCAdapter.php",
+      "size": 3994,
+      "sha256": "3ea0d10567dd90c31efb4d9b2f67a6ccaad62ccd1bd11581b124983d835dc305"
+    },
+    {
+      "path": "src/Analytics/SEODataRepository.php",
+      "size": 2508,
+      "sha256": "23f4a7b2266abc19b8e6d97fd6a05fbce2bf1b2592d7814a1dc1364369950d4d"
+    },
+    {
+      "path": "src/Approval/ApprovalEngine.php",
+      "size": 8775,
+      "sha256": "dd659df78bb3b2d3b7a8a0e0adb9db2f5fdfdca90d1c4abd70190296a375fb3f"
+    },
+    {
+      "path": "src/Brand/BrandProfile.php",
+      "size": 2950,
+      "sha256": "aa83153ec43e6bbf1484b23af5d0779e1b96ba5e3e760ca2e535ef7fb4cb6019"
+    },
+    {
+      "path": "src/Content/ContentDraftRepository.php",
+      "size": 5128,
+      "sha256": "354be1862c4f19042252daed2aa38216ed4dbecea16f9f0cbc33c819645ad9ac"
+    },
+    {
+      "path": "src/Content/ContentQAEngine.php",
+      "size": 3422,
+      "sha256": "d16de0d0f915812ca8e7d595f7e9d0e8a0304bf16cffb0becebed661222b394d"
+    },
+    {
+      "path": "src/Content/ContentWorkflowEngine.php",
+      "size": 5683,
+      "sha256": "57694b823ea1f313348234515dde0e2d86bcf77d41fdde6505e20184b5de5764"
+    },
+    {
+      "path": "src/Content/NewUpdateDecisionEngine.php",
+      "size": 2701,
+      "sha256": "7eebf5916a1bd49fdc2fa54eda8aa2a517e4da02d8fda8010ba8bc90242baa3c"
+    },
+    {
+      "path": "src/Contracts/AiProviderInterface.php",
+      "size": 691,
+      "sha256": "83dab5b2c6976d44b465bd93e84909b7335455f8f298d63299a43121f087758c"
+    },
+    {
+      "path": "src/Contracts/ContentGeneratorInterface.php",
+      "size": 269,
+      "sha256": "0f37e28385d3de94720a2e5137c46c60b55b43de06f4222111dda42178d3e3f4"
+    },
+    {
+      "path": "src/Contracts/PromptEngineInterface.php",
+      "size": 282,
+      "sha256": "14c02e99bf8dcf8955dcefb88064eb669ce525727088324954c15576f9f347c2"
+    },
+    {
+      "path": "src/Core/Container.php",
+      "size": 882,
+      "sha256": "28e4d066197f88af704d07a78dc0a626b6969e01ed1e505ffa6af9bb15d5e4a3"
+    },
+    {
+      "path": "src/Core/HealthCheck.php",
+      "size": 1701,
+      "sha256": "d4a1802ef05f82a1e50dbb50e0ed12697da5d10b9ccd8c7f5e47c2aa80a9785d"
+    },
+    {
+      "path": "src/Core/Lifecycle.php",
+      "size": 820,
+      "sha256": "c9072468c90bf26e453aed69727bb3fc5cb2b51c86a15fdc4a653fa26f2a3a4d"
+    },
+    {
+      "path": "src/Core/ModuleRegistry.php",
+      "size": 1605,
+      "sha256": "e4038bdfda2c2fd80a6ad96a6a1bc69e5218d4dd8d2d50d78eac5bf2f9f8303f"
+    },
+    {
+      "path": "src/Core/Plugin.php",
+      "size": 16223,
+      "sha256": "e94e12728d5ca6af1685b8e86fa1180620122adbaf0004492dacd865f81a19d1"
+    },
+    {
+      "path": "src/Credentials/CredentialVault.php",
+      "size": 5717,
+      "sha256": "4b7a3005b831cbeda05f6116b0454eb06fbfb22da4ce5c97cf3004851d9d34ab"
+    },
+    {
+      "path": "src/Database/Migrator.php",
+      "size": 5076,
+      "sha256": "626679c11696bb3c9c46f5a8ea3452c6ad3ff83448eccf63dfacc23ce59fd403"
+    },
+    {
+      "path": "src/Database/Schema.php",
+      "size": 16114,
+      "sha256": "a5c87645485611c2f25b8eb4acbb495bbeae1c6051eb57b1e853028497a1b020"
+    },
+    {
+      "path": "src/Growth/CategorySEOEngine.php",
+      "size": 4324,
+      "sha256": "a742a246ad56a0e095acb823eb2dbd770b139c68804580895f41cda69935728f"
+    },
+    {
+      "path": "src/Growth/CompetitorAndAISearchEngine.php",
+      "size": 4095,
+      "sha256": "9e7c8832189dd0708c83f2d5f4f6a5fe86cddf527ce5472811023dca996243bb"
+    },
+    {
+      "path": "src/Growth/GrowthAnalyticsEngine.php",
+      "size": 1595,
+      "sha256": "54c7209729d936600b219650e84a896054f6af3470b40add70e1c6e9b3dbc013"
+    },
+    {
+      "path": "src/Growth/OneClickAuditWorkflow.php",
+      "size": 2864,
+      "sha256": "a92b7a3448ff1d47987375fef8c2a041f1e77162f892921705dab7e1eae1cc42"
+    },
+    {
+      "path": "src/Growth/OpportunityAndRoadmapEngine.php",
+      "size": 4556,
+      "sha256": "20b59c5484ada315a37ff635a03d26fda03b7d93a4121787d847d7f97a83a531"
+    },
+    {
+      "path": "src/Growth/TechnicalAuditAndTrafficGuard.php",
+      "size": 2844,
+      "sha256": "6950cdacb0679bc7e1661b086cc46fac8f9d20e88cdca8b39103c3a86a88caab"
+    },
+    {
+      "path": "src/Keyword/KeywordIntelligence.php",
+      "size": 3984,
+      "sha256": "18fba913ede8f15b58c2c7e47c5ee1396548841ed39743054c9b73e98346ffde"
+    },
+    {
+      "path": "src/Keyword/KeywordRepository.php",
+      "size": 8213,
+      "sha256": "2b8c016f8d1677272519039712670fcca8be2b903cb60d7618daafb9a3d94e3b"
+    },
+    {
+      "path": "src/Logging/Logger.php",
+      "size": 4216,
+      "sha256": "8e714857cc87ce14070c8d44617f0c485cc7edac1a10ed3a661cb1795b4d97e1"
+    },
+    {
+      "path": "src/Media/ImageGenerationService.php",
+      "size": 3868,
+      "sha256": "4e1a92f10c6b0e636bd6b14e46fa77f02a0cdfdddf808751bd82337d93cc747d"
+    },
+    {
+      "path": "src/Media/ImageValidator.php",
+      "size": 4057,
+      "sha256": "d8e74b9eb8ca6a77b358cb353b0e78b2c9096913ee1e264b0df4c6017119a5cc"
+    },
+    {
+      "path": "src/Media/MediaLibraryReader.php",
+      "size": 1260,
+      "sha256": "8d806483e6752eb25dce4fec8b526b57e4a45343897133d80cada23ef6aaa96d"
+    },
+    {
+      "path": "src/Media/MediaProposalService.php",
+      "size": 3883,
+      "sha256": "7d5fb7749595f5899d848a7741cdff312d2ec4f69c6a1c30b8bb8306e657b407"
+    },
+    {
+      "path": "src/Prompt/DefaultPromptLibrary.php",
+      "size": 5131,
+      "sha256": "d971286de91ff7fb94e6eb425d2087be04f56eae1db04ca1d63ed90156b00aa7"
+    },
+    {
+      "path": "src/Prompt/PromptRegistry.php",
+      "size": 4483,
+      "sha256": "f40e8c196ca96eab4565a9e3818f7a33b9f567327d9614b38874b67cac0f75c1"
+    },
+    {
+      "path": "src/Prompt/PromptRenderer.php",
+      "size": 1725,
+      "sha256": "4382a4c0f8a62c3894eb6421020844082c2249a47ef37d832d34236eaa367499"
+    },
+    {
+      "path": "src/Prompt/PromptSafetyGuard.php",
+      "size": 1223,
+      "sha256": "2adbefb908191387a168ced1c91748148eb6ee2b0b14bca7a4242210ec88f04c"
+    },
+    {
+      "path": "src/Prompt/PromptTemplate.php",
+      "size": 3109,
+      "sha256": "d03dca0b188a8e611dbcd61852b6d7bed4ef36265798dcd973f2057dc7e2c830"
+    },
+    {
+      "path": "src/Publishing/PublishingEngine.php",
+      "size": 6232,
+      "sha256": "ea516ccbe91421103d15164182e838a6de2dba3303dee408eeb5340433b68dd8"
+    },
+    {
+      "path": "src/Queue/CronScheduler.php",
+      "size": 3744,
+      "sha256": "ec2ad233d52c79c162545a3d5ffc2d0a4575875370ed5d8eae6c42a5c94a6a7e"
+    },
+    {
+      "path": "src/Queue/QueueEngine.php",
+      "size": 8310,
+      "sha256": "1c75e983c6f30e3b85b9d8f0bc00dc269738f5ade57b423fdaaadb9e493e5520"
+    },
+    {
+      "path": "src/Queue/WorkerEngine.php",
+      "size": 2985,
+      "sha256": "666060043a25bc269ae7226ea3bce4a191fcb9bec6d68fb007b2e2472120f992"
+    },
+    {
+      "path": "src/Rewrite/RewriteEngine.php",
+      "size": 6690,
+      "sha256": "b8359dc8e6867ac943aa98183f1d22af8ab70e36de9feca7fb77678195f50357"
+    },
+    {
+      "path": "src/Security/ExternalRequestGuard.php",
+      "size": 5097,
+      "sha256": "2da84942731f84c2463d3952445103eabb780810be33c2058e1d6e502623a582"
+    },
+    {
+      "path": "src/Security/MutationGuard.php",
+      "size": 1972,
+      "sha256": "aac184bc1aa365908342fa0aed2624ec8c33f64b0fd6b5e14e6f7ca95a2cf458"
+    },
+    {
+      "path": "src/Security/RequestVerifier.php",
+      "size": 1214,
+      "sha256": "b5228dde03c4e28d179ce72ab34c09c67ff47a4ecd162a93e58b6c833285dfd5"
+    },
+    {
+      "path": "src/Security/Sanitizer.php",
+      "size": 1058,
+      "sha256": "2243dea39bbdd35eac3944ca749e9e02be80778f80497682570c95a26b4c6607"
+    },
+    {
+      "path": "src/SEO/InternalLinkEngine.php",
+      "size": 6728,
+      "sha256": "b81f1e14d7b1a5a329f5152954e27609f3d66c874e004fe804fa85cf6ca7b827"
+    },
+    {
+      "path": "src/SEO/InternalLinkProposalEngine.php",
+      "size": 2480,
+      "sha256": "f93f6fd4b1ae39d437766ba9960999edc46197643a4ef0971b1ef8cbe4f26f77"
+    },
+    {
+      "path": "src/SEO/RankMathAdapter.php",
+      "size": 2418,
+      "sha256": "c2b13fd48123f6670f102db570d127f2a98e095eebdcc5c131566827d9242eff"
+    },
+    {
+      "path": "src/SEO/SeoEnhancer.php",
+      "size": 1675,
+      "sha256": "abcb470c1983db2e25deb8d0f818aa2438134b8a29efcd36b3706474c27b820d"
+    },
+    {
+      "path": "src/Settings/SettingsRegistry.php",
+      "size": 6303,
+      "sha256": "89d3632c73245bc78fa5a532d1b8307734e1024dfabf2b8eb13120fa39971ddb"
+    },
+    {
+      "path": "src/Support/Capabilities.php",
+      "size": 1313,
+      "sha256": "b22e7da04e72de1a36da1d3e4f03fa726792f59ee87df67ff13ddd710a6f35eb"
+    },
+    {
+      "path": "src/Support/Environment.php",
+      "size": 999,
+      "sha256": "299e340c01be827a79b6266a30d01d9d59f8d52e15e56068647fe29d9fdc0c5d"
+    },
+    {
+      "path": "src/Token/TokenBudgetManager.php",
+      "size": 5525,
+      "sha256": "95cefabede1a08611f12ba1cc585664b8af63120642dc051c6337a055fff6b62"
+    },
+    {
+      "path": "src/WooCommerce/MasterProductRepository.php",
+      "size": 4241,
+      "sha256": "ff1980ed74c8f9f93d9d8c1b1eaa2d840df1529b6a3e80ab17ac790ed243d613"
+    },
+    {
+      "path": "src/WooCommerce/ProductEngine.php",
+      "size": 7083,
+      "sha256": "9e9d153babb4bb18ae9395ab8ee18335b38885638ede2da0141c6b1906ff70a7"
+    },
+    {
+      "path": "src/WooCommerce/WooCommerceAdapter.php",
+      "size": 3384,
+      "sha256": "b917dce86941fdb9d2de5d86489911e2b2242d4862133c1f2f2151dda0426d7e"
+    },
+    {
+      "path": "templates/ai-playground.php",
+      "size": 449,
+      "sha256": "e260a5751c217067e90c7253c3a0cc5a25872f91197c7ccf03836fe3d6265ebb"
+    },
+    {
+      "path": "templates/ai-providers.php",
+      "size": 1869,
+      "sha256": "aceac36abc5f61f4b08a382eef4fa001f5773b5c83b67f8f4c538031bbfc3c41"
+    },
+    {
+      "path": "templates/ai-usage.php",
+      "size": 979,
+      "sha256": "344e83366cff01e61b417ef6a81b4a2ac2064f3d9c8331534696924724c84374"
+    },
+    {
+      "path": "templates/approvals.php",
+      "size": 1622,
+      "sha256": "21e3bde34945a011c6ede7de7c96abfd2ac5fdcb73016da410662330a3aff014"
+    },
+    {
+      "path": "templates/brand-profile.php",
+      "size": 1809,
+      "sha256": "640e4afcc0f27d23b0e60005e264cd630c093dfc4806511990bab9ac257870c3"
+    },
+    {
+      "path": "templates/content-drafts.php",
+      "size": 1095,
+      "sha256": "ea502d21fb565362f1798ffbfc25c6003b1598a6b1e9352b0e729b2ce48cc0b6"
+    },
+    {
+      "path": "templates/credentials.php",
+      "size": 2253,
+      "sha256": "40c0e0f1332e87216880e03be61b16def8e769e25bc21888371441db2a39a995"
+    },
+    {
+      "path": "templates/dashboard.php",
+      "size": 2935,
+      "sha256": "04cdb87c444ab62cc3a84d5fb3b559e35b6ea26c2ea9fc5a53af5cff75262642"
+    },
+    {
+      "path": "templates/growth-center.php",
+      "size": 2271,
+      "sha256": "7f9c1cc9612e527ae10c3c4279cac71eb86e943afd35248db1880958c3dc4123"
+    },
+    {
+      "path": "templates/health.php",
+      "size": 1067,
+      "sha256": "49b2ffaa154763b6aa18f33021d49d8865883db4dd28fbb654e3e6aec02f4655"
+    },
+    {
+      "path": "templates/keywords.php",
+      "size": 2315,
+      "sha256": "86625120eaba8ab95a69b9632eac01fd651563994b03ec8b9e50093ebcc8577d"
+    },
+    {
+      "path": "templates/logs.php",
+      "size": 957,
+      "sha256": "26a54d3e3ac559b9d12dc87be30933f4ab82e14fbb6a5ece4b2dfcbc5e6fcd15"
+    },
+    {
+      "path": "templates/operations.php",
+      "size": 1612,
+      "sha256": "5d0d1c2616c3fdcfb280f3089d6692094b9dd6ab65ac49c00a6d36dcaf9182aa"
+    },
+    {
+      "path": "templates/products.php",
+      "size": 1117,
+      "sha256": "7957f00080a0bfe5a2957ecd23f6b1bafb12fd2589098969308a3ede902d3929"
+    },
+    {
+      "path": "templates/prompts.php",
+      "size": 1192,
+      "sha256": "edcf0faa48fdb63a11e5dd2fb8da1e08ed36f6d3f8dd400e777dedc19e827b1e"
+    },
+    {
+      "path": "templates/rewrite-posts.php",
+      "size": 1071,
+      "sha256": "04e5930f54f56d8db3ca6d27adf8f791fc461bb54c05a6cbef647cf547a95ed2"
+    },
+    {
+      "path": "templates/security.php",
+      "size": 973,
+      "sha256": "b563e8da1982e8319624ac78a1d0c7512e06d120824e139c8b66eee7a9845a04"
+    },
+    {
+      "path": "templates/settings.php",
+      "size": 1976,
+      "sha256": "40b9f8465c4fcba6b341432c3832745316e315dd360b02f07562754de0e5b810"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "size": 393,
+      "sha256": "954fa92cc8646627c806f18b8046a2bc257192e4fdebf32c9834a1bc6ace4409"
+    },
+    {
+      "path": "uninstall.php",
+      "size": 1369,
+      "sha256": "c93e2890c19ce00ed6b545f93179129eaf178f0d73c74a369b3985e7eb22ebb8"
+    }
+  ],
+  "audit_hits": {
+    "TODO_FIXME": [
+      {
+        "file": "src/Growth/OpportunityAndRoadmapEngine.php",
+        "line": 110,
+        "snippet": "* Build 6-column SEO roadmap CSV: TỚI NGÀY | NVPT | LOẠI BÀI ĐĂNG | TODO | LINK CONTENT | SOURCE"
+      },
+      {
+        "file": "src/Growth/OpportunityAndRoadmapEngine.php",
+        "line": 119,
+        "snippet": "fputcsv($fh, ['TỚI NGÀY', 'NVPT', 'LOẠI BÀI ĐĂNG', 'TODO', 'LINK CONTENT', 'SOURCE']);"
+      }
+    ],
+    "DANGEROUS_EXEC": [],
+    "NOPRIV_OR_PUBLIC_REST": [],
+    "HARDCODED_SECRET": [],
+    "SOFTVIET_REF": [
+      {
+        "file": "src/AI/Providers/CustomOpenAICompatibleProvider.php",
+        "line": 56,
+        "snippet": "if ($host === 'softviet.vn' || str_ends_with($host, '.softviet.vn')) {"
+      },
+      {
+        "file": "src/AI/Providers/CustomOpenAICompatibleProvider.php",
+        "line": 57,
+        "snippet": "throw new AIException(AIError::REQUEST_BLOCKED, 'SoftViet domains are blocked.', 403);"
+      },
+      {
+        "file": "src/Media/ImageValidator.php",
+        "line": 81,
+        "snippet": "if ($host === 'localhost' || str_ends_with($host, '.local') || str_ends_with($host, '.internal') || $host === 'softviet."
+      },
+      {
+        "file": "src/Security/ExternalRequestGuard.php",
+        "line": 34,
+        "snippet": "'softviet.vn',"
+      },
+      {
+        "file": "src/Security/ExternalRequestGuard.php",
+        "line": 35,
+        "snippet": "'ai.softviet.vn',"
+      },
+      {
+        "file": "templates/prompts.php",
+        "line": 4,
+        "snippet": "<p class=\"description\">100% local HTD-authored prompts. Zero calls to softviet.vn.</p>"
+      },
+      {
+        "file": "templates/security.php",
+        "line": 11,
+        "snippet": "<tr><th>SoftViet Endpoints</th><td>BLOCKED (Removed from HTD Core)</td></tr>"
+      },
+      {
+        "file": "THIRD_PARTY_NOTICES.md",
+        "line": 4,
+        "snippet": "Architectural reference and GPLv2+ functional patterns were informed by SoftViet AI SEO Auto Writer (v26.10.20.02) by So"
+      },
+      {
+        "file": "THIRD_PARTY_NOTICES.md",
+        "line": 5,
+        "snippet": "All SoftViet brand assets, commercial licensing endpoints, and remote prompt/update services have been excluded."
+      }
+    ]
+  }
+}

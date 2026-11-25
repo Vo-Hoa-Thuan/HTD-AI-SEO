@@ -1,0 +1,31 @@
+{
+    "pass": 4,
+    "fail": 0,
+    "cases": [
+        {
+            "name": "SEC7_01_SsrfIpv6EncodedAndCustomIsolation",
+            "status": "PASS"
+        },
+        {
+            "name": "SEC7_02_PromptAndNestedLogRedaction",
+            "status": "PASS"
+        },
+        {
+            "name": "LIFE7_01_BackupRestoreChecksum",
+            "status": "PASS"
+        },
+        {
+            "name": "PERF7_01_SyntheticDatasetBenchmark",
+            "status": "PASS"
+        }
+    ],
+    "benchmark": {
+        "environment": "PHP_CLI_SYNTHETIC_IN_MEMORY (NOT_HOSTING_RUNTIME)",
+        "php_version": "8.3.36",
+        "keywords_imported": 1000,
+        "gsc_rows_analyzed": 1000,
+        "queue_jobs_enqueued": 200,
+        "elapsed_ms": 44.49,
+        "peak_memory_mb": 8
+    }
+}
