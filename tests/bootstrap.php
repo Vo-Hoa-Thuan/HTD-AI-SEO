@@ -163,6 +163,19 @@ final class TestWpdb {
 		if (preg_match('/^UPDATE\s+([a-zA-Z0-9_]+job_attempts)\s+SET\s+status\s*=\s*\'([^\']+)\'/i', $s, $m)) {
 			return 1;
 		}
+		// Queue complete
+		if (preg_match('/^UPDATE\s+([a-zA-Z0-9_]+queue)\s+SET\s+status\s*=\s*\'COMPLETED\',\s*lock_owner\s*=\s*NULL,\s*lease_expires_at\s*=\s*NULL,\s*updated_at_utc\s*=\s*\'([^\']+)\'\s+WHERE\s+id\s*=\s*(\d+)\s+AND\s+status\s*=\s*\'RUNNING\'\s+AND\s+lock_owner\s*=\s*\'([^\']+)\'/i', $s, $m)) {
+			$tbl = $m[1];
+			$id = (int) $m[3];
+			if (isset($this->tables[$tbl][$id]) && $this->tables[$tbl][$id]['status'] === 'RUNNING' && $this->tables[$tbl][$id]['lock_owner'] === $m[4]) {
+				$this->tables[$tbl][$id]['status'] = 'COMPLETED';
+				$this->tables[$tbl][$id]['lock_owner'] = null;
+				$this->tables[$tbl][$id]['lease_expires_at'] = null;
+				$this->tables[$tbl][$id]['updated_at_utc'] = $m[2];
+				return 1;
+			}
+			return 0;
+		}
 		// Queue cancel
 		if (preg_match('/^UPDATE\s+([a-zA-Z0-9_]+queue)\s+SET\s+status\s*=\s*\'CANCELLED\'.*WHERE\s+id\s*=\s*(\d+)/i', $s, $m)) {
 			$tbl = $m[1];
@@ -260,6 +273,31 @@ final class TestWpdb {
 				if (($r['keyword'] ?? '') === $m[2] && ($r['content_language'] ?? '') === $m[3]) return $r;
 			}
 			return null;
+		}
+		if (preg_match('/FROM\s+([a-zA-Z0-9_]+master_products)\s+WHERE\s+sku\s*=\s*\'([^\']+)\'/i', $sql, $m)) {
+			foreach ($this->tables[$m[1]] ?? [] as $r) {
+				if (($r['sku'] ?? '') === $m[2]) return $r;
+			}
+			return null;
+		}
+		if (preg_match('/FROM\s+([a-zA-Z0-9_]+publishing_receipts)\s+WHERE\s+idempotency_key\s*=\s*\'([^\']+)\'/i', $sql, $m)) {
+			foreach ($this->tables[$m[1]] ?? [] as $r) {
+				if (($r['idempotency_key'] ?? '') === $m[2]) return $r;
+			}
+			return null;
+		}
+		if (preg_match('/FROM\s+([a-zA-Z0-9_]+link_index)\s+WHERE\s+post_id\s*=\s*(\d+)/i', $sql, $m)) {
+			foreach ($this->tables[$m[1]] ?? [] as $r) {
+				if ((int) ($r['post_id'] ?? 0) === (int) $m[2]) return $r;
+			}
+			return null;
+		}
+		if (preg_match('/FROM\s+([a-zA-Z0-9_]+rewrite_snapshots)\s+WHERE\s+draft_id\s*=\s*(\d+)/i', $sql, $m)) {
+			$found = null;
+			foreach ($this->tables[$m[1]] ?? [] as $r) {
+				if ((int) ($r['draft_id'] ?? 0) === (int) $m[2]) $found = $r;
+			}
+			return $found;
 		}
 		return null;
 	}

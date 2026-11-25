@@ -25,17 +25,28 @@ use HTD\AISEO\Database\Migrator;
 use HTD\AISEO\Keyword\KeywordIntelligence;
 use HTD\AISEO\Keyword\KeywordRepository;
 use HTD\AISEO\Logging\Logger;
+use HTD\AISEO\Media\ImageGenerationService;
 use HTD\AISEO\Media\ImageValidator;
+use HTD\AISEO\Media\MediaLibraryReader;
 use HTD\AISEO\Media\MediaProposalService;
 use HTD\AISEO\Prompt\PromptRegistry;
 use HTD\AISEO\Prompt\PromptRenderer;
+use HTD\AISEO\Publishing\PublishingEngine;
+use HTD\AISEO\Queue\CronScheduler;
 use HTD\AISEO\Queue\QueueEngine;
+use HTD\AISEO\Queue\WorkerEngine;
 use HTD\AISEO\Rewrite\RewriteEngine;
 use HTD\AISEO\Security\ExternalRequestGuard;
 use HTD\AISEO\Security\MutationGuard;
+use HTD\AISEO\SEO\InternalLinkEngine;
 use HTD\AISEO\SEO\InternalLinkProposalEngine;
+use HTD\AISEO\SEO\RankMathAdapter;
+use HTD\AISEO\SEO\SeoEnhancer;
 use HTD\AISEO\Settings\SettingsRegistry;
 use HTD\AISEO\Token\TokenBudgetManager;
+use HTD\AISEO\WooCommerce\MasterProductRepository;
+use HTD\AISEO\WooCommerce\ProductEngine;
+use HTD\AISEO\WooCommerce\WooCommerceAdapter;
 
 if (!defined('ABSPATH')) {
 	exit;
@@ -172,6 +183,63 @@ final class Plugin {
 			return new MediaProposalService($wpdb, $c->get(ImageValidator::class), $c->get(ProviderRegistry::class), $c->get(Logger::class));
 		});
 		$this->container->singleton(InternalLinkProposalEngine::class, static fn(Container $c): InternalLinkProposalEngine => new InternalLinkProposalEngine($c->get(BrandProfile::class)));
+		$this->container->singleton(ImageGenerationService::class, static function (Container $c): ImageGenerationService {
+			return new ImageGenerationService(
+				$c->get(SettingsRegistry::class),
+				$c->get(ProviderRegistry::class),
+				$c->get(CredentialVault::class),
+				$c->get(ExternalRequestGuard::class),
+				$c->get(ImageValidator::class),
+				$c->get(Logger::class)
+			);
+		});
+		$this->container->singleton(MediaLibraryReader::class, static fn(): MediaLibraryReader => new MediaLibraryReader());
+		$this->container->singleton(MasterProductRepository::class, static function (Container $c): MasterProductRepository {
+			global $wpdb;
+			return new MasterProductRepository($wpdb, $c->get(Logger::class));
+		});
+		$this->container->singleton(WooCommerceAdapter::class, static fn(): WooCommerceAdapter => new WooCommerceAdapter());
+		$this->container->singleton(ProductEngine::class, static function (Container $c): ProductEngine {
+			global $wpdb;
+			return new ProductEngine(
+				$wpdb,
+				$c->get(WooCommerceAdapter::class),
+				$c->get(MasterProductRepository::class),
+				$c->get(ApprovalEngine::class),
+				$c->get(MutationGuard::class),
+				$c->get(Logger::class)
+			);
+		});
+		$this->container->singleton(RankMathAdapter::class, static fn(): RankMathAdapter => new RankMathAdapter());
+		$this->container->singleton(SeoEnhancer::class, static fn(): SeoEnhancer => new SeoEnhancer());
+		$this->container->singleton(PublishingEngine::class, static function (Container $c): PublishingEngine {
+			global $wpdb;
+			return new PublishingEngine(
+				$wpdb,
+				$c->get(ContentDraftRepository::class),
+				$c->get(ApprovalEngine::class),
+				$c->get(MutationGuard::class),
+				$c->get(RankMathAdapter::class),
+				$c->get(Logger::class)
+			);
+		});
+		$this->container->singleton(InternalLinkEngine::class, static function (Container $c): InternalLinkEngine {
+			global $wpdb;
+			return new InternalLinkEngine(
+				$wpdb,
+				$c->get(BrandProfile::class),
+				$c->get(InternalLinkProposalEngine::class),
+				$c->get(ApprovalEngine::class),
+				$c->get(MutationGuard::class),
+				$c->get(Logger::class)
+			);
+		});
+		$this->container->singleton(WorkerEngine::class, static function (Container $c): WorkerEngine {
+			return new WorkerEngine($c->get(QueueEngine::class), $c->get(SettingsRegistry::class), $c->get(Logger::class));
+		});
+		$this->container->singleton(CronScheduler::class, static function (Container $c): CronScheduler {
+			return new CronScheduler($c->get(WorkerEngine::class), $c->get(SettingsRegistry::class), $c->get(Logger::class));
+		});
 		$this->container->singleton(AdminMenu::class, function (Container $c): AdminMenu {
 			return new AdminMenu($c, $this->modules);
 		});
@@ -195,7 +263,10 @@ final class Plugin {
 		$this->modules->register('content_engine', 'ACTIVE', 'PHASE_04', ['prompt_engine', 'ai_providers', 'mutation_guard']);
 		$this->modules->register('rewrite_engine', 'ACTIVE', 'PHASE_04', ['content_engine', 'approval']);
 		$this->modules->register('media_engine', 'ACTIVE', 'PHASE_04', ['database', 'ai_providers']);
-		$this->modules->register('woocommerce_seo', 'NOT_IMPLEMENTED', 'PHASE_05', ['content_engine'], 'COMING_IN_PHASE_05');
+		$this->modules->register('woocommerce_seo', 'ACTIVE', 'PHASE_05', ['content_engine', 'mutation_guard']);
+		$this->modules->register('publishing', 'ACTIVE', 'PHASE_05', ['content_engine', 'mutation_guard']);
+		$this->modules->register('internal_links', 'ACTIVE', 'PHASE_05', ['content_engine', 'mutation_guard']);
+		$this->modules->register('cron_scheduler', 'ACTIVE', 'PHASE_05', ['queue', 'settings']);
 		$this->modules->register('htd_seo_extensions', 'NOT_IMPLEMENTED', 'PHASE_06', ['woocommerce_seo'], 'COMING_IN_PHASE_06');
 	}
 
@@ -211,6 +282,7 @@ final class Plugin {
 		}
 
 		$this->migrator()->migrateIfNeeded();
+		$this->container->get(CronScheduler::class)->register();
 
 		if (function_exists('is_admin') && is_admin()) {
 			$this->container->get(AdminMenu::class)->register();

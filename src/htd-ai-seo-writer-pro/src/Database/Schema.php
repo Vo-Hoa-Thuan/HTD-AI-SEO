@@ -255,4 +255,93 @@ final class Schema {
 			) {$charsetCollate};",
 		];
 	}
+
+	/**
+	 * @return array<string, string>
+	 */
+	public static function v050Tables(object $wpdb, string $charsetCollate = ''): array {
+		$p = self::prefix($wpdb);
+		return [
+			'product_proposals' => "CREATE TABLE IF NOT EXISTS {$p}product_proposals (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				product_id BIGINT UNSIGNED NOT NULL,
+				proposal_type VARCHAR(32) NOT NULL DEFAULT 'seo_update',
+				proposed_fields_json LONGTEXT NOT NULL,
+				snapshot_json LONGTEXT NOT NULL,
+				state_hash VARCHAR(64) NOT NULL,
+				diff_json LONGTEXT NULL,
+				master_conflicts_json LONGTEXT NULL,
+				approval_id BIGINT UNSIGNED NULL,
+				status VARCHAR(24) NOT NULL DEFAULT 'DRAFT',
+				created_at_utc DATETIME NOT NULL,
+				updated_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				KEY idx_prod_id (product_id),
+				KEY idx_status (status)
+			) {$charsetCollate};",
+
+			'publishing_receipts' => "CREATE TABLE IF NOT EXISTS {$p}publishing_receipts (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				idempotency_key VARCHAR(128) NOT NULL,
+				approval_id BIGINT UNSIGNED NOT NULL,
+				action_type VARCHAR(64) NOT NULL,
+				target_type VARCHAR(32) NOT NULL,
+				target_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
+				wp_post_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
+				post_status VARCHAR(24) NOT NULL,
+				execution_status VARCHAR(24) NOT NULL,
+				receipt_json LONGTEXT NULL,
+				error_message TEXT NULL,
+				created_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				UNIQUE KEY uniq_pub_idem (idempotency_key),
+				KEY idx_approval (approval_id)
+			) {$charsetCollate};",
+
+			'link_index' => "CREATE TABLE IF NOT EXISTS {$p}link_index (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				post_id BIGINT UNSIGNED NOT NULL,
+				url VARCHAR(512) NOT NULL,
+				title VARCHAR(255) NOT NULL,
+				post_type VARCHAR(32) NOT NULL DEFAULT 'post',
+				category_slugs_json LONGTEXT NULL,
+				outbound_links_json LONGTEXT NULL,
+				updated_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				UNIQUE KEY uniq_post_idx (post_id)
+			) {$charsetCollate};",
+
+			'link_proposals' => "CREATE TABLE IF NOT EXISTS {$p}link_proposals (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				source_post_id BIGINT UNSIGNED NOT NULL,
+				target_post_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
+				target_url VARCHAR(512) NOT NULL,
+				anchor_text VARCHAR(255) NOT NULL,
+				relevance_score DECIMAL(4,2) NOT NULL DEFAULT 0.00,
+				placement VARCHAR(32) NOT NULL DEFAULT 'body',
+				approval_id BIGINT UNSIGNED NULL,
+				status VARCHAR(24) NOT NULL DEFAULT 'PROPOSED',
+				created_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				KEY idx_src_post (source_post_id)
+			) {$charsetCollate};",
+
+			'master_products' => "CREATE TABLE IF NOT EXISTS {$p}master_products (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				sku VARCHAR(100) NOT NULL,
+				model VARCHAR(120) NOT NULL,
+				product_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
+				price VARCHAR(64) NULL,
+				specs_json LONGTEXT NOT NULL,
+				warranty VARCHAR(120) NULL,
+				gifts VARCHAR(255) NULL,
+				product_url VARCHAR(512) NULL,
+				source VARCHAR(120) NOT NULL DEFAULT 'MASTER_PRODUCT_HTD',
+				last_verified_date VARCHAR(32) NULL,
+				updated_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				UNIQUE KEY uniq_master_sku (sku)
+			) {$charsetCollate};",
+		];
+	}
 }

@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
  */
 final class Migrator {
 	public const VERSION_OPTION = 'htd_ai_seo_db_version';
-	public const TARGET_VERSION = '0.4.0';
+	public const TARGET_VERSION = '0.5.0';
 
 	public function __construct(private readonly object $wpdb) {}
 
@@ -39,7 +39,8 @@ final class Migrator {
 
 		$tables = array_merge(
 			Schema::v020Tables($this->wpdb, $charsetCollate),
-			Schema::v040Tables($this->wpdb, $charsetCollate)
+			Schema::v040Tables($this->wpdb, $charsetCollate),
+			Schema::v050Tables($this->wpdb, $charsetCollate)
 		);
 		$migTable = Schema::table($this->wpdb, 'migrations');
 		$now = gmdate('Y-m-d H:i:s');
@@ -104,6 +105,16 @@ final class Migrator {
 	public function rollbackVersion(string $version): bool {
 		$p = Schema::prefix($this->wpdb);
 		$migTable = Schema::table($this->wpdb, 'migrations');
+		if ($version === '0.5.0') {
+			foreach (['master_products', 'link_proposals', 'link_index', 'publishing_receipts', 'product_proposals'] as $tbl) {
+				$this->wpdb->query("DROP TABLE IF EXISTS {$p}{$tbl}");
+			}
+			$this->wpdb->update($migTable, ['status' => 'rolled_back', 'rolled_back_at_utc' => gmdate('Y-m-d H:i:s')], ['version' => $version]);
+			if (function_exists('update_option')) {
+				update_option(self::VERSION_OPTION, '0.4.0', false);
+			}
+			return true;
+		}
 		if ($version === '0.4.0') {
 			foreach (['media_proposals', 'rewrite_snapshots', 'content_revisions', 'content_drafts', 'keyword_mappings', 'keywords'] as $tbl) {
 				$this->wpdb->query("DROP TABLE IF EXISTS {$p}{$tbl}");

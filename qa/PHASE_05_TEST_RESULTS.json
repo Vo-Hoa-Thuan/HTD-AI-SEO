@@ -1,0 +1,30 @@
+{
+    "pass": 6,
+    "fail": 0,
+    "cases": [
+        {
+            "name": "DB5_01_V050MigrationAndRollback",
+            "status": "PASS"
+        },
+        {
+            "name": "PUB_01_ScenarioA_SafePublishingAndIdempotency",
+            "status": "PASS"
+        },
+        {
+            "name": "REW_02_ScenarioB_RewritePublishPreservesSlug",
+            "status": "PASS"
+        },
+        {
+            "name": "WC_01_ScenarioC_ProductProtectionAndConcurrentHash",
+            "status": "PASS"
+        },
+        {
+            "name": "SEO_01_ScenarioD_RankMathEnhancerAndInternalLinks",
+            "status": "PASS"
+        },
+        {
+            "name": "AUTO_01_ScenarioEF_MediaContractWorkerAndCronSafety",
+            "status": "PASS"
+        }
+    ]
+}

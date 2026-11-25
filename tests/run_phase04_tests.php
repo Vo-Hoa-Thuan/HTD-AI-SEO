@@ -70,10 +70,10 @@ $providers->register(new ClaudeProvider($httpGuard, $models));
 
 // 1. DB v0.4.0 Migration & Rollback
 p4_test('DB4_01_V040MigrationAndRollback', function () use ($migrator): void {
-	p4_assert($migrator->currentVersion() === '0.4.0', 'DB version is 0.4.0');
+	p4_assert($migrator->currentVersion() === Migrator::TARGET_VERSION, 'DB version matches target');
 	p4_assert($migrator->rollbackVersion('0.4.0') === true, 'Rollback v0.4.0 succeeded');
 	p4_assert($migrator->currentVersion() === '0.2.0', 'Rolled back to 0.2.0');
-	p4_assert($migrator->migrate() === true, 'Re-migrated to 0.4.0');
+	p4_assert($migrator->migrate() === true, 'Re-migrated to target');
 }, $results);
 
 // 2. Keyword Engine: CRUD, Duplicate, Search, Bulk, CSV Import/Export

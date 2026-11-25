@@ -14,11 +14,15 @@ use HTD\AISEO\Credentials\CredentialVault;
 use HTD\AISEO\Keyword\KeywordRepository;
 use HTD\AISEO\Logging\Logger;
 use HTD\AISEO\Prompt\PromptRegistry;
+use HTD\AISEO\Queue\CronScheduler;
+use HTD\AISEO\Queue\QueueEngine;
 use HTD\AISEO\Security\RequestVerifier;
 use HTD\AISEO\Security\Sanitizer;
+use HTD\AISEO\SEO\RankMathAdapter;
 use HTD\AISEO\Settings\SettingsRegistry;
 use HTD\AISEO\Support\Capabilities;
 use HTD\AISEO\Token\TokenBudgetManager;
+use HTD\AISEO\WooCommerce\WooCommerceAdapter;
 
 if (!defined('ABSPATH')) {
 	exit;
@@ -67,6 +71,8 @@ final class AdminMenu {
 			['htd-ai-seo-keywords', 'Keywords & Audit', $cap, [$this, 'renderKeywords']],
 			['htd-ai-seo-drafts', 'Content Drafts & QA', $cap, [$this, 'renderDrafts']],
 			['htd-ai-seo-rewrite', 'Rewrite Posts', $cap, [$this, 'renderRewrite']],
+			['htd-ai-seo-products', 'Products (WooCommerce)', $cap, [$this, 'renderProducts']],
+			['htd-ai-seo-operations', 'Operations & Cron', $cap, [$this, 'renderOperations']],
 			['htd-ai-seo-settings', 'Settings', Capabilities::MANAGE_SETTINGS, [$this, 'renderSettings']],
 			['htd-ai-seo-ai-providers', 'AI Providers', Capabilities::MANAGE_SETTINGS, [$this, 'renderAiProviders']],
 			['htd-ai-seo-prompts', 'Prompt Library', $cap, [$this, 'renderPrompts']],
@@ -208,6 +214,26 @@ final class AdminMenu {
 			static fn(array $d): bool => ($d['job_type'] ?? '') === 'rewrite'
 		));
 		$this->renderTemplate('rewrite-posts', ['drafts' => $drafts]);
+	}
+
+	public function renderProducts(): void {
+		$wc = $this->container->get(WooCommerceAdapter::class);
+		$available = $wc->isAvailable();
+		$products = $available ? $wc->listProducts(30) : [];
+		$this->renderTemplate('products', ['available' => $available, 'products' => $products]);
+	}
+
+	public function renderOperations(): void {
+		$queue = $this->container->get(QueueEngine::class)->countsByStatus();
+		$cron = $this->container->get(CronScheduler::class)->state();
+		$settings = $this->container->get(SettingsRegistry::class)->all();
+		$rankMath = $this->container->get(RankMathAdapter::class)->isAvailable();
+		$this->renderTemplate('operations', [
+			'queue'    => $queue,
+			'cron'     => $cron,
+			'settings' => $settings,
+			'rankMath' => $rankMath,
+		]);
 	}
 
 	public function handleAddKeyword(): void {

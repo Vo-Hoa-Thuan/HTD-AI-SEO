@@ -25,8 +25,8 @@ final class Lifecycle {
 	}
 
 	public static function deactivate(): void {
+		\HTD\AISEO\Queue\CronScheduler::clearScheduled();
 		if (function_exists('wp_clear_scheduled_hook')) {
-			wp_clear_scheduled_hook('htd_ai_seo_cron_process');
 			wp_clear_scheduled_hook('htd_ai_seo_cron_heartbeat');
 		}
 		// Never drop tables or delete data on deactivation.
