@@ -50,8 +50,8 @@ $migrator = new Migrator($wpdb);
 
 test_case('DB_01_FreshMigration_CustomPrefix', function () use ($migrator, $wpdb): void {
 	assert_true($migrator->migrate() === true, 'migrate() returned true');
-	assert_true($migrator->currentVersion() === '0.2.0', 'DB version is 0.2.0');
-	$migRow = $wpdb->get_row("SELECT * FROM htd_custom_htd_ai_seo_migrations WHERE version = '0.2.0'");
+	assert_true($migrator->currentVersion() === Migrator::TARGET_VERSION, 'DB version matches target');
+	$migRow = $wpdb->get_row("SELECT * FROM htd_custom_htd_ai_seo_migrations WHERE version = '" . Migrator::TARGET_VERSION . "'");
 	assert_true($migRow !== null && $migRow['status'] === 'applied', 'Migration recorded as applied');
 }, $results);
 
@@ -225,7 +225,7 @@ test_case('CORE_01_ModuleRegistryAndHealthCheck', function () use ($settings, $m
 	assert_true($order === ['core', 'db'], 'Dependency order resolved');
 	$hc = new HealthCheck($reg, $settings, $migrator, $queue);
 	$summary = $hc->summary();
-	assert_true($summary['wp_read_only_mode'] === true && $summary['db_schema_version'] === '0.2.0', 'HealthCheck returns real metrics');
+	assert_true($summary['wp_read_only_mode'] === true && $summary['db_schema_version'] === Migrator::TARGET_VERSION, 'HealthCheck returns real metrics');
 }, $results);
 
 echo json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n";

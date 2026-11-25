@@ -6,10 +6,12 @@ namespace HTD\AISEO\Admin;
 use HTD\AISEO\AI\ProviderConfiguration;
 use HTD\AISEO\Approval\ApprovalEngine;
 use HTD\AISEO\Brand\BrandProfile;
+use HTD\AISEO\Content\ContentDraftRepository;
 use HTD\AISEO\Core\Container;
 use HTD\AISEO\Core\HealthCheck;
 use HTD\AISEO\Core\ModuleRegistry;
 use HTD\AISEO\Credentials\CredentialVault;
+use HTD\AISEO\Keyword\KeywordRepository;
 use HTD\AISEO\Logging\Logger;
 use HTD\AISEO\Prompt\PromptRegistry;
 use HTD\AISEO\Security\RequestVerifier;
@@ -44,6 +46,8 @@ final class AdminMenu {
 		add_action('admin_post_htd_ai_seo_approval_decision', [$this, 'handleApprovalDecision']);
 		add_action('admin_post_htd_ai_seo_save_provider', [$this, 'handleSaveProvider']);
 		add_action('admin_post_htd_ai_seo_save_brand', [$this, 'handleSaveBrand']);
+		add_action('admin_post_htd_ai_seo_add_keyword', [$this, 'handleAddKeyword']);
+		add_action('admin_post_htd_ai_seo_bulk_keywords', [$this, 'handleBulkKeywords']);
 	}
 
 	public function addMenus(): void {
@@ -60,6 +64,9 @@ final class AdminMenu {
 
 		$submenus = [
 			['htd-ai-seo-dashboard', 'Dashboard', $cap, [$this, 'renderDashboard']],
+			['htd-ai-seo-keywords', 'Keywords & Audit', $cap, [$this, 'renderKeywords']],
+			['htd-ai-seo-drafts', 'Content Drafts & QA', $cap, [$this, 'renderDrafts']],
+			['htd-ai-seo-rewrite', 'Rewrite Posts', $cap, [$this, 'renderRewrite']],
 			['htd-ai-seo-settings', 'Settings', Capabilities::MANAGE_SETTINGS, [$this, 'renderSettings']],
 			['htd-ai-seo-ai-providers', 'AI Providers', Capabilities::MANAGE_SETTINGS, [$this, 'renderAiProviders']],
 			['htd-ai-seo-prompts', 'Prompt Library', $cap, [$this, 'renderPrompts']],
@@ -180,6 +187,52 @@ final class AdminMenu {
 		$this->container->get(BrandProfile::class)->save(wp_unslash($_POST));
 		$this->container->get(Logger::class)->log('brand', 'brand_updated', 'AUDIT', 'OK');
 		wp_safe_redirect(admin_url('admin.php?page=htd-ai-seo-brand&updated=1'));
+		exit;
+	}
+
+	public function renderKeywords(): void {
+		$search = isset($_GET['s']) ? sanitize_text_field((string) wp_unslash($_GET['s'])) : null;
+		$status = isset($_GET['status']) ? Sanitizer::sanitizeIdentifier((string) wp_unslash($_GET['status'])) : null;
+		$keywords = $this->container->get(KeywordRepository::class)->list(50, 0, $status, $search);
+		$this->renderTemplate('keywords', ['keywords' => $keywords, 'search' => $search, 'status' => $status]);
+	}
+
+	public function renderDrafts(): void {
+		$drafts = $this->container->get(ContentDraftRepository::class)->listRecent(50);
+		$this->renderTemplate('content-drafts', ['drafts' => $drafts]);
+	}
+
+	public function renderRewrite(): void {
+		$drafts = array_values(array_filter(
+			$this->container->get(ContentDraftRepository::class)->listRecent(50),
+			static fn(array $d): bool => ($d['job_type'] ?? '') === 'rewrite'
+		));
+		$this->renderTemplate('rewrite-posts', ['drafts' => $drafts]);
+	}
+
+	public function handleAddKeyword(): void {
+		RequestVerifier::verifyAdminAction('htd_ai_seo_add_keyword', Capabilities::MANAGE);
+		$kw = sanitize_text_field((string) wp_unslash($_POST['keyword'] ?? ''));
+		if ($kw !== '') {
+			$this->container->get(KeywordRepository::class)->add([
+				'keyword'       => $kw,
+				'keyword_group' => sanitize_text_field((string) wp_unslash($_POST['keyword_group'] ?? '')),
+				'priority'      => absint($_POST['priority'] ?? 5),
+				'target_url'    => esc_url_raw((string) wp_unslash($_POST['target_url'] ?? '')),
+			]);
+		}
+		wp_safe_redirect(admin_url('admin.php?page=htd-ai-seo-keywords&updated=1'));
+		exit;
+	}
+
+	public function handleBulkKeywords(): void {
+		RequestVerifier::verifyAdminAction('htd_ai_seo_bulk_keywords', Capabilities::MANAGE);
+		$ids = isset($_POST['keyword_ids']) && is_array($_POST['keyword_ids']) ? array_map('absint', $_POST['keyword_ids']) : [];
+		$act = Sanitizer::sanitizeIdentifier((string) wp_unslash($_POST['bulk_action'] ?? ''));
+		if ($ids !== [] && $act !== '') {
+			$this->container->get(KeywordRepository::class)->bulkAction($ids, $act);
+		}
+		wp_safe_redirect(admin_url('admin.php?page=htd-ai-seo-keywords&updated=1'));
 		exit;
 	}
 

@@ -16,6 +16,12 @@ if (!$shouldDelete) {
 global $wpdb;
 $prefix = $wpdb->prefix . 'htd_ai_seo_';
 $tables = [
+	$prefix . 'media_proposals',
+	$prefix . 'rewrite_snapshots',
+	$prefix . 'content_revisions',
+	$prefix . 'content_drafts',
+	$prefix . 'keyword_mappings',
+	$prefix . 'keywords',
 	$prefix . 'job_attempts',
 	$prefix . 'queue',
 	$prefix . 'approvals',

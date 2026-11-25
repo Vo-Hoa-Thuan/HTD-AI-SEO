@@ -127,4 +127,132 @@ final class Schema {
 			) {$charsetCollate};",
 		];
 	}
+
+	/**
+	 * @return array<string, string>
+	 */
+	public static function v040Tables(object $wpdb, string $charsetCollate = ''): array {
+		$p = self::prefix($wpdb);
+		return [
+			'keywords' => "CREATE TABLE IF NOT EXISTS {$p}keywords (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				keyword VARCHAR(255) NOT NULL,
+				secondary_keywords_json LONGTEXT NULL,
+				keyword_group VARCHAR(100) NULL,
+				priority TINYINT UNSIGNED NOT NULL DEFAULT 5,
+				search_intent VARCHAR(40) NOT NULL DEFAULT 'UNKNOWN',
+				intent_source VARCHAR(32) NOT NULL DEFAULT 'UNKNOWN',
+				target_url VARCHAR(512) NULL,
+				target_post_type VARCHAR(32) NOT NULL DEFAULT 'post',
+				target_category_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
+				assigned_provider VARCHAR(32) NOT NULL DEFAULT 'openai',
+				assigned_model VARCHAR(64) NULL,
+				assigned_prompt VARCHAR(64) NOT NULL DEFAULT 'seo_article',
+				content_language VARCHAR(10) NOT NULL DEFAULT 'vi',
+				status VARCHAR(24) NOT NULL DEFAULT 'pending',
+				error_message TEXT NULL,
+				processing_history_json LONGTEXT NULL,
+				created_at_utc DATETIME NOT NULL,
+				updated_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				UNIQUE KEY uniq_keyword_lang (keyword, content_language),
+				KEY idx_status_prio (status, priority),
+				KEY idx_group (keyword_group)
+			) {$charsetCollate};",
+
+			'keyword_mappings' => "CREATE TABLE IF NOT EXISTS {$p}keyword_mappings (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				keyword_id BIGINT UNSIGNED NOT NULL,
+				target_url VARCHAR(512) NOT NULL,
+				post_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
+				slug VARCHAR(200) NULL,
+				search_intent VARCHAR(40) NOT NULL DEFAULT 'UNKNOWN',
+				cannibalization_status VARCHAR(32) NOT NULL DEFAULT 'CLEAR',
+				data_source VARCHAR(32) NOT NULL DEFAULT 'USER_PROVIDED',
+				created_at_utc DATETIME NOT NULL,
+				updated_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				KEY idx_kw_id (keyword_id),
+				KEY idx_post_id (post_id)
+			) {$charsetCollate};",
+
+			'content_drafts' => "CREATE TABLE IF NOT EXISTS {$p}content_drafts (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				keyword_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
+				job_type VARCHAR(32) NOT NULL DEFAULT 'new',
+				target_post_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
+				title VARCHAR(255) NOT NULL,
+				h1 VARCHAR(255) NULL,
+				meta_title VARCHAR(255) NULL,
+				meta_description TEXT NULL,
+				slug VARCHAR(200) NULL,
+				excerpt TEXT NULL,
+				html_content LONGTEXT NOT NULL,
+				faq_json LONGTEXT NULL,
+				tags_json LONGTEXT NULL,
+				internal_links_json LONGTEXT NULL,
+				media_proposals_json LONGTEXT NULL,
+				structured_json LONGTEXT NULL,
+				qa_status VARCHAR(24) NOT NULL DEFAULT 'NOT_RUN',
+				qa_result_json LONGTEXT NULL,
+				approval_id BIGINT UNSIGNED NULL,
+				status VARCHAR(24) NOT NULL DEFAULT 'DRAFT',
+				created_at_utc DATETIME NOT NULL,
+				updated_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				KEY idx_kw_draft (keyword_id),
+				KEY idx_status (status),
+				KEY idx_qa (qa_status)
+			) {$charsetCollate};",
+
+			'content_revisions' => "CREATE TABLE IF NOT EXISTS {$p}content_revisions (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				draft_id BIGINT UNSIGNED NOT NULL,
+				revision_no INT UNSIGNED NOT NULL,
+				title VARCHAR(255) NOT NULL,
+				html_content LONGTEXT NOT NULL,
+				structured_json LONGTEXT NULL,
+				change_summary VARCHAR(255) NULL,
+				created_by BIGINT UNSIGNED NOT NULL DEFAULT 0,
+				created_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				KEY idx_draft_rev (draft_id, revision_no)
+			) {$charsetCollate};",
+
+			'rewrite_snapshots' => "CREATE TABLE IF NOT EXISTS {$p}rewrite_snapshots (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				draft_id BIGINT UNSIGNED NOT NULL,
+				post_id BIGINT UNSIGNED NOT NULL,
+				original_url VARCHAR(512) NULL,
+				original_slug VARCHAR(200) NULL,
+				original_title VARCHAR(255) NOT NULL,
+				original_html LONGTEXT NOT NULL,
+				original_meta_json LONGTEXT NULL,
+				preserved_links_json LONGTEXT NULL,
+				diff_summary_json LONGTEXT NULL,
+				risk_level VARCHAR(20) NOT NULL DEFAULT 'LOW_RISK',
+				created_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				KEY idx_draft_snap (draft_id),
+				KEY idx_post_snap (post_id)
+			) {$charsetCollate};",
+
+			'media_proposals' => "CREATE TABLE IF NOT EXISTS {$p}media_proposals (
+				id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+				draft_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
+				source_type VARCHAR(24) NOT NULL,
+				attachment_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
+				media_url VARCHAR(512) NULL,
+				alt_text VARCHAR(255) NULL,
+				caption TEXT NULL,
+				image_title VARCHAR(255) NULL,
+				placement VARCHAR(32) NOT NULL DEFAULT 'body',
+				validation_status VARCHAR(24) NOT NULL DEFAULT 'PENDING',
+				metadata_json LONGTEXT NULL,
+				created_at_utc DATETIME NOT NULL,
+				PRIMARY KEY (id),
+				KEY idx_draft_media (draft_id)
+			) {$charsetCollate};",
+		];
+	}
 }

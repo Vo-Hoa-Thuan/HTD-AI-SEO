@@ -163,6 +163,26 @@ final class TestWpdb {
 		if (preg_match('/^UPDATE\s+([a-zA-Z0-9_]+job_attempts)\s+SET\s+status\s*=\s*\'([^\']+)\'/i', $s, $m)) {
 			return 1;
 		}
+		// Queue cancel
+		if (preg_match('/^UPDATE\s+([a-zA-Z0-9_]+queue)\s+SET\s+status\s*=\s*\'CANCELLED\'.*WHERE\s+id\s*=\s*(\d+)/i', $s, $m)) {
+			$tbl = $m[1];
+			$id = (int) $m[2];
+			if (isset($this->tables[$tbl][$id]) && in_array($this->tables[$tbl][$id]['status'], ['PENDING', 'FAILED', 'RUNNING'], true)) {
+				$this->tables[$tbl][$id]['status'] = 'CANCELLED';
+				$this->tables[$tbl][$id]['lock_owner'] = null;
+				$this->tables[$tbl][$id]['lease_expires_at'] = null;
+				return 1;
+			}
+			return 0;
+		}
+		// Generic DELETE FROM table WHERE id = X
+		if (preg_match('/^DELETE\s+FROM\s+([a-zA-Z0-9_]+)\s+WHERE\s+id\s*=\s*(\d+)/i', $s, $m)) {
+			if (isset($this->tables[$m[1]][(int) $m[2]])) {
+				unset($this->tables[$m[1]][(int) $m[2]]);
+				return 1;
+			}
+			return 0;
+		}
 		return 0;
 	}
 
@@ -235,6 +255,12 @@ final class TestWpdb {
 			}
 			return null;
 		}
+		if (preg_match('/FROM\s+([a-zA-Z0-9_]+keywords)\s+WHERE\s+keyword\s*=\s*\'([^\']+)\'\s+AND\s+content_language\s*=\s*\'([^\']+)\'/i', $sql, $m)) {
+			foreach ($this->tables[$m[1]] ?? [] as $r) {
+				if (($r['keyword'] ?? '') === $m[2] && ($r['content_language'] ?? '') === $m[3]) return $r;
+			}
+			return null;
+		}
 		return null;
 	}
 
@@ -252,6 +278,18 @@ final class TestWpdb {
 					$out[] = ['status' => $st, 'cnt' => $cnt];
 				}
 				return $out;
+			}
+			if (preg_match('/target_url\s*=\s*\'([^\']+)\'/i', $sql, $um)) {
+				$rows = array_values(array_filter($rows, static fn($r) => ($r['target_url'] ?? '') === $um[1]));
+			}
+			if (preg_match('/draft_id\s*=\s*(\d+)/i', $sql, $dm)) {
+				$rows = array_values(array_filter($rows, static fn($r) => (int) ($r['draft_id'] ?? 0) === (int) $dm[1]));
+			}
+			if (preg_match('/keyword\s+LIKE\s+\'%([^\']+)%\'/i', $sql, $km)) {
+				$rows = array_values(array_filter($rows, static fn($r) => stripos((string) ($r['keyword'] ?? ''), $km[1]) !== false));
+			}
+			if (preg_match('/status\s*=\s*\'([^\']+)\'/i', $sql, $sm)) {
+				$rows = array_values(array_filter($rows, static fn($r) => ($r['status'] ?? '') === $sm[1]));
 			}
 			if (preg_match('/module\s*=\s*\'([^\']+)\'/i', $sql, $mm)) {
 				$rows = array_values(array_filter($rows, static fn($r) => ($r['module'] ?? '') === $mm[1]));

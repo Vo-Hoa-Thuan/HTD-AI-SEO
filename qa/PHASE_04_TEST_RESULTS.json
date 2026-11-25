@@ -1,0 +1,38 @@
+{
+    "pass": 8,
+    "fail": 0,
+    "cases": [
+        {
+            "name": "DB4_01_V040MigrationAndRollback",
+            "status": "PASS"
+        },
+        {
+            "name": "KW_01_CrudDuplicateSearchBulkAndCsv",
+            "status": "PASS"
+        },
+        {
+            "name": "KW_02_IntentClusterAndCannibalization",
+            "status": "PASS"
+        },
+        {
+            "name": "CONT_01_WorkflowQaApprovalAndExport",
+            "status": "PASS"
+        },
+        {
+            "name": "DEC_01_NewUpdateCannibalization",
+            "status": "PASS"
+        },
+        {
+            "name": "REW_01_SnapshotDiffAndPreservation",
+            "status": "PASS"
+        },
+        {
+            "name": "MED_01_ImageSecurityAndVideoEmbed",
+            "status": "PASS"
+        },
+        {
+            "name": "LINK_01_InternalLinksAndBatchBoundary",
+            "status": "PASS"
+        }
+    ]
+}

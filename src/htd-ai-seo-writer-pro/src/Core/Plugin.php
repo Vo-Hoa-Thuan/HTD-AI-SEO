@@ -16,14 +16,24 @@ use HTD\AISEO\AI\Providers\GrokProvider;
 use HTD\AISEO\AI\Providers\OpenAIProvider;
 use HTD\AISEO\Approval\ApprovalEngine;
 use HTD\AISEO\Brand\BrandProfile;
+use HTD\AISEO\Content\ContentDraftRepository;
+use HTD\AISEO\Content\ContentQAEngine;
+use HTD\AISEO\Content\ContentWorkflowEngine;
+use HTD\AISEO\Content\NewUpdateDecisionEngine;
 use HTD\AISEO\Credentials\CredentialVault;
 use HTD\AISEO\Database\Migrator;
+use HTD\AISEO\Keyword\KeywordIntelligence;
+use HTD\AISEO\Keyword\KeywordRepository;
 use HTD\AISEO\Logging\Logger;
+use HTD\AISEO\Media\ImageValidator;
+use HTD\AISEO\Media\MediaProposalService;
 use HTD\AISEO\Prompt\PromptRegistry;
 use HTD\AISEO\Prompt\PromptRenderer;
 use HTD\AISEO\Queue\QueueEngine;
+use HTD\AISEO\Rewrite\RewriteEngine;
 use HTD\AISEO\Security\ExternalRequestGuard;
 use HTD\AISEO\Security\MutationGuard;
+use HTD\AISEO\SEO\InternalLinkProposalEngine;
 use HTD\AISEO\Settings\SettingsRegistry;
 use HTD\AISEO\Token\TokenBudgetManager;
 
@@ -130,6 +140,38 @@ final class Plugin {
 				$c->get(Logger::class)
 			);
 		});
+		$this->container->singleton(KeywordRepository::class, static function (Container $c): KeywordRepository {
+			global $wpdb;
+			return new KeywordRepository($wpdb, $c->get(Logger::class));
+		});
+		$this->container->singleton(KeywordIntelligence::class, static function (): KeywordIntelligence {
+			global $wpdb;
+			return new KeywordIntelligence($wpdb);
+		});
+		$this->container->singleton(ContentDraftRepository::class, static function (Container $c): ContentDraftRepository {
+			global $wpdb;
+			return new ContentDraftRepository($wpdb, $c->get(Logger::class));
+		});
+		$this->container->singleton(ContentQAEngine::class, static fn(Container $c): ContentQAEngine => new ContentQAEngine($c->get(BrandProfile::class)));
+		$this->container->singleton(ContentWorkflowEngine::class, static function (Container $c): ContentWorkflowEngine {
+			return new ContentWorkflowEngine(
+				$c->get(ContentDraftRepository::class),
+				$c->get(ContentQAEngine::class),
+				$c->get(ApprovalEngine::class),
+				$c->get(KeywordIntelligence::class)
+			);
+		});
+		$this->container->singleton(NewUpdateDecisionEngine::class, static fn(): NewUpdateDecisionEngine => new NewUpdateDecisionEngine());
+		$this->container->singleton(RewriteEngine::class, static function (Container $c): RewriteEngine {
+			global $wpdb;
+			return new RewriteEngine($wpdb, $c->get(ContentDraftRepository::class), $c->get(ApprovalEngine::class), $c->get(Logger::class));
+		});
+		$this->container->singleton(ImageValidator::class, static fn(): ImageValidator => new ImageValidator());
+		$this->container->singleton(MediaProposalService::class, static function (Container $c): MediaProposalService {
+			global $wpdb;
+			return new MediaProposalService($wpdb, $c->get(ImageValidator::class), $c->get(ProviderRegistry::class), $c->get(Logger::class));
+		});
+		$this->container->singleton(InternalLinkProposalEngine::class, static fn(Container $c): InternalLinkProposalEngine => new InternalLinkProposalEngine($c->get(BrandProfile::class)));
 		$this->container->singleton(AdminMenu::class, function (Container $c): AdminMenu {
 			return new AdminMenu($c, $this->modules);
 		});
@@ -149,8 +191,10 @@ final class Plugin {
 		$this->modules->register('ai_providers', 'ACTIVE', 'PHASE_03', ['credentials', 'http_guard']);
 		$this->modules->register('prompt_engine', 'ACTIVE', 'PHASE_03', ['settings']);
 		$this->modules->register('token_engine', 'ACTIVE', 'PHASE_03', ['ai_providers']);
-		$this->modules->register('keyword_engine', 'NOT_IMPLEMENTED', 'PHASE_04', ['database', 'ai_providers'], 'COMING_IN_PHASE_04');
-		$this->modules->register('content_engine', 'NOT_IMPLEMENTED', 'PHASE_04', ['prompt_engine', 'ai_providers', 'mutation_guard'], 'COMING_IN_PHASE_04');
+		$this->modules->register('keyword_engine', 'ACTIVE', 'PHASE_04', ['database', 'ai_providers']);
+		$this->modules->register('content_engine', 'ACTIVE', 'PHASE_04', ['prompt_engine', 'ai_providers', 'mutation_guard']);
+		$this->modules->register('rewrite_engine', 'ACTIVE', 'PHASE_04', ['content_engine', 'approval']);
+		$this->modules->register('media_engine', 'ACTIVE', 'PHASE_04', ['database', 'ai_providers']);
 		$this->modules->register('woocommerce_seo', 'NOT_IMPLEMENTED', 'PHASE_05', ['content_engine'], 'COMING_IN_PHASE_05');
 		$this->modules->register('htd_seo_extensions', 'NOT_IMPLEMENTED', 'PHASE_06', ['woocommerce_seo'], 'COMING_IN_PHASE_06');
 	}
