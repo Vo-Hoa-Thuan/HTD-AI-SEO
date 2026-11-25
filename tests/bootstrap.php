@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 define('ABSPATH', __DIR__ . '/');
 define('ARRAY_A', 'ARRAY_A');
-define('HTD_AI_SEO_VERSION', '0.2.0-dev');
-define('HTD_AI_SEO_DB_VERSION', '0.2.0');
+define('HTD_AI_SEO_VERSION', '0.9.0-dev');
+define('ABSPATH_VER_CHECK', true);
+define('HTD_AI_SEO_DB_VERSION', '0.6.0');
 define('HTD_AI_SEO_PATH', dirname(__DIR__) . '/src/htd-ai-seo-writer-pro/');
 define('HTD_AI_SEO_URL', 'http://localhost/wp-content/plugins/htd-ai-seo-writer-pro/');
 define('HTD_AI_SEO_BASENAME', 'htd-ai-seo-writer-pro/htd-ai-seo-writer-pro.php');

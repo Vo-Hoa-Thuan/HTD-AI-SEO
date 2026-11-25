@@ -3,7 +3,7 @@
  * Plugin Name: HTD AI SEO Writer Pro
  * Plugin URI: https://htd.net.vn
  * Description: Independent, self-hosted AI SEO content, WooCommerce, and Rank Math automation platform managed by HTD.
- * Version: 0.2.0-dev
+ * Version: 0.9.0-dev
  * Author: HTD Digital
  * Author URI: https://htd.net.vn
  * License: GPL v2 or later
@@ -42,8 +42,8 @@ if (version_compare(PHP_VERSION, '8.1.0', '<')) {
 	return;
 }
 
-define('HTD_AI_SEO_VERSION', '0.2.0-dev');
-define('HTD_AI_SEO_DB_VERSION', '0.2.0');
+define('HTD_AI_SEO_VERSION', '0.9.0-dev');
+define('HTD_AI_SEO_DB_VERSION', '0.6.0');
 define('HTD_AI_SEO_FILE', __FILE__);
 define('HTD_AI_SEO_PATH', plugin_dir_path(__FILE__));
 define('HTD_AI_SEO_URL', plugin_dir_url(__FILE__));

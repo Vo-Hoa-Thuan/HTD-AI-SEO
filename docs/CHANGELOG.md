@@ -1,5 +1,9 @@
 # CHANGELOG — HTD AI SEO WRITER PRO
 
+## 0.9.0-dev (2026-11-25)
+- Khắc phục lỗi đồng bộ phiên bản plugin header (`Version: 0.9.0-dev`), `HTD_AI_SEO_VERSION`, `HTD_AI_SEO_DB_VERSION` (`0.6.0`) và `readme.txt` (`Stable tag: 0.9.0-dev`).
+- Đóng gói `htd-ai-seo-writer-pro-0.9.0-dev.zip` với mã SHA-256 mới; giữ trạng thái `NO_GO` cho production đến khi xử lý `BLK-001`, `BLK-002`, `BLK-004`, `BLK-005`, `BLK-006`.
+
 ## 0.8.0-dev (2026-11-25)
 - Hoàn thiện bộ tài liệu tiếng Việt (18 files), Release Manifest, Báo cáo Nghiệm thu Phase 08 và gói phát triển `htd-ai-seo-writer-pro-0.8.0-dev.zip`.
 - Ghi nhận đầy đủ 5 blockers còn mở trước khi nâng lên `1.0.0` production-ready.
