@@ -1,0 +1,40 @@
+FEATURE_ID,FEATURE_NAME,IMPLEMENTATION_PHASE,OWNER_MODULE,REUSE_STRATEGY,ACCEPTANCE_TEST_ID,DEPENDENCY
+FEAT_001,OpenAI Chat Completions API,PHASE_03,AI_PROVIDERS,REFACTOR_GPL,AT_001,wp_options:sv_ai_writer_settings
+FEAT_002,Custom OpenAI-Compatible Base URL,PHASE_03,AI_PROVIDERS,REFACTOR_GPL,AT_002,wp_options:sv_ai_writer_settings
+FEAT_003,Google Gemini Provider,PHASE_03,AI_PROVIDERS,REFACTOR_GPL,AT_003,wp_options:sv_ai_writer_settings
+FEAT_004,Anthropic Claude Provider,PHASE_03,AI_PROVIDERS,REFACTOR_GPL,AT_004,wp_options:sv_ai_writer_settings
+FEAT_005,DeepSeek Provider,PHASE_03,AI_PROVIDERS,REFACTOR_GPL,AT_005,wp_options:sv_ai_writer_settings
+FEAT_006,xAI Grok Provider,PHASE_03,AI_PROVIDERS,REFACTOR_GPL,AT_006,wp_options:sv_ai_writer_settings
+FEAT_007,ChatGPT / Codex OAuth & JWKS,PHASE_03,AI_PROVIDERS,REIMPLEMENT_INDEPENDENTLY,AT_007,wp_options:sv_ai_chatgpt_credentials
+FEAT_008,Encrypted Credential Store,PHASE_03,AI_PROVIDERS,REFACTOR_GPL,AT_008,wp_options:sv_ai_chatgpt_credentials
+FEAT_009,"AI Request Retry, Timeout & Token Budget",PHASE_03,AI_PROVIDERS,REFACTOR_GPL,AT_009,None
+FEAT_010,Keyword Queue CRUD,PHASE_04,KEYWORDS,REFACTOR_GPL,AT_010,wp_sv_ai_keywords
+FEAT_011,Keyword Clustering & Batch Queue,PHASE_04,KEYWORDS,REIMPLEMENT_INDEPENDENTLY,AT_011,wp_sv_ai_keywords
+FEAT_012,Keyword Audit Service,PHASE_04,KEYWORDS,REFACTOR_GPL,AT_012,"wp_posts, wp_sv_ai_keywords"
+FEAT_013,Keyword Action Service,PHASE_04,KEYWORDS,REFACTOR_GPL,AT_013,wp_sv_ai_keywords
+FEAT_014,Inline Keyword Title/Images/Categories Edit,PHASE_04,KEYWORDS,REFACTOR_GPL,AT_014,wp_sv_ai_keywords
+FEAT_015,Local Prompt Engine & Outline Generation,PHASE_03,CONTENT_GEN,REIMPLEMENT_INDEPENDENTLY,AT_015,"wp_sv_ai_keywords, wp_options"
+FEAT_016,Remote Prompt Bundle Client Call,PHASE_03,CONTENT_GEN,REIMPLEMENT_INDEPENDENTLY,AT_016,wp_options
+FEAT_017,Heading Depth & Word Count Control,PHASE_04,CONTENT_GEN,REFACTOR_GPL,AT_017,"wp_options, wp_sv_ai_keywords"
+FEAT_018,Multilingual Content & Brand Prompt,PHASE_03,CONTENT_GEN,REFACTOR_GPL,AT_018,wp_options
+FEAT_019,Checkpoint Resume for Long Articles,PHASE_04,CONTENT_GEN,REFACTOR_GPL,AT_019,wp_sv_ai_keywords
+FEAT_020,Existing Post Selection & Analysis,PHASE_04,POST_REWRITE,REFACTOR_GPL,AT_020,"wp_posts, wp_postmeta"
+FEAT_021,AI Post Rewrite & Metadata Update,PHASE_04,POST_REWRITE,REFACTOR_GPL,AT_021,"wp_posts, wp_postmeta"
+FEAT_022,AI Image Generation Runtime,PHASE_04,MEDIA,REFACTOR_GPL,AT_022,"wp_posts (attachment), wp_postmeta"
+FEAT_023,Media Library Picker & Metadata,PHASE_04,MEDIA,REFACTOR_GPL,AT_023,"wp_posts, wp_postmeta"
+FEAT_024,WooCommerce Product Selection & Tagging,PHASE_05,WOOCOMMERCE,REFACTOR_GPL,AT_024,"wp_posts (product), wp_postmeta"
+FEAT_025,WooCommerce Product AI Content & Publisher,PHASE_05,WOOCOMMERCE,REFACTOR_GPL,AT_025,"wp_posts (product), wp_postmeta, wp_terms"
+FEAT_026,Rank Math & Yoast SEO Meta Mapping,PHASE_05,SEO,REFACTOR_GPL,AT_026,"wp_postmeta (rank_math_*, _yoast_wpseo_*)"
+FEAT_027,SEO Enhancer & Internal Linking,PHASE_05,SEO,REFACTOR_GPL,AT_027,"wp_posts, wp_postmeta"
+FEAT_028,Post Publisher (Draft/Publish/Future),PHASE_05,SEO,REFACTOR_GPL,AT_028,"wp_posts, wp_terms, wp_postmeta"
+FEAT_029,WP-Cron Scheduler & Custom Intervals,PHASE_05,AUTOMATION,REFACTOR_GPL,AT_029,"wp_options, wp_sv_ai_keywords"
+FEAT_030,Loopback Background Worker & Diagnostics,PHASE_05,AUTOMATION,REFACTOR_GPL,AT_030,"wp_options (transients), wp_sv_ai_logs"
+FEAT_031,Execution & Error Logging,PHASE_02,AUTOMATION,REFACTOR_GPL,AT_031,wp_sv_ai_logs
+FEAT_032,Admin Menu & Multilingual UI (VI/EN/ZH),PHASE_05,ADMIN,REFACTOR_GPL,AT_032,wp_options
+FEAT_033,Tabbed Plugin Settings UI,PHASE_02,ADMIN,REFACTOR_GPL,AT_033,wp_options:sv_ai_writer_settings
+FEAT_034,SoftViet Commercial License Client,PHASE_02,LICENSE,EXCLUDE_WITH_REASON,AT_034,wp_options
+FEAT_035,SoftViet License Server & REST API,PHASE_02,LICENSE,EXCLUDE_WITH_REASON,AT_035,"wp_sv_ai_licenses, wp_sv_ai_license_activations"
+FEAT_036,SoftViet Remote Plugin Updater,PHASE_02,ADMIN,REPLACE_WITH_OFFICIAL_API,AT_036,wp_options (transients)
+FEAT_037,PHP Version Guard & Activation/Deactivation,PHASE_02,LIFECYCLE,REIMPLEMENT_INDEPENDENTLY,AT_037,"wp_sv_ai_*, wp_options"
+FEAT_038,DB Schema Creation & Versioned Migration,PHASE_02,LIFECYCLE,REIMPLEMENT_INDEPENDENTLY,AT_038,"wp_sv_ai_keywords, logs, client_sites, daily_usage"
+FEAT_039,Uninstall Cleanup,PHASE_02,LIFECYCLE,REIMPLEMENT_INDEPENDENTLY,AT_039,wp_options

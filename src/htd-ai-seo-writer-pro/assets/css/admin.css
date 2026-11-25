@@ -1,0 +1,9 @@
+.htd-wrap { max-width: 1180px; }
+.htd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 16px 0; }
+.htd-card { background: #fff; border: 1px solid #dcdcde; border-radius: 6px; padding: 16px; }
+.htd-card h3 { margin-top: 0; font-size: 14px; color: #1d2327; }
+.htd-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+.htd-badge-ok { background: #edfaef; color: #007017; }
+.htd-badge-warn { background: #fcf9e8; color: #996800; }
+.htd-badge-danger { background: #fcf0f1; color: #b32d2e; }
+.htd-badge-muted { background: #f0f0f1; color: #50575e; }

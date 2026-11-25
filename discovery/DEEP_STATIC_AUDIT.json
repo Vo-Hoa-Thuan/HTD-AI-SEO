@@ -1,0 +1,973 @@
+{
+  "license_headers": {
+    "softviet-ai-seo-writer/WORDPRESS-ORG-LITE-CHECKLIST.md": [
+      "L9: - [ ] Submit from:",
+      "L12: - `includes/class-sv-ai-license-service.php`",
+      "L13: - `includes/class-sv-ai-license-api.php`",
+      "L14: - `admin/class-sv-ai-license-server-admin.php`",
+      "L15: - `admin/views/license.php`",
+      "L16: - `admin/views/license-client.php`",
+      "L17: - `admin/views/license-server.php`"
+    ],
+    "softviet-ai-seo-writer/license.txt": [
+      "L2: the terms of the GNU General Public License as published by the Free Software",
+      "L3: Foundation; either version 2 of the License, or any later version.",
+      "L7: PARTICULAR PURPOSE. See the GNU General Public License for more details.",
+      "L9: You should have received a copy of the GNU General Public License along with",
+      "L11: https://www.gnu.org/licenses/gpl-2.0.html"
+    ],
+    "softviet-ai-seo-writer/readme-public.txt": [
+      "L8: License: GPLv2 or later",
+      "L9: License URI: https://www.gnu.org/licenses/gpl-2.0.html",
+      "L32: * A separate commercial Pro edition is available outside WordPress.org for AI image generation, additional AI providers,",
+      "L34: The Lite package does not include the commercial license server/client code and does not contact SoftViet licensing serv"
+    ],
+    "softviet-ai-seo-writer/readme.txt": [
+      "L8: License: GPLv2 or later",
+      "L9: License URI: https://www.gnu.org/licenses/gpl-2.0.html",
+      "L11: Generate SEO article drafts and publish-ready content from keyword queues with AI analysis, multilingual UI, image handl",
+      "L37: * Commercial client/server license architecture with activation, deactivation, revoke, renew, plan changes, and periodic"
+    ],
+    "softviet-ai-seo-writer/softviet-ai-seo-writer.php": [
+      "L10: * License: GPL v2 or later",
+      "L11: * License URI: https://www.gnu.org/licenses/gpl-2.0.html"
+    ],
+    "softviet-ai-seo-writer/uninstall.php": [
+      "L20: // and license state to remain intact."
+    ],
+    "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php": [
+      "L29: add_action('admin_post_sv_ai_activate_client_license', array(__CLASS__, 'activate_client_license'));",
+      "L30: add_action('admin_post_sv_ai_deactivate_client_license', array(__CLASS__, 'deactivate_client_license'));",
+      "L31: add_action('admin_post_sv_ai_report_license_payment', array(__CLASS__, 'report_license_payment'));",
+      "L32: add_action('admin_post_sv_ai_sync_domain_license', array(__CLASS__, 'sync_domain_license_action'));",
+      "L33: add_action('admin_init', array(__CLASS__, 'auto_sync_domain_license'));"
+    ],
+    "softviet-ai-seo-writer/admin/class-sv-ai-license-server-admin.php": [
+      "L6: class SV_AI_License_Server_Admin {",
+      "L8: add_action('admin_post_sv_ai_create_license', array(__CLASS__, 'create_license'));",
+      "L9: add_action('admin_post_sv_ai_license_manage', array(__CLASS__, 'manage_license'));",
+      "L11: add_action('wp_ajax_sv_ai_mark_license_sent', array(__CLASS__, 'ajax_mark_license_sent'));",
+      "L14: public static function prepare_license_page_data(): array {",
+      "L15: SV_AI_License_Service::create_tables();",
+      "L16: return SV_AI_License_Service::list_licenses();",
+      "L19: public static function create_license(): void {",
+      "L23: check_admin_referer('sv_ai_create_license');",
+      "L35: ? SV_AI_License_Service::create_bulk_licenses($data, $quantity)",
+      "L36: : SV_AI_License_Service::create_license($data);",
+      "L37: $redirect = admin_url('admin.php?page=sv-ai-license');",
+      "L39: wp_safe_redirect(add_query_arg('license_error', rawurlencode($result->get_error_message()), $redirect));"
+    ],
+    "softviet-ai-seo-writer/admin/views/free-clients.php": [
+      "L8: <?php if (!empty($_GET['license_created'])) : ?>",
+      "L9: <div class=\"notice notice-success\"><p><strong><?php echo esc_html(SV_AI_I18N::t('License đã cấp cho domain:', 'License i",
+      "L11: <?php if (!empty($_GET['license_error'])) : ?>",
+      "L12: <div class=\"notice notice-error\"><p><?php echo esc_html(wp_unslash($_GET['license_error'])); ?></p></div>",
+      "L14: <?php if (!empty($_GET['license_updated'])) : ?>",
+      "L19: <p style=\"margin:0;\"><?php echo esc_html(SV_AI_I18N::t('Lượt prompt và lượt cụm từ khóa hiện được ghi nhận cho mọi gói F"
+    ],
+    "softviet-ai-seo-writer/admin/views/license-client.php": [
+      "L1: <div class=\"sv-ai-card sv-ai-license-client-card\">",
+      "L2: <h2><?php echo esc_html(SV_AI_I18N::t('License của website này', 'License for this website', '此网站的许可证')); ?></h2>",
+      "L4: <?php $sv_ai_license_plan = sanitize_key((string) ($settings['license_plan'] ?? 'free')); ?>",
+      "L5: <div class=\"sv-ai-license-client-grid\">",
+      "L6: <div><span>License server</span><code><?php echo esc_html($settings['license_server_url'] ?? SV_AI_WRITER_LICENSE_SERVER",
+      "L7: <div><span><?php echo esc_html(SV_AI_I18N::t('Trạng thái', 'Status', '状态')); ?></span><strong><?php echo esc_html($setti",
+      "L8: <div><span><?php echo esc_html(SV_AI_I18N::t('Gói', 'Plan', '套餐')); ?></span><strong><?php echo esc_html(strtoupper($sv_",
+      "L9: <div><span><?php echo esc_html(SV_AI_I18N::t('Giới hạn/ngày', 'Daily limit', '每日限制')); ?></span><strong><?php echo esc_h",
+      "L10: <div><span><?php echo esc_html(SV_AI_I18N::t('Website đã kích hoạt', 'Activated website', '已激活网站')); ?></span><code><?ph",
+      "L11: <div><span><?php echo esc_html(SV_AI_I18N::t('Email đã gửi lên server', 'Email sent to server', '已发送到服务器的邮箱')); ?></span",
+      "L12: <div><span><?php echo esc_html(SV_AI_I18N::t('Số điện thoại đã gửi lên server', 'Phone sent to server', '已发送到服务器的电话')); ",
+      "L13: <div><span><?php echo esc_html(SV_AI_I18N::t('Hết hạn', 'Expires at', '到期时间')); ?></span><strong><?php echo esc_html($se",
+      "L16: <div class=\"notice notice-success inline\"><p><?php echo esc_html(SV_AI_I18N::t('Đã gửi thông báo thanh toán lên SoftViet",
+      "L20: <button type=\"button\" class=\"button button-primary\" id=\"sv-ai-open-payment-dialog\"><?php echo esc_html(SV_AI_I18N::t('Mu",
+      "L25: <p><?php echo esc_html(SV_AI_I18N::t('Vui lòng chuyển khoản theo thông tin bên dưới. Nội dung chuyển khoản giúp SoftViet",
+      "L39: <?php wp_nonce_field('sv_ai_report_license_payment'); ?>",
+      "L40: <input type=\"hidden\" name=\"action\" value=\"sv_ai_report_license_payment\">"
+    ],
+    "softviet-ai-seo-writer/admin/views/license-server.php": [
+      "L13: $license_filter_q = sanitize_text_field(wp_unslash($_GET['license_q'] ?? ''));",
+      "L14: $license_filter_plan = sanitize_key(wp_unslash($_GET['license_plan'] ?? ''));",
+      "L15: $license_filter_status = sanitize_key(wp_unslash($_GET['license_status'] ?? ''));",
+      "L16: $license_filter_duration = sanitize_key(wp_unslash($_GET['license_duration'] ?? ''));",
+      "L17: $license_filter_sent = sanitize_key(wp_unslash($_GET['license_sent'] ?? ''));",
+      "L18: $all_licenses = is_array($licenses) ? $licenses : array();",
+      "L19: $license_counts = array(",
+      "L20: 'total' => count($all_licenses),",
+      "L27: foreach ($all_licenses as $license_item) {",
+      "L28: $status_key = sanitize_key((string) ($license_item->status ?? ''));",
+      "L29: if (isset($license_counts[$status_key])) {",
+      "L30: $license_counts[$status_key]++;",
+      "L32: if (!empty($license_item->sent_to_customer)) {",
+      "L33: $license_counts['sent']++;",
+      "L35: $license_counts['not_sent']++;",
+      "L38: $licenses = array_values(array_filter($all_licenses, static function ($license) use ($license_filter_q, $license_filter_",
+      "L39: if ($license_filter_plan !== '' && sanitize_key((string) ($license->plan ?? '')) !== $license_filter_plan) {"
+    ],
+    "softviet-ai-seo-writer/admin/views/license.php": [
+      "L3: <h1><?php echo esc_html(SV_AI_I18N::t('License', 'License', '许可证')); ?></h1>",
+      "L5: $license_plan = sanitize_key((string) ($settings['license_plan'] ?? 'free'));",
+      "L6: if (class_exists('SV_AI_License_Service')) {",
+      "L7: if (!empty($settings['license_key'])) {",
+      "L8: $resolved_license = SV_AI_License_Service::check_license((string) $settings['license_key'], home_url());",
+      "L9: if (is_array($resolved_license) && !empty($resolved_license['plan'])) {",
+      "L10: $license_plan = sanitize_key((string) $resolved_license['plan']);",
+      "L13: $resolved_license = SV_AI_License_Service::domain_license_payload(home_url());",
+      "L14: if (is_array($resolved_license) && !empty($resolved_license['plan'])) {",
+      "L15: $license_plan = sanitize_key((string) $resolved_license['plan']);",
+      "L22: <?php echo esc_html(SV_AI_I18N::t('Giới hạn hiện tại:', 'Current limit:', '当前限制：')); ?>",
+      "L23: <strong><?php echo esc_html($license_plan === 'max' ? SV_AI_I18N::t('Không giới hạn', 'Unlimited', '无限制') : ($license_pl",
+      "L27: <?php if (!empty($_GET['license_created'])) : ?>",
+      "L28: <div class=\"notice notice-success\"><p><strong><?php echo esc_html(SV_AI_I18N::t('License mới:', 'New license:', '新许可证：')",
+      "L30: <?php if (!empty($_GET['license_error'])) : ?>",
+      "L31: <div class=\"notice notice-error\"><p><?php echo esc_html(wp_unslash($_GET['license_error'])); ?></p></div>",
+      "L33: <?php if (!empty($_GET['license_updated'])) : ?>",
+      "L34: <div class=\"notice notice-success\"><p><?php echo esc_html(SV_AI_I18N::t('Đã cập nhật trạng thái license.', 'License stat",
+      "L40: <?php require SV_AI_WRITER_PATH . 'admin/views/license-client.php'; ?>"
+    ],
+    "softviet-ai-seo-writer/admin/views/logs.php": [
+      "L9: <?php submit_button(SV_AI_I18N::t('Lọc', 'Filter', '筛选'), 'secondary', '', false); ?>",
+      "L12: <?php wp_nonce_field('sv_ai_clear_logs'); ?><input type=\"hidden\" name=\"action\" value=\"sv_ai_clear_logs\"><?php submit_but"
+    ],
+    "softviet-ai-seo-writer/admin/views/schedule.php": [
+      "L4: <?php $schedule_plan = sanitize_key((string) ($settings['license_plan'] ?? 'free')); ?>",
+      "L23: <p><?php echo esc_html(SV_AI_I18N::t('Quota bài viết được kiểm soát ở server: FREE 1 bài/ngày, PRO 3 bài/ngày, MAX không"
+    ],
+    "softviet-ai-seo-writer/admin/views/updates.php": [
+      "L15: <?php submit_button(SV_AI_I18N::t('Tải manifest mẫu', 'Download sample manifest', '下载示例 manifest'), 'secondary', 'submit"
+    ],
+    "softviet-ai-seo-writer/admin/views/upgrade.php": [
+      "L5: <p><?php echo esc_html(SV_AI_I18N::t('Bản Lite phù hợp để trải nghiệm và triển khai quy trình cơ bản. FREE được phép 1 b",
+      "L19: <tr><td><?php echo esc_html(SV_AI_I18N::t('Giới hạn bài/ngày', 'Daily post limit', '每日文章限制')); ?></td><td>1</td><td>3 / ",
+      "L20: <tr><td><?php echo esc_html(SV_AI_I18N::t('License thương mại', 'Commercial licensing', '商业授权')); ?></td><td><?php echo "
+    ],
+    "softviet-ai-seo-writer/docs/chatgpt-oauth.md": [
+      "L3: Tính năng dành cho license Pro/Max đang hoạt động. Mỗi website có một kết nối ChatGPT do quản trị viên cấu hình. Kết nối"
+    ],
+    "softviet-ai-seo-writer/includes/class-sv-ai-activator.php": [
+      "L10: SV_AI_License_Service::create_tables();",
+      "L19: SV_AI_Cron::clear_license_schedule();"
+    ],
+    "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-client.php": [
+      "L24: $args = array('method' => $method, 'timeout' => $timeout, 'redirection' => 0, 'limit_response_size' => self::MAX_RESPONS"
+    ],
+    "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php": [
+      "L23: if (!in_array($settings['license_plan'] ?? '', array('pro', 'max'), true) || ($settings['license_status'] ?? '') !== 'ac",
+      "L24: throw new RuntimeException(self::t('ChatGPT OAuth cần bản Pro đang hoạt động.', 'ChatGPT OAuth requires an active Pro li"
+    ],
+    "softviet-ai-seo-writer/includes/class-sv-ai-cron.php": [
+      "L8: public const LICENSE_HOOK = 'sv_ai_writer_license_check';",
+      "L19: add_action(self::LICENSE_HOOK, array(__CLASS__, 'check_license_status'));",
+      "L27: add_action('init', array(__CLASS__, 'maybe_schedule_license_check'));"
+    ],
+    "softviet-ai-seo-writer/includes/class-sv-ai-keyword-service.php": [
+      "L26: $is_pro = in_array(($settings['license_plan'] ?? 'free'), array('pro', 'max'), true) && ($settings['license_status'] ?? "
+    ],
+    "softviet-ai-seo-writer/includes/class-sv-ai-license-api.php": [
+      "L6: class SV_AI_License_API {",
+      "L7: private const FREE_PROMPT_DOMAIN_LIMIT = 10;",
+      "L8: private const FREE_PROMPT_IP_LIMIT = 40;",
+      "L9: private const FREE_KEYWORD_DOMAIN_LIMIT = 5;",
+      "L10: private const FREE_KEYWORD_IP_LIMIT = 20;",
+      "L19: '/license/activate',",
+      "L28: '/license/check',",
+      "L37: '/license/deactivate',"
+    ],
+    "softviet-ai-seo-writer/includes/class-sv-ai-license-service.php": [
+      "L6: class SV_AI_License_Service {",
+      "L10: public static function licenses_table(): string {",
+      "L12: return $wpdb->prefix . 'sv_ai_licenses';",
+      "L17: return $wpdb->prefix . 'sv_ai_license_activations';",
+      "L25: $licenses = self::licenses_table();",
+      "L28: dbDelta(\"CREATE TABLE {$licenses} (",
+      "L30: license_key_hash VARCHAR(255) NOT NULL,",
+      "L31: license_key_encrypted LONGTEXT NULL,",
+      "L32: license_key_last4 VARCHAR(8) NOT NULL,"
+    ]
+  },
+  "third_party_mentions": [
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php",
+      "line": 259,
+      "match": "JWT",
+      "text": "/** Validate a signed OIDC token; decoded JWT claims alone are never trusted. */"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php",
+      "line": 260,
+      "match": "jwt",
+      "text": "public static function verify_identity(string $jwt, string $nonce): array {"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php",
+      "line": 261,
+      "match": "jwt",
+      "text": "$parts = explode('.', $jwt);"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php",
+      "line": 262,
+      "match": "jwt",
+      "text": "if (count($parts) !== 3 || strlen($jwt) > 32768) { throw new RuntimeException('Invalid ChatGPT ID token.', 401); }"
+    }
+  ],
+  "external_urls": {
+    "https://www.gnu.org/licenses/gpl-2.0.html": [
+      "softviet-ai-seo-writer/license.txt:L11",
+      "softviet-ai-seo-writer/readme-public.txt:L9",
+      "softviet-ai-seo-writer/readme.txt:L9",
+      "softviet-ai-seo-writer/softviet-ai-seo-writer.php:L11"
+    ],
+    "https://api.openai.com/v1/chat/completions": [
+      "softviet-ai-seo-writer/readme-public.txt:L72",
+      "softviet-ai-seo-writer/readme.txt:L98",
+      "softviet-ai-seo-writer/includes/class-sv-ai-openai-client.php:L627"
+    ],
+    "https://openai.com/policies/terms-of-use/": [
+      "softviet-ai-seo-writer/readme-public.txt:L75",
+      "softviet-ai-seo-writer/readme.txt:L112",
+      "softviet-ai-seo-writer/docs/chatgpt-oauth.md:L60"
+    ],
+    "https://openai.com/policies/privacy-policy/": [
+      "softviet-ai-seo-writer/readme-public.txt:L76",
+      "softviet-ai-seo-writer/readme.txt:L112",
+      "softviet-ai-seo-writer/docs/chatgpt-oauth.md:L60"
+    ],
+    "https://softviet.vn": [
+      "softviet-ai-seo-writer/readme.txt:L68",
+      "softviet-ai-seo-writer/readme.txt:L87",
+      "softviet-ai-seo-writer/softviet-ai-seo-writer.php:L4",
+      "softviet-ai-seo-writer/softviet-ai-seo-writer.php:L8",
+      "softviet-ai-seo-writer/softviet-ai-seo-writer.php:L99",
+      "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php:L771",
+      "softviet-ai-seo-writer/admin/views/upgrade.php:L25",
+      "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php:L14",
+      "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php:L16",
+      "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php:L19",
+      "softviet-ai-seo-writer/includes/class-sv-ai-updater.php:L61",
+      "softviet-ai-seo-writer/includes/class-sv-ai-updater.php:L82",
+      "softviet-ai-seo-writer/includes/class-sv-ai-updater.php:L83",
+      "softviet-ai-seo-writer/includes/class-sv-ai-updater.php:L262"
+    ],
+    "https://softviet.vn/wp-json/sv-ai-writer/v1/license/activate": [
+      "softviet-ai-seo-writer/readme.txt:L89"
+    ],
+    "https://softviet.vn/wp-json/sv-ai-writer/v1/license/check": [
+      "softviet-ai-seo-writer/readme.txt:L90"
+    ],
+    "https://softviet.vn/wp-json/sv-ai-writer/v1/license/deactivate": [
+      "softviet-ai-seo-writer/readme.txt:L91"
+    ],
+    "https://softviet.vn/wp-json/sv-ai-writer/v1/ai/prompt-bundle": [
+      "softviet-ai-seo-writer/readme.txt:L92"
+    ],
+    "https://api.openai.com/v1/images/generations": [
+      "softviet-ai-seo-writer/readme.txt:L98",
+      "softviet-ai-seo-writer/includes/class-sv-ai-image-generator-runtime.php:L144"
+    ],
+    "https://generativelanguage.googleapis.com/": [
+      "softviet-ai-seo-writer/readme.txt:L99"
+    ],
+    "https://api.anthropic.com/v1/messages": [
+      "softviet-ai-seo-writer/readme.txt:L100",
+      "softviet-ai-seo-writer/includes/class-sv-ai-openai-client.php:L523"
+    ],
+    "https://api.deepseek.com/chat/completions": [
+      "softviet-ai-seo-writer/readme.txt:L101",
+      "softviet-ai-seo-writer/includes/class-sv-ai-openai-client.php:L533"
+    ],
+    "https://api.x.ai/v1/chat/completions": [
+      "softviet-ai-seo-writer/readme.txt:L102",
+      "softviet-ai-seo-writer/includes/class-sv-ai-openai-client.php:L536"
+    ],
+    "https://auth.openai.com/oauth/authorize": [
+      "softviet-ai-seo-writer/readme.txt:L108",
+      "softviet-ai-seo-writer/docs/chatgpt-oauth.md:L52"
+    ],
+    "https://auth.openai.com/oauth/token": [
+      "softviet-ai-seo-writer/readme.txt:L108",
+      "softviet-ai-seo-writer/docs/chatgpt-oauth.md:L53",
+      "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php:L8"
+    ],
+    "https://auth.openai.com/.well-known/jwks.json": [
+      "softviet-ai-seo-writer/readme.txt:L108",
+      "softviet-ai-seo-writer/docs/chatgpt-oauth.md:L54",
+      "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php:L230"
+    ],
+    "https://chatgpt.com/backend-api/codex/responses": [
+      "softviet-ai-seo-writer/readme.txt:L109",
+      "softviet-ai-seo-writer/docs/chatgpt-oauth.md:L56"
+    ],
+    "https://chatgpt.com/backend-api/codex/models": [
+      "softviet-ai-seo-writer/readme.txt:L109",
+      "softviet-ai-seo-writer/docs/chatgpt-oauth.md:L55"
+    ],
+    "https://softviet.vn/softviet-ai-seo-writer/": [
+      "softviet-ai-seo-writer/softviet-ai-seo-writer.php:L9"
+    ],
+    "https://softviet.vn/softviet-ai-seo-writer.json": [
+      "softviet-ai-seo-writer/softviet-ai-seo-writer.php:L100"
+    ],
+    "https://softviet.vn/softviet-ai-seo-writer.zip": [
+      "softviet-ai-seo-writer/softviet-ai-seo-writer.php:L101"
+    ],
+    "https://softviet.vn/softviet-ai-writer-docs.html": [
+      "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php:L157"
+    ],
+    "http://localhost:1455/auth/callback?code=": [
+      "softviet-ai-seo-writer/admin/views/chatgpt-connection.php:L28"
+    ],
+    "https://softviet.vn/wp-content/uploads/2026/06/QRVCB.png": [
+      "softviet-ai-seo-writer/admin/views/license-client.php:L26"
+    ],
+    "https://softviet.vn/softviet-ai-writer-docs.html#pricing-models": [
+      "softviet-ai-seo-writer/admin/views/license-client.php:L37"
+    ],
+    "https://softviet.vn/huong-dan-api-key-ai.html": [
+      "softviet-ai-seo-writer/admin/views/settings.php:L154"
+    ],
+    "https://ai.softviet.vn/v1": [
+      "softviet-ai-seo-writer/admin/views/settings.php:L155",
+      "softviet-ai-seo-writer/admin/views/settings.php:L155",
+      "softviet-ai-seo-writer/admin/views/settings.php:L155",
+      "softviet-ai-seo-writer/admin/views/settings.php:L155"
+    ],
+    "https://tenmien.com/phan-mem": [
+      "softviet-ai-seo-writer/admin/views/settings.php:L341"
+    ],
+    "https://tenmien.com/bai-viet": [
+      "softviet-ai-seo-writer/admin/views/settings.php:L559"
+    ],
+    "https://domain.com/post": [
+      "softviet-ai-seo-writer/admin/views/settings.php:L559",
+      "softviet-ai-seo-writer/admin/views/settings.php:L559"
+    ],
+    "https://www.facebook.com/SoftVietOfficial": [
+      "softviet-ai-seo-writer/admin/views/settings.php:L561",
+      "softviet-ai-seo-writer/admin/views/settings.php:L561",
+      "softviet-ai-seo-writer/admin/views/settings.php:L561"
+    ],
+    "https://zalo.me/0972555414": [
+      "softviet-ai-seo-writer/admin/views/settings.php:L561",
+      "softviet-ai-seo-writer/admin/views/settings.php:L561"
+    ],
+    "http://localhost:1455/auth/callback": [
+      "softviet-ai-seo-writer/docs/chatgpt-oauth.md:L9",
+      "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php:L7"
+    ],
+    "https://developers.openai.com/siwc/token-sharing-open-source": [
+      "softviet-ai-seo-writer/docs/chatgpt-oauth.md:L60"
+    ],
+    "https://developers.openai.com/siwc/token-sharing-open-source/sign-in": [
+      "softviet-ai-seo-writer/docs/chatgpt-oauth.md:L60"
+    ],
+    "https://chatgpt.com/backend-api/codex": [
+      "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php:L9"
+    ],
+    "https://auth.openai.com/oauth/authorize?": [
+      "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php:L58"
+    ],
+    "https://api.openai.com/auth": [
+      "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php:L91"
+    ],
+    "https://auth.openai.com": [
+      "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php:L284"
+    ],
+    "https://www.facebook.com/": [
+      "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php:L14",
+      "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php:L16",
+      "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php:L19"
+    ],
+    "https://zalo.me/": [
+      "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php:L14",
+      "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php:L16",
+      "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php:L19"
+    ],
+    "https://example.com": [
+      "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php:L27",
+      "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php:L31"
+    ],
+    "https://generativelanguage.googleapis.com/v1beta/models/": [
+      "softviet-ai-seo-writer/includes/class-sv-ai-image-generator-runtime.php:L207",
+      "softviet-ai-seo-writer/includes/class-sv-ai-openai-client.php:L482"
+    ],
+    "https://api.openai.com/v1": [
+      "softviet-ai-seo-writer/includes/class-sv-ai-openai-client.php:L547"
+    ]
+  },
+  "db_tables": [
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-db.php",
+      "table": "{$keywords}"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-db.php",
+      "table": "{$logs}"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-db.php",
+      "table": "{$client_sites}"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-db.php",
+      "table": "{$daily_usage}"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-db.php",
+      "table": "prefix.sv_ai_keywords"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-db.php",
+      "table": "prefix.sv_ai_logs"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-db.php",
+      "table": "prefix.sv_ai_client_sites"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-db.php",
+      "table": "prefix.sv_ai_daily_usage"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-license-service.php",
+      "table": "{$licenses}"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-license-service.php",
+      "table": "{$activations}"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-license-service.php",
+      "table": "prefix.sv_ai_licenses"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-license-service.php",
+      "table": "prefix.sv_ai_license_activations"
+    }
+  ],
+  "options": [
+    "blog_charset",
+    "sv_ai_chatgpt_auth_epoch",
+    "sv_ai_chatgpt_cooldown",
+    "sv_ai_chatgpt_credentials",
+    "sv_ai_chatgpt_credentials_lock",
+    "sv_ai_chatgpt_models",
+    "sv_ai_writer_db_version",
+    "sv_ai_writer_settings"
+  ],
+  "post_meta": [
+    "_product_attributes",
+    "_product_image_gallery",
+    "_regular_price",
+    "_sale_price",
+    "_sku",
+    "_stock_status",
+    "_sv_ai_auto_internal_links_applied",
+    "_sv_ai_auto_internal_links_hash",
+    "_sv_ai_auto_internal_links_pending",
+    "_sv_ai_auto_internal_links_pending_keyword",
+    "_sv_ai_focus_keyword",
+    "_sv_ai_meta_description",
+    "_sv_ai_meta_title",
+    "_sv_ai_product_content_generated",
+    "_sv_ai_product_content_generated_at",
+    "_sv_ai_product_content_queue_id",
+    "_sv_ai_product_content_target",
+    "_sv_ai_product_created_by_ai",
+    "_sv_ai_product_original_content_backup",
+    "_sv_ai_product_original_content_hash",
+    "_sv_ai_rank_math_estimated_score",
+    "_sv_ai_rewrite_created_at",
+    "_sv_ai_rewrite_last_backup",
+    "_sv_ai_rewrite_mode",
+    "_sv_ai_rewrite_reasons",
+    "_sv_ai_rewrite_source_hash",
+    "_sv_ai_rewrite_source_post_id",
+    "_visibility",
+    "_wp_attachment_image_alt",
+    "_yoast_wpseo_focuskw",
+    "_yoast_wpseo_metadesc",
+    "_yoast_wpseo_title",
+    "rank_math_description",
+    "rank_math_focus_keyword",
+    "rank_math_seo_score",
+    "rank_math_title"
+  ],
+  "transients": [
+    "sv_ai_bg_",
+    "sv_ai_chatgpt_failures_",
+    "sv_ai_chatgpt_jwks",
+    "sv_ai_checkpoint_kick_",
+    "sv_ai_checkpoint_sig_",
+    "sv_ai_dispatch_requeue_",
+    "sv_ai_dispatch_retry_",
+    "sv_ai_domain_license_sync_checked",
+    "sv_ai_keyword_retry_hold_",
+    "sv_ai_writer_cron_cooldown",
+    "sv_ai_writer_processing_lock"
+  ],
+  "cron_hooks": [],
+  "capabilities": [
+    "manage_options"
+  ],
+  "nonces": [
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "nonce": "sv_ai_upload_update_assets"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "nonce": "sv_ai_download_sample_manifest"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "nonce": "sv_ai_ajax"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "nonce": "sv_ai_ajax"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "nonce": "sv_ai_ajax"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "nonce": "sv_ai_ajax"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "nonce": "sv_ai_ajax"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "nonce": "sv_ai_ajax"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "nonce": "sv_ai_ajax"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "nonce": "sv_ai_ajax"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "nonce": "sv_ai_ajax"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-license-server-admin.php",
+      "nonce": "sv_ai_create_license"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-license-server-admin.php",
+      "nonce": "sv_ai_client_site_manage"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-license-server-admin.php",
+      "nonce": "sv_ai_license_manage"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-license-server-admin.php",
+      "nonce": "sv_ai_ajax"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/free-clients.php",
+      "nonce": "sv_ai_client_site_manage"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/free-clients.php",
+      "nonce": "sv_ai_client_site_manage"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/free-clients.php",
+      "nonce": "sv_ai_client_site_manage"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/free-clients.php",
+      "nonce": "sv_ai_client_site_manage"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+      "nonce": "sv_ai_keyword_audit_rescan"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+      "nonce": "sv_ai_keyword_audit_apply"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/keywords.php",
+      "nonce": "sv_ai_add_keywords"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/keywords.php",
+      "nonce": "sv_ai_keywords_bulk_action"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/license-client.php",
+      "nonce": "sv_ai_report_license_payment"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/license-client.php",
+      "nonce": "sv_ai_sync_domain_license"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/license-client.php",
+      "nonce": "sv_ai_activate_client_license"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/license-client.php",
+      "nonce": "sv_ai_deactivate_client_license"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/license-server.php",
+      "nonce": "sv_ai_create_license"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/license-server.php",
+      "nonce": "sv_ai_license_manage"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/license-server.php",
+      "nonce": "sv_ai_license_manage"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/license-server.php",
+      "nonce": "sv_ai_license_manage"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/license-server.php",
+      "nonce": "sv_ai_license_manage"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/logs.php",
+      "nonce": "sv_ai_clear_logs"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/products.php",
+      "nonce": "sv_ai_add_product_names"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/products.php",
+      "nonce": "sv_ai_products_bulk_action"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/products.php",
+      "nonce": "sv_ai_products_bulk_action"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+      "nonce": "sv_ai_rewrite_bulk_action"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+      "nonce": "sv_ai_rewrite_bulk_action"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/schedule.php",
+      "nonce": "sv_ai_save_settings"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/settings.php",
+      "nonce": "sv_ai_save_settings"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/settings.php",
+      "nonce": "sv_ai_force_update_check"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/settings.php",
+      "nonce": "sv_ai_save_settings"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/settings.php",
+      "nonce": "sv_ai_save_settings"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/updates.php",
+      "nonce": "sv_ai_download_sample_manifest"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/updates.php",
+      "nonce": "sv_ai_upload_update_assets"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php",
+      "nonce": "sv_ai_ajax"
+    }
+  ],
+  "ajax_actions": [
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 36,
+      "args": "'wp_ajax_sv_ai_generate_post', array(__CLASS__, 'ajax_generate_post')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 37,
+      "args": "'wp_ajax_sv_ai_queue_generate_post', array(__CLASS__, 'ajax_queue_generate_post')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 38,
+      "args": "'wp_ajax_sv_ai_keyword_status', array(__CLASS__, 'ajax_keyword_status')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 39,
+      "args": "'wp_ajax_sv_ai_analyze_keyword_clusters', array(__CLASS__, 'ajax_analyze_keyword_clusters')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 40,
+      "args": "'wp_ajax_sv_ai_accept_keyword_clusters', array(__CLASS__, 'ajax_accept_keyword_clusters')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 41,
+      "args": "'wp_ajax_sv_ai_update_keyword_title', array(__CLASS__, 'ajax_update_keyword_title')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 42,
+      "args": "'wp_ajax_sv_ai_update_keyword_images', array(__CLASS__, 'ajax_update_keyword_images')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 43,
+      "args": "'wp_ajax_sv_ai_update_keyword_categories', array(__CLASS__, 'ajax_update_keyword_categories')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 44,
+      "args": "'wp_ajax_sv_ai_run_loopback_diagnostic', array(__CLASS__, 'ajax_run_loopback_diagnostic')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-license-server-admin.php",
+      "line": 11,
+      "args": "'wp_ajax_sv_ai_mark_license_sent', array(__CLASS__, 'ajax_mark_license_sent')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php",
+      "line": 18,
+      "args": "'wp_ajax_sv_ai_chatgpt', array(__CLASS__, 'ajax')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-cron.php",
+      "line": 23,
+      "args": "'wp_ajax_sv_ai_background_generate', array(__CLASS__, 'background_generate')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-cron.php",
+      "line": 24,
+      "args": "'wp_ajax_nopriv_sv_ai_background_generate', array(__CLASS__, 'background_generate')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-cron.php",
+      "line": 25,
+      "args": "'wp_ajax_sv_ai_background_diagnostic', array(__CLASS__, 'background_diagnostic')"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-cron.php",
+      "line": 26,
+      "args": "'wp_ajax_nopriv_sv_ai_background_diagnostic', array(__CLASS__, 'background_diagnostic')"
+    }
+  ],
+  "rest_routes": [
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-license-api.php",
+      "line": 17,
+      "args": "'sv-ai-writer/v1', '/license/activate', array( 'methods' => 'POST', 'callback' => array(__CLASS__, 'activate'), 'permission_callback' => '__return_true'"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-license-api.php",
+      "line": 26,
+      "args": "'sv-ai-writer/v1', '/license/check', array( 'methods' => 'POST', 'callback' => array(__CLASS__, 'check'), 'permission_callback' => '__return_true'"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-license-api.php",
+      "line": 35,
+      "args": "'sv-ai-writer/v1', '/license/deactivate', array( 'methods' => 'POST', 'callback' => array(__CLASS__, 'deactivate'), 'permission_callback'"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-license-api.php",
+      "line": 44,
+      "args": "'sv-ai-writer/v1', '/license/payment-report', array( 'methods' => 'POST', 'callback' => array(__CLASS__, 'payment_report'), 'permission_callback'"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-license-api.php",
+      "line": 53,
+      "args": "'sv-ai-writer/v1', '/license/domain-check', array( 'methods' => 'POST', 'callback' => array(__CLASS__, 'domain_check'), 'permission_callback'"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-license-api.php",
+      "line": 62,
+      "args": "'sv-ai-writer/v1', '/ai/prompt-bundle', array( 'methods' => 'POST', 'callback' => array(__CLASS__, 'prompt_bundle'), 'permission_callback'"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-license-api.php",
+      "line": 71,
+      "args": "'sv-ai-writer/v1', '/ai/keyword-cluster-prompt', array( 'methods' => 'POST', 'callback' => array(__CLASS__, 'keyword_cluster_prompt'), 'permission_callback'"
+    }
+  ],
+  "security_hits": [
+    {
+      "pattern": "BASE64_DECODE",
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php",
+      "line": 207,
+      "snippet": "$result = base64_decode(strtr($value, '-_', '+/'), true);"
+    },
+    {
+      "pattern": "DYNAMIC_INCLUDE",
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php",
+      "line": 1200,
+      "snippet": "$include_result = require_once $file;"
+    },
+    {
+      "pattern": "DYNAMIC_INCLUDE",
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php",
+      "line": 1205,
+      "snippet": "require $file;"
+    },
+    {
+      "pattern": "DYNAMIC_INCLUDE",
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php",
+      "line": 1264,
+      "snippet": "require_once $file;"
+    },
+    {
+      "pattern": "BASE64_DECODE",
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-credential-store.php",
+      "line": 25,
+      "snippet": "$bytes = base64_decode($value, true);"
+    },
+    {
+      "pattern": "NOPRIV_AJAX",
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-cron.php",
+      "line": 24,
+      "snippet": "add_action('wp_ajax_nopriv_sv_ai_background_generate', array(__CLASS__, 'background_generate'));"
+    },
+    {
+      "pattern": "NOPRIV_AJAX",
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-cron.php",
+      "line": 26,
+      "snippet": "add_action('wp_ajax_nopriv_sv_ai_background_diagnostic', array(__CLASS__, 'background_diagnostic'));"
+    },
+    {
+      "pattern": "BASE64_DECODE",
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-image-generator-runtime.php",
+      "line": 274,
+      "snippet": "$image_bytes = base64_decode((string) $image_base64, true);"
+    },
+    {
+      "pattern": "UNLINK_VAR",
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-image-generator-runtime.php",
+      "line": 334,
+      "snippet": "@unlink($temp_file);"
+    },
+    {
+      "pattern": "FILE_PUT_CONTENTS",
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-image-generator-runtime.php",
+      "line": 280,
+      "snippet": "if (file_put_contents($file_path, $image_bytes) === false) {"
+    },
+    {
+      "pattern": "BASE64_DECODE",
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-license-service.php",
+      "line": 726,
+      "snippet": "$decoded = base64_decode($encrypted_key, true);"
+    },
+    {
+      "pattern": "SQL_RAW_VAR",
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-post-publisher.php",
+      "line": 267,
+      "snippet": "$latest = $wpdb->get_var(\"SELECT MAX(post_date) FROM {$wpdb->posts} WHERE post_status = 'future' AND post_type = 'post'\");"
+    }
+  ],
+  "ui_screens": [],
+  "softviet_brand_refs": [
+    {
+      "file": "softviet-ai-seo-writer/WORDPRESS-ORG-LITE-CHECKLIST.md",
+      "count": 7
+    },
+    {
+      "file": "softviet-ai-seo-writer/readme-public.txt",
+      "count": 7
+    },
+    {
+      "file": "softviet-ai-seo-writer/readme.txt",
+      "count": 17
+    },
+    {
+      "file": "softviet-ai-seo-writer/softviet-ai-seo-writer.php",
+      "count": 14
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "count": 31
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-license-server-admin.php",
+      "count": 7
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/assets/admin.js",
+      "count": 2
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/license-client.php",
+      "count": 16
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/products.php",
+      "count": 2
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/schedule.php",
+      "count": 3
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/settings.php",
+      "count": 8
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/views/upgrade.php",
+      "count": 1
+    },
+    {
+      "file": "softviet-ai-seo-writer/docs/chatgpt-oauth.md",
+      "count": 3
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php",
+      "count": 1
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php",
+      "count": 22
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-keyword-audit-service.php",
+      "count": 1
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-keyword-service.php",
+      "count": 7
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-post-rewrite-publisher.php",
+      "count": 1
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-product-publisher.php",
+      "count": 3
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-updater.php",
+      "count": 15
+    },
+    {
+      "file": "softviet-ai-seo-writer/languages/softviet-ai-seo-writer-vi.po",
+      "count": 1
+    }
+  ]
+}

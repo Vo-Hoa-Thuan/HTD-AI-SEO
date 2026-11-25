@@ -1,0 +1,9 @@
+TARGET,TYPE,MUTATION,SOURCE,RISK
+wp_sv_ai_keywords,CUSTOM_TABLE,CREATE/UPDATE/DELETE,"class-sv-ai-db.php, class-sv-ai-keyword-service.php",LOW
+wp_sv_ai_logs,CUSTOM_TABLE,CREATE,class-sv-ai-db.php,LOW
+wp_sv_ai_daily_usage,CUSTOM_TABLE,CREATE/UPDATE,class-sv-ai-db.php,LOW
+"wp_posts (post, product, attachment)",WP_CORE_TABLE,CREATE/UPDATE/PUBLISH,"class-sv-ai-post-publisher.php, class-sv-ai-post-rewrite-publisher.php, class-sv-ai-product-publisher.php, class-sv-ai-image-generator-runtime.php",HIGH
+"wp_postmeta (Rank Math, Yoast, WC)",WP_CORE_TABLE,CREATE/UPDATE,"class-sv-ai-seo-meta.php, class-sv-ai-product-publisher.php",MEDIUM
+wp_options (sv_ai_*),WP_CORE_TABLE,CREATE/UPDATE/DELETE,"class-sv-ai-credential-store.php, class-sv-ai-content-generator.php, uninstall.php",MEDIUM
+External AI APIs,EXTERNAL_HTTP,EXTERNAL_TRANSMISSION,"class-sv-ai-openai-client.php, class-sv-ai-chatgpt-client.php, class-sv-ai-image-generator-runtime.php",MEDIUM
+SoftViet APIs (softviet.vn),EXTERNAL_HTTP,EXTERNAL_TRANSMISSION,"class-sv-ai-content-generator.php, class-sv-ai-updater.php, class-sv-ai-cron.php",HIGH_EXCLUDED_IN_HTD

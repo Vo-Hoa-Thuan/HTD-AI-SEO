@@ -1,0 +1,3467 @@
+[
+  {
+    "UI_ID": "UI_0001",
+    "SCREEN": "chatgpt-connection",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/chatgpt-connection.php",
+    "SOURCE_LINE": 19,
+    "SNIPPET": "<p><button type=\"button\" class=\"button\" data-chatgpt-operation=\"start\" <?php disabled(!$is_pro); ?>><?php echo esc_html("
+  },
+  {
+    "UI_ID": "UI_0002",
+    "SCREEN": "chatgpt-connection",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "sv-ai-chatgpt-callback",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/chatgpt-connection.php",
+    "SOURCE_LINE": 28,
+    "SNIPPET": "<textarea id=\"sv-ai-chatgpt-callback\" class=\"large-text\" rows=\"3\" autocomplete=\"off\" spellcheck=\"false\" placeholder=\"htt"
+  },
+  {
+    "UI_ID": "UI_0003",
+    "SCREEN": "chatgpt-connection",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/chatgpt-connection.php",
+    "SOURCE_LINE": 29,
+    "SNIPPET": "<button type=\"button\" class=\"button button-secondary\" data-chatgpt-operation=\"complete\"><?php echo esc_html(SV_AI_I18N::"
+  },
+  {
+    "UI_ID": "UI_0004",
+    "SCREEN": "chatgpt-connection",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "sv-ai-chatgpt-model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/chatgpt-connection.php",
+    "SOURCE_LINE": 32,
+    "SNIPPET": "<select name=\"chatgpt_model\" id=\"sv-ai-chatgpt-model\">"
+  },
+  {
+    "UI_ID": "UI_0005",
+    "SCREEN": "chatgpt-connection",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/chatgpt-connection.php",
+    "SOURCE_LINE": 39,
+    "SNIPPET": "<button type=\"button\" class=\"button\" data-chatgpt-operation=\"models\" <?php disabled(!$is_pro); ?>><?php echo esc_html(SV"
+  },
+  {
+    "UI_ID": "UI_0006",
+    "SCREEN": "chatgpt-connection",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/chatgpt-connection.php",
+    "SOURCE_LINE": 40,
+    "SNIPPET": "<button type=\"button\" class=\"button\" data-chatgpt-operation=\"test\" <?php disabled(!$is_pro); ?>><?php echo esc_html(SV_A"
+  },
+  {
+    "UI_ID": "UI_0007",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 25,
+    "SNIPPET": "<table class=\"widefat striped\">"
+  },
+  {
+    "UI_ID": "UI_0008",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 70,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" style=\"display:inline-block;margin:0 0 "
+  },
+  {
+    "UI_ID": "UI_0009",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 72,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_client_site_manage\">"
+  },
+  {
+    "UI_ID": "UI_0010",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "site_url",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 73,
+    "SNIPPET": "<input type=\"hidden\" name=\"site_url\" value=\"<?php echo esc_attr((string) ($site->site_url ?? '')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0011",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "manage_action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 74,
+    "SNIPPET": "<input type=\"hidden\" name=\"manage_action\" value=\"create_pro_license\">"
+  },
+  {
+    "UI_ID": "UI_0012",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 77,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" style=\"display:inline-block;margin:0 0 "
+  },
+  {
+    "UI_ID": "UI_0013",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 79,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_client_site_manage\">"
+  },
+  {
+    "UI_ID": "UI_0014",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "site_url",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 80,
+    "SNIPPET": "<input type=\"hidden\" name=\"site_url\" value=\"<?php echo esc_attr((string) ($site->site_url ?? '')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0015",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "manage_action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 81,
+    "SNIPPET": "<input type=\"hidden\" name=\"manage_action\" value=\"mark_pro\">"
+  },
+  {
+    "UI_ID": "UI_0016",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 84,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" style=\"display:inline-block;margin:0 0 "
+  },
+  {
+    "UI_ID": "UI_0017",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 86,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_client_site_manage\">"
+  },
+  {
+    "UI_ID": "UI_0018",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "site_url",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 87,
+    "SNIPPET": "<input type=\"hidden\" name=\"site_url\" value=\"<?php echo esc_attr((string) ($site->site_url ?? '')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0019",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "manage_action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 88,
+    "SNIPPET": "<input type=\"hidden\" name=\"manage_action\" value=\"opt_out\">"
+  },
+  {
+    "UI_ID": "UI_0020",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 91,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" style=\"display:inline-block;margin:0;\">"
+  },
+  {
+    "UI_ID": "UI_0021",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 93,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_client_site_manage\">"
+  },
+  {
+    "UI_ID": "UI_0022",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "site_url",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 94,
+    "SNIPPET": "<input type=\"hidden\" name=\"site_url\" value=\"<?php echo esc_attr((string) ($site->site_url ?? '')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0023",
+    "SCREEN": "free-clients",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "manage_action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/free-clients.php",
+    "SOURCE_LINE": 95,
+    "SNIPPET": "<input type=\"hidden\" name=\"manage_action\" value=\"mark_free\">"
+  },
+  {
+    "UI_ID": "UI_0024",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 31,
+    "SNIPPET": "<form method=\"get\" class=\"sv-ai-keyword-filters sv-ai-card\" style=\"max-width:none;\">"
+  },
+  {
+    "UI_ID": "UI_0025",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "page",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 32,
+    "SNIPPET": "<input type=\"hidden\" name=\"page\" value=\"sv-ai-keyword-audit\">"
+  },
+  {
+    "UI_ID": "UI_0026",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "audit_q",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 33,
+    "SNIPPET": "<input type=\"search\" name=\"audit_q\" value=\"<?php echo esc_attr($audit_args['q'] ?? ''); ?>\" placeholder=\"<?php echo esc_"
+  },
+  {
+    "UI_ID": "UI_0027",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "audit_post_type",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 34,
+    "SNIPPET": "<select name=\"audit_post_type\">"
+  },
+  {
+    "UI_ID": "UI_0028",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "audit_status",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 39,
+    "SNIPPET": "<select name=\"audit_status\">"
+  },
+  {
+    "UI_ID": "UI_0029",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "audit_severity",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 44,
+    "SNIPPET": "<select name=\"audit_severity\">"
+  },
+  {
+    "UI_ID": "UI_0030",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "audit_source",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 50,
+    "SNIPPET": "<select name=\"audit_source\">"
+  },
+  {
+    "UI_ID": "UI_0031",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "include_inferred",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 56,
+    "SNIPPET": "<label class=\"sv-ai-audit-check\"><input type=\"checkbox\" name=\"include_inferred\" value=\"1\" <?php checked(!empty($audit_ar"
+  },
+  {
+    "UI_ID": "UI_0032",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 61,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" class=\"sv-ai-audit-rescan\">"
+  },
+  {
+    "UI_ID": "UI_0033",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 63,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_keyword_audit_rescan\">"
+  },
+  {
+    "UI_ID": "UI_0034",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "audit_post_type",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 64,
+    "SNIPPET": "<input type=\"hidden\" name=\"audit_post_type\" value=\"<?php echo esc_attr($audit_args['post_type'] ?? 'all'); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0035",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "audit_status",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 65,
+    "SNIPPET": "<input type=\"hidden\" name=\"audit_status\" value=\"<?php echo esc_attr($audit_args['post_status'] ?? 'publish'); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0036",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "audit_severity",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 66,
+    "SNIPPET": "<input type=\"hidden\" name=\"audit_severity\" value=\"<?php echo esc_attr($audit_args['severity'] ?? 'all'); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0037",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "audit_source",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 67,
+    "SNIPPET": "<input type=\"hidden\" name=\"audit_source\" value=\"<?php echo esc_attr($audit_args['source'] ?? 'all'); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0038",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "audit_q",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 68,
+    "SNIPPET": "<input type=\"hidden\" name=\"audit_q\" value=\"<?php echo esc_attr($audit_args['q'] ?? ''); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0039",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "include_inferred",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 69,
+    "SNIPPET": "<?php if (!empty($audit_args['include_inferred'])) : ?><input type=\"hidden\" name=\"include_inferred\" value=\"1\"><?php endi"
+  },
+  {
+    "UI_ID": "UI_0040",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 88,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0041",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 90,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_keyword_audit_apply\">"
+  },
+  {
+    "UI_ID": "UI_0042",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "audit_post_type",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 91,
+    "SNIPPET": "<input type=\"hidden\" name=\"audit_post_type\" value=\"<?php echo esc_attr($audit_args['post_type'] ?? 'all'); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0043",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "audit_status",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 92,
+    "SNIPPET": "<input type=\"hidden\" name=\"audit_status\" value=\"<?php echo esc_attr($audit_args['post_status'] ?? 'publish'); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0044",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "audit_severity",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 93,
+    "SNIPPET": "<input type=\"hidden\" name=\"audit_severity\" value=\"<?php echo esc_attr($audit_args['severity'] ?? 'all'); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0045",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "audit_source",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 94,
+    "SNIPPET": "<input type=\"hidden\" name=\"audit_source\" value=\"<?php echo esc_attr($audit_args['source'] ?? 'all'); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0046",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "audit_q",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 95,
+    "SNIPPET": "<input type=\"hidden\" name=\"audit_q\" value=\"<?php echo esc_attr($audit_args['q'] ?? ''); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0047",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "include_inferred",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 96,
+    "SNIPPET": "<?php if (!empty($audit_args['include_inferred'])) : ?><input type=\"hidden\" name=\"include_inferred\" value=\"1\"><?php endi"
+  },
+  {
+    "UI_ID": "UI_0048",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 98,
+    "SNIPPET": "<button type=\"submit\" class=\"button button-primary button-large\" onclick=\"return confirm('<?php echo esc_js(SV_AI_I18N::"
+  },
+  {
+    "UI_ID": "UI_0049",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 102,
+    "SNIPPET": "<table class=\"widefat striped sv-ai-audit-plan-table\">"
+  },
+  {
+    "UI_ID": "UI_0050",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 103,
+    "SNIPPET": "<thead><tr><td class=\"manage-column column-cb check-column\"><input type=\"checkbox\"></td><th><?php echo esc_html(SV_AI_I1"
+  },
+  {
+    "UI_ID": "UI_0051",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "audit_group_keys[]",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 108,
+    "SNIPPET": "<th scope=\"row\" class=\"check-column\"><input type=\"checkbox\" name=\"audit_group_keys[]\" value=\"<?php echo esc_attr($group_"
+  },
+  {
+    "UI_ID": "UI_0052",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "audit_actions[<?php echo esc_attr($group_key); ?>][]",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 126,
+    "SNIPPET": "<label class=\"sv-ai-audit-action-check\"><input type=\"checkbox\" name=\"audit_actions[<?php echo esc_attr($group_key); ?>]["
+  },
+  {
+    "UI_ID": "UI_0053",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "audit_actions[<?php echo esc_attr($group_key); ?>][]",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 128,
+    "SNIPPET": "<label class=\"sv-ai-audit-action-check\"><input type=\"checkbox\" name=\"audit_actions[<?php echo esc_attr($group_key); ?>]["
+  },
+  {
+    "UI_ID": "UI_0054",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 136,
+    "SNIPPET": "<button type=\"submit\" class=\"button button-primary button-large\" onclick=\"return confirm('<?php echo esc_js(SV_AI_I18N::"
+  },
+  {
+    "UI_ID": "UI_0055",
+    "SCREEN": "keyword-audit",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keyword-audit.php",
+    "SOURCE_LINE": 153,
+    "SNIPPET": "<table class=\"widefat striped sv-ai-audit-table\">"
+  },
+  {
+    "UI_ID": "UI_0056",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "sv-ai-analysis-mode",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 46,
+    "SNIPPET": "<select id=\"sv-ai-analysis-mode\">"
+  },
+  {
+    "UI_ID": "UI_0057",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "sv-ai-analysis-locations",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 59,
+    "SNIPPET": "<input type=\"text\" id=\"sv-ai-analysis-locations\" class=\"regular-text\" placeholder=\"<?php echo esc_attr(SV_AI_I18N::t('Ví"
+  },
+  {
+    "UI_ID": "UI_0058",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "sv-ai-seed-keywords",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 62,
+    "SNIPPET": "<textarea id=\"sv-ai-seed-keywords\" rows=\"4\" class=\"large-text\" placeholder=\"<?php echo esc_attr(SV_AI_I18N::t('Ví dụ: ph"
+  },
+  {
+    "UI_ID": "UI_0059",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "sv-ai-analyze-keywords",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 64,
+    "SNIPPET": "<button type=\"button\" class=\"button button-secondary\" id=\"sv-ai-analyze-keywords\"><?php echo esc_html(SV_AI_I18N::t('Phâ"
+  },
+  {
+    "UI_ID": "UI_0060",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 71,
+    "SNIPPET": "<table class=\"widefat striped\">"
+  },
+  {
+    "UI_ID": "UI_0061",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "sv-ai-accept-analysis",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 89,
+    "SNIPPET": "<button type=\"button\" class=\"button button-primary\" id=\"sv-ai-accept-analysis\"><?php echo esc_html(SV_AI_I18N::t('Đồng ý"
+  },
+  {
+    "UI_ID": "UI_0062",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "sv-ai-analysis-payload",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 91,
+    "SNIPPET": "<input type=\"hidden\" id=\"sv-ai-analysis-payload\" value=\"\">"
+  },
+  {
+    "UI_ID": "UI_0063",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 94,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" class=\"sv-ai-card\">"
+  },
+  {
+    "UI_ID": "UI_0064",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 96,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_add_keywords\">"
+  },
+  {
+    "UI_ID": "UI_0065",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "keywords",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 97,
+    "SNIPPET": "<textarea name=\"keywords\" rows=\"5\" class=\"large-text\" placeholder=\"Mỗi dòng là 1 bài viết. Ví dụ&#10;phần mềm quản lý in"
+  },
+  {
+    "UI_ID": "UI_0066",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 106,
+    "SNIPPET": "<form method=\"get\" class=\"sv-ai-keyword-filters sv-ai-card\" style=\"max-width:none;\">"
+  },
+  {
+    "UI_ID": "UI_0067",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "page",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 107,
+    "SNIPPET": "<input type=\"hidden\" name=\"page\" value=\"sv-ai-keywords\">"
+  },
+  {
+    "UI_ID": "UI_0068",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "keyword_q",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 108,
+    "SNIPPET": "<input type=\"search\" name=\"keyword_q\" value=\"<?php echo esc_attr($keyword_filter_q ?? ''); ?>\" placeholder=\"<?php echo e"
+  },
+  {
+    "UI_ID": "UI_0069",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "keyword_status",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 109,
+    "SNIPPET": "<select name=\"keyword_status\">"
+  },
+  {
+    "UI_ID": "UI_0070",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "keyword_has_post",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 115,
+    "SNIPPET": "<select name=\"keyword_has_post\">"
+  },
+  {
+    "UI_ID": "UI_0071",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "keyword_has_error",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 120,
+    "SNIPPET": "<select name=\"keyword_has_error\">"
+  },
+  {
+    "UI_ID": "UI_0072",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "keyword_category",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 125,
+    "SNIPPET": "<select name=\"keyword_category\">"
+  },
+  {
+    "UI_ID": "UI_0073",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "keyword_per_page",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 133,
+    "SNIPPET": "<select name=\"keyword_per_page\">"
+  },
+  {
+    "UI_ID": "UI_0074",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 142,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0075",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 144,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_keywords_bulk_action\">"
+  },
+  {
+    "UI_ID": "UI_0076",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "bulk_action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 147,
+    "SNIPPET": "<select name=\"bulk_action\">"
+  },
+  {
+    "UI_ID": "UI_0077",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 176,
+    "SNIPPET": "<button type=\"button\" class=\"button sv-ai-toggle-keyword-columns\" aria-expanded=\"false\">"
+  },
+  {
+    "UI_ID": "UI_0078",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 181,
+    "SNIPPET": "<table class=\"widefat striped sv-ai-keywords-table\">"
+  },
+  {
+    "UI_ID": "UI_0079",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "sv-ai-check-all",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 182,
+    "SNIPPET": "<thead><tr><td class=\"manage-column column-cb check-column\"><input type=\"checkbox\" id=\"sv-ai-check-all\"></td><th>ID</th>"
+  },
+  {
+    "UI_ID": "UI_0080",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "keyword_ids[]",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 201,
+    "SNIPPET": "<th scope=\"row\" class=\"check-column\"><input type=\"checkbox\" name=\"keyword_ids[]\" value=\"<?php echo esc_attr($row->id); ?"
+  },
+  {
+    "UI_ID": "UI_0081",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "sv-ai-title-<?php echo esc_attr((int) $row->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 207,
+    "SNIPPET": "<input id=\"sv-ai-title-<?php echo esc_attr((int) $row->id); ?>\" type=\"text\" class=\"regular-text sv-ai-keyword-title-inpu"
+  },
+  {
+    "UI_ID": "UI_0082",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "<?php echo esc_attr((int) $row->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 209,
+    "SNIPPET": "<button type=\"button\" class=\"button sv-ai-save-keyword-title\" data-keyword-id=\"<?php echo esc_attr((int) $row->id); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0083",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "<?php echo esc_attr($row->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 238,
+    "SNIPPET": "<input type=\"hidden\" class=\"sv-ai-category-ids-input\" data-keyword-id=\"<?php echo esc_attr($row->id); ?>\" value=\"<?php e"
+  },
+  {
+    "UI_ID": "UI_0084",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 239,
+    "SNIPPET": "<select class=\"sv-ai-category-select\" multiple size=\"6\">"
+  },
+  {
+    "UI_ID": "UI_0085",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 260,
+    "SNIPPET": "<button type=\"button\" class=\"button sv-ai-select-all-categories\"><?php echo esc_html(SV_AI_I18N::t('Chọn hết', 'Select a"
+  },
+  {
+    "UI_ID": "UI_0086",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 261,
+    "SNIPPET": "<button type=\"button\" class=\"button sv-ai-clear-categories\"><?php echo esc_html(SV_AI_I18N::t('Bỏ chọn', 'Clear', '清空'))"
+  },
+  {
+    "UI_ID": "UI_0087",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "<?php echo esc_attr($row->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 262,
+    "SNIPPET": "<button type=\"button\" class=\"button sv-ai-save-categories\" data-keyword-id=\"<?php echo esc_attr($row->id); ?>\"><?php ech"
+  },
+  {
+    "UI_ID": "UI_0088",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "<?php echo esc_attr($row->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 267,
+    "SNIPPET": "<input type=\"hidden\" class=\"sv-ai-selected-images-input\" data-keyword-id=\"<?php echo esc_attr($row->id); ?>\" value=\"<?ph"
+  },
+  {
+    "UI_ID": "UI_0089",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 276,
+    "SNIPPET": "<button type=\"button\" class=\"sv-ai-remove-queue-image\" aria-label=\"<?php echo esc_attr(SV_AI_I18N::t('Xóa ảnh này', 'Rem"
+  },
+  {
+    "UI_ID": "UI_0090",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "<?php echo esc_attr($row->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 283,
+    "SNIPPET": "<button type=\"button\" class=\"button sv-ai-select-queue-images\" data-keyword-id=\"<?php echo esc_attr($row->id); ?>\"><?php"
+  },
+  {
+    "UI_ID": "UI_0091",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "<?php echo esc_attr($row->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 284,
+    "SNIPPET": "<button type=\"button\" class=\"button sv-ai-clear-queue-images\" data-keyword-id=\"<?php echo esc_attr($row->id); ?>\"><?php "
+  },
+  {
+    "UI_ID": "UI_0092",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "<?php echo esc_attr($row->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 285,
+    "SNIPPET": "<button type=\"button\" class=\"button sv-ai-save-images\" data-keyword-id=\"<?php echo esc_attr($row->id); ?>\"><?php echo es"
+  },
+  {
+    "UI_ID": "UI_0093",
+    "SCREEN": "keywords",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "<?php echo esc_attr($row->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/keywords.php",
+    "SOURCE_LINE": 313,
+    "SNIPPET": "<button type=\"button\" class=\"button button-primary sv-ai-generate\" data-id=\"<?php echo esc_attr($row->id); ?>\"><?php ech"
+  },
+  {
+    "UI_ID": "UI_0094",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "sv-ai-open-payment-dialog",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 20,
+    "SNIPPET": "<button type=\"button\" class=\"button button-primary\" id=\"sv-ai-open-payment-dialog\"><?php echo esc_html(SV_AI_I18N::t('Mu"
+  },
+  {
+    "UI_ID": "UI_0095",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 27,
+    "SNIPPET": "<table class=\"widefat striped\" style=\"margin-bottom:12px;\">"
+  },
+  {
+    "UI_ID": "UI_0096",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 38,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" style=\"margin:0;\">"
+  },
+  {
+    "UI_ID": "UI_0097",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 40,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_report_license_payment\">"
+  },
+  {
+    "UI_ID": "UI_0098",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "sv-ai-close-payment-dialog",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 43,
+    "SNIPPET": "<button type=\"button\" class=\"button\" id=\"sv-ai-close-payment-dialog\"><?php echo esc_html(SV_AI_I18N::t('Đóng', 'Close', "
+  },
+  {
+    "UI_ID": "UI_0099",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 47,
+    "SNIPPET": "<form class=\"sv-ai-license-action-form\" method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" style"
+  },
+  {
+    "UI_ID": "UI_0100",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 49,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_sync_domain_license\">"
+  },
+  {
+    "UI_ID": "UI_0101",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 54,
+    "SNIPPET": "<form class=\"sv-ai-license-activate-form\" method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0102",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 56,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_activate_client_license\">"
+  },
+  {
+    "UI_ID": "UI_0103",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 57,
+    "SNIPPET": "<table class=\"form-table\" role=\"presentation\">"
+  },
+  {
+    "UI_ID": "UI_0104",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "license_key",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 60,
+    "SNIPPET": "<td><input type=\"text\" class=\"regular-text\" name=\"license_key\" value=\"<?php echo esc_attr($settings['license_key'] ?? ''"
+  },
+  {
+    "UI_ID": "UI_0105",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "customer_email",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 64,
+    "SNIPPET": "<td><input type=\"email\" class=\"regular-text\" name=\"customer_email\" value=\"<?php echo esc_attr($settings['license_custome"
+  },
+  {
+    "UI_ID": "UI_0106",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "customer_phone",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 68,
+    "SNIPPET": "<td><input type=\"text\" class=\"regular-text\" name=\"customer_phone\" value=\"<?php echo esc_attr($settings['license_customer"
+  },
+  {
+    "UI_ID": "UI_0107",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 74,
+    "SNIPPET": "<form class=\"sv-ai-license-action-form\" method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0108",
+    "SCREEN": "license-client",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-client.php",
+    "SOURCE_LINE": 76,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_deactivate_client_license\">"
+  },
+  {
+    "UI_ID": "UI_0109",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 99,
+    "SNIPPET": "<textarea readonly rows=\"6\" class=\"large-text\"><?php echo esc_textarea(implode(\"\\n\", array_map('strval', $created_keys))"
+  },
+  {
+    "UI_ID": "UI_0110",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 103,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0111",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 105,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_create_license\">"
+  },
+  {
+    "UI_ID": "UI_0112",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 106,
+    "SNIPPET": "<table class=\"form-table\" role=\"presentation\">"
+  },
+  {
+    "UI_ID": "UI_0113",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "customer_name",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 107,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Khách hàng', 'Customer', '客户')); ?></th><td><input type=\"text\" class=\"regular"
+  },
+  {
+    "UI_ID": "UI_0114",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "customer_email",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 108,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Email', 'Email', '邮箱')); ?></th><td><input type=\"email\" class=\"regular-text\" "
+  },
+  {
+    "UI_ID": "UI_0115",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "customer_phone",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 109,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Số điện thoại', 'Phone number', '电话号码')); ?></th><td><input type=\"text\" class"
+  },
+  {
+    "UI_ID": "UI_0116",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "plan",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 110,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Gói', 'Plan', '套餐')); ?></th><td><select name=\"plan\"><option value=\"max\">MAX<"
+  },
+  {
+    "UI_ID": "UI_0117",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "duration_type",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 111,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Loại key theo thời hạn', 'Key duration type', 'Key 时长类型')); ?></th><td><selec"
+  },
+  {
+    "UI_ID": "UI_0118",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "quantity",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 112,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Số lượng key', 'Number of keys', 'Key 数量')); ?></th><td><input type=\"number\" "
+  },
+  {
+    "UI_ID": "UI_0119",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "notes",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 113,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Ghi chú', 'Notes', '备注')); ?></th><td><textarea class=\"large-text\" rows=\"3\" n"
+  },
+  {
+    "UI_ID": "UI_0120",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 129,
+    "SNIPPET": "<form method=\"get\" class=\"sv-ai-license-filters\">"
+  },
+  {
+    "UI_ID": "UI_0121",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "page",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 130,
+    "SNIPPET": "<input type=\"hidden\" name=\"page\" value=\"sv-ai-license\">"
+  },
+  {
+    "UI_ID": "UI_0122",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "license_q",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 131,
+    "SNIPPET": "<input type=\"search\" name=\"license_q\" value=\"<?php echo esc_attr($license_filter_q); ?>\" placeholder=\"<?php echo esc_att"
+  },
+  {
+    "UI_ID": "UI_0123",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "license_plan",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 132,
+    "SNIPPET": "<select name=\"license_plan\">"
+  },
+  {
+    "UI_ID": "UI_0124",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "license_status",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 138,
+    "SNIPPET": "<select name=\"license_status\">"
+  },
+  {
+    "UI_ID": "UI_0125",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "license_duration",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 144,
+    "SNIPPET": "<select name=\"license_duration\">"
+  },
+  {
+    "UI_ID": "UI_0126",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "license_sent",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 150,
+    "SNIPPET": "<select name=\"license_sent\">"
+  },
+  {
+    "UI_ID": "UI_0127",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 210,
+    "SNIPPET": "<table class=\"widefat striped sv-ai-license-table\">"
+  },
+  {
+    "UI_ID": "UI_0128",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "<?php echo esc_attr((int) $license->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 238,
+    "SNIPPET": "<button type=\"button\" class=\"button button-small sv-ai-copy-license\" data-license-id=\"<?php echo esc_attr((int) $license"
+  },
+  {
+    "UI_ID": "UI_0129",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 242,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" style=\"margin-top:6px;\">"
+  },
+  {
+    "UI_ID": "UI_0130",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 244,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_license_manage\">"
+  },
+  {
+    "UI_ID": "UI_0131",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "license_id",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 245,
+    "SNIPPET": "<input type=\"hidden\" name=\"license_id\" value=\"<?php echo esc_attr((int) $license->id); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0132",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "manage_action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 246,
+    "SNIPPET": "<input type=\"hidden\" name=\"manage_action\" value=\"regenerate_key\">"
+  },
+  {
+    "UI_ID": "UI_0133",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 270,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" style=\"display:inline-block;margin:0 0 "
+  },
+  {
+    "UI_ID": "UI_0134",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 272,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_license_manage\">"
+  },
+  {
+    "UI_ID": "UI_0135",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "license_id",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 273,
+    "SNIPPET": "<input type=\"hidden\" name=\"license_id\" value=\"<?php echo esc_attr((int) $license->id); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0136",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "manage_action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 274,
+    "SNIPPET": "<input type=\"hidden\" name=\"manage_action\" value=\"revoke\">"
+  },
+  {
+    "UI_ID": "UI_0137",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 277,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" style=\"margin:0 0 6px;\">"
+  },
+  {
+    "UI_ID": "UI_0138",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 279,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_license_manage\">"
+  },
+  {
+    "UI_ID": "UI_0139",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "license_id",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 280,
+    "SNIPPET": "<input type=\"hidden\" name=\"license_id\" value=\"<?php echo esc_attr((int) $license->id); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0140",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "manage_action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 281,
+    "SNIPPET": "<input type=\"hidden\" name=\"manage_action\" value=\"renew\">"
+  },
+  {
+    "UI_ID": "UI_0141",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "expires_at",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 282,
+    "SNIPPET": "<input type=\"datetime-local\" name=\"expires_at\" value=\"<?php echo esc_attr($license->expires_at ? str_replace(' ', 'T', s"
+  },
+  {
+    "UI_ID": "UI_0142",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 285,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" style=\"margin:0;\">"
+  },
+  {
+    "UI_ID": "UI_0143",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 287,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_license_manage\">"
+  },
+  {
+    "UI_ID": "UI_0144",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "license_id",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 288,
+    "SNIPPET": "<input type=\"hidden\" name=\"license_id\" value=\"<?php echo esc_attr((int) $license->id); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0145",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "manage_action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 289,
+    "SNIPPET": "<input type=\"hidden\" name=\"manage_action\" value=\"change_plan\">"
+  },
+  {
+    "UI_ID": "UI_0146",
+    "SCREEN": "license-server",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "plan",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/license-server.php",
+    "SOURCE_LINE": 290,
+    "SNIPPET": "<select name=\"plan\">"
+  },
+  {
+    "UI_ID": "UI_0147",
+    "SCREEN": "logs",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/logs.php",
+    "SOURCE_LINE": 4,
+    "SNIPPET": "<form method=\"get\">"
+  },
+  {
+    "UI_ID": "UI_0148",
+    "SCREEN": "logs",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "page",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/logs.php",
+    "SOURCE_LINE": 5,
+    "SNIPPET": "<input type=\"hidden\" name=\"page\" value=\"sv-ai-logs\">"
+  },
+  {
+    "UI_ID": "UI_0149",
+    "SCREEN": "logs",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "keyword_id",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/logs.php",
+    "SOURCE_LINE": 6,
+    "SNIPPET": "<input type=\"number\" name=\"keyword_id\" placeholder=\"<?php echo esc_attr(SV_AI_I18N::t('Keyword ID', 'Keyword ID', '关键词 I"
+  },
+  {
+    "UI_ID": "UI_0150",
+    "SCREEN": "logs",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action_filter",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/logs.php",
+    "SOURCE_LINE": 7,
+    "SNIPPET": "<input type=\"text\" name=\"action_filter\" placeholder=\"<?php echo esc_attr(SV_AI_I18N::t('Hành động', 'Action', '动作')); ?>"
+  },
+  {
+    "UI_ID": "UI_0151",
+    "SCREEN": "logs",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "status_filter",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/logs.php",
+    "SOURCE_LINE": 8,
+    "SNIPPET": "<select name=\"status_filter\"><option value=\"\"><?php echo esc_html(SV_AI_I18N::t('Tất cả trạng thái', 'All statuses', '所有"
+  },
+  {
+    "UI_ID": "UI_0152",
+    "SCREEN": "logs",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/logs.php",
+    "SOURCE_LINE": 11,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0153",
+    "SCREEN": "logs",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/logs.php",
+    "SOURCE_LINE": 12,
+    "SNIPPET": "<?php wp_nonce_field('sv_ai_clear_logs'); ?><input type=\"hidden\" name=\"action\" value=\"sv_ai_clear_logs\"><?php submit_but"
+  },
+  {
+    "UI_ID": "UI_0154",
+    "SCREEN": "logs",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/logs.php",
+    "SOURCE_LINE": 14,
+    "SNIPPET": "<table class=\"widefat striped\">"
+  },
+  {
+    "UI_ID": "UI_0155",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 23,
+    "SNIPPET": "<form method=\"get\" class=\"sv-ai-keyword-filters sv-ai-card\" style=\"max-width:none;\">"
+  },
+  {
+    "UI_ID": "UI_0156",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "page",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 24,
+    "SNIPPET": "<input type=\"hidden\" name=\"page\" value=\"sv-ai-products\">"
+  },
+  {
+    "UI_ID": "UI_0157",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "product_q",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 25,
+    "SNIPPET": "<input type=\"search\" name=\"product_q\" value=\"<?php echo esc_attr($product_filter_q ?? ''); ?>\" placeholder=\"<?php echo e"
+  },
+  {
+    "UI_ID": "UI_0158",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "product_status",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 26,
+    "SNIPPET": "<select name=\"product_status\">"
+  },
+  {
+    "UI_ID": "UI_0159",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "product_cat",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 32,
+    "SNIPPET": "<select name=\"product_cat\">"
+  },
+  {
+    "UI_ID": "UI_0160",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "content_target",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 38,
+    "SNIPPET": "<select name=\"content_target\">"
+  },
+  {
+    "UI_ID": "UI_0161",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "min_words",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 43,
+    "SNIPPET": "<input type=\"number\" name=\"min_words\" value=\"<?php echo esc_attr((int) ($product_min_words ?? 120)); ?>\" min=\"20\" max=\"1"
+  },
+  {
+    "UI_ID": "UI_0162",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 50,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0163",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 52,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_add_product_names\">"
+  },
+  {
+    "UI_ID": "UI_0164",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "min_words",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 53,
+    "SNIPPET": "<input type=\"hidden\" name=\"min_words\" value=\"<?php echo esc_attr((int) ($product_min_words ?? 120)); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0165",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "product_names",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 55,
+    "SNIPPET": "<textarea name=\"product_names\" rows=\"6\" class=\"large-text\" placeholder=\"<?php echo esc_attr(SV_AI_I18N::t(\"Mỗi dòng là m"
+  },
+  {
+    "UI_ID": "UI_0166",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "content_target",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 59,
+    "SNIPPET": "<select name=\"content_target\">"
+  },
+  {
+    "UI_ID": "UI_0167",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "image_mode",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 66,
+    "SNIPPET": "<select name=\"image_mode\">"
+  },
+  {
+    "UI_ID": "UI_0168",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 79,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0169",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 81,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_products_bulk_action\">"
+  },
+  {
+    "UI_ID": "UI_0170",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "min_words",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 82,
+    "SNIPPET": "<input type=\"hidden\" name=\"min_words\" value=\"<?php echo esc_attr((int) ($product_min_words ?? 120)); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0171",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "content_target",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 83,
+    "SNIPPET": "<input type=\"hidden\" name=\"content_target\" value=\"<?php echo esc_attr($product_content_target ?? 'long'); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0172",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "bulk_action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 86,
+    "SNIPPET": "<select name=\"bulk_action\">"
+  },
+  {
+    "UI_ID": "UI_0173",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 92,
+    "SNIPPET": "<table class=\"widefat striped\">"
+  },
+  {
+    "UI_ID": "UI_0174",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 93,
+    "SNIPPET": "<thead><tr><td class=\"manage-column column-cb check-column\"><input type=\"checkbox\"></td><th>ID</th><th><?php echo esc_ht"
+  },
+  {
+    "UI_ID": "UI_0175",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "product_ids[]",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 101,
+    "SNIPPET": "<th scope=\"row\" class=\"check-column\"><input type=\"checkbox\" name=\"product_ids[]\" value=\"<?php echo esc_attr((int) $produ"
+  },
+  {
+    "UI_ID": "UI_0176",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 121,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0177",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 123,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_products_bulk_action\">"
+  },
+  {
+    "UI_ID": "UI_0178",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "bulk_action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 126,
+    "SNIPPET": "<select name=\"bulk_action\">"
+  },
+  {
+    "UI_ID": "UI_0179",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 137,
+    "SNIPPET": "<table class=\"widefat striped\">"
+  },
+  {
+    "UI_ID": "UI_0180",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 138,
+    "SNIPPET": "<thead><tr><td class=\"manage-column column-cb check-column\"><input type=\"checkbox\"></td><th>ID</th><th><?php echo esc_ht"
+  },
+  {
+    "UI_ID": "UI_0181",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "queue_ids[]",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 148,
+    "SNIPPET": "<th scope=\"row\" class=\"check-column\"><input type=\"checkbox\" name=\"queue_ids[]\" value=\"<?php echo esc_attr((int) $row->id"
+  },
+  {
+    "UI_ID": "UI_0182",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "<?php echo esc_attr((int) $row->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 154,
+    "SNIPPET": "<input type=\"hidden\" class=\"sv-ai-selected-images-input\" data-keyword-id=\"<?php echo esc_attr((int) $row->id); ?>\" value"
+  },
+  {
+    "UI_ID": "UI_0183",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 160,
+    "SNIPPET": "<button type=\"button\" class=\"sv-ai-remove-queue-image\" aria-label=\"<?php echo esc_attr(SV_AI_I18N::t('Xóa ảnh này', 'Rem"
+  },
+  {
+    "UI_ID": "UI_0184",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "<?php echo esc_attr((int) $row->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 166,
+    "SNIPPET": "<button type=\"button\" class=\"button sv-ai-select-queue-images\" data-keyword-id=\"<?php echo esc_attr((int) $row->id); ?>\""
+  },
+  {
+    "UI_ID": "UI_0185",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "<?php echo esc_attr((int) $row->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 167,
+    "SNIPPET": "<button type=\"button\" class=\"button sv-ai-clear-queue-images\" data-keyword-id=\"<?php echo esc_attr((int) $row->id); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0186",
+    "SCREEN": "products",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "<?php echo esc_attr((int) $row->id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/products.php",
+    "SOURCE_LINE": 168,
+    "SNIPPET": "<button type=\"button\" class=\"button sv-ai-save-images\" data-keyword-id=\"<?php echo esc_attr((int) $row->id); ?>\"><?php e"
+  },
+  {
+    "UI_ID": "UI_0187",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 28,
+    "SNIPPET": "<form method=\"get\" class=\"sv-ai-keyword-filters sv-ai-card\" style=\"max-width:none;\">"
+  },
+  {
+    "UI_ID": "UI_0188",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "page",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 29,
+    "SNIPPET": "<input type=\"hidden\" name=\"page\" value=\"sv-ai-rewrite-posts\">"
+  },
+  {
+    "UI_ID": "UI_0189",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "rewrite_q",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 30,
+    "SNIPPET": "<input type=\"search\" name=\"rewrite_q\" value=\"<?php echo esc_attr($rewrite_filter_q ?? ''); ?>\" placeholder=\"<?php echo e"
+  },
+  {
+    "UI_ID": "UI_0190",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "rewrite_status",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 31,
+    "SNIPPET": "<select name=\"rewrite_status\">"
+  },
+  {
+    "UI_ID": "UI_0191",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "rewrite_cat",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 36,
+    "SNIPPET": "<select name=\"rewrite_cat\">"
+  },
+  {
+    "UI_ID": "UI_0192",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "min_score",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 42,
+    "SNIPPET": "<label><?php echo esc_html(SV_AI_I18N::t('Điểm dưới', 'Score under', '分数低于')); ?> <input type=\"number\" name=\"min_score\" "
+  },
+  {
+    "UI_ID": "UI_0193",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "min_words",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 43,
+    "SNIPPET": "<label><?php echo esc_html(SV_AI_I18N::t('Từ dưới', 'Words under', '字数低于')); ?> <input type=\"number\" name=\"min_words\" va"
+  },
+  {
+    "UI_ID": "UI_0194",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "output_mode",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 44,
+    "SNIPPET": "<select name=\"output_mode\">"
+  },
+  {
+    "UI_ID": "UI_0195",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 53,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0196",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 55,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_rewrite_bulk_action\">"
+  },
+  {
+    "UI_ID": "UI_0197",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "min_words",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 56,
+    "SNIPPET": "<input type=\"hidden\" name=\"min_words\" value=\"<?php echo esc_attr((int) ($rewrite_min_words ?? 800)); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0198",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "min_score",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 57,
+    "SNIPPET": "<input type=\"hidden\" name=\"min_score\" value=\"<?php echo esc_attr((int) ($rewrite_min_score ?? 70)); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0199",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "output_mode",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 58,
+    "SNIPPET": "<input type=\"hidden\" name=\"output_mode\" value=\"<?php echo esc_attr($rewrite_output_mode ?? 'draft_copy'); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0200",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "bulk_action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 61,
+    "SNIPPET": "<select name=\"bulk_action\">"
+  },
+  {
+    "UI_ID": "UI_0201",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 67,
+    "SNIPPET": "<table class=\"widefat striped\">"
+  },
+  {
+    "UI_ID": "UI_0202",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 68,
+    "SNIPPET": "<thead><tr><td class=\"manage-column column-cb check-column\"><input type=\"checkbox\"></td><th>ID</th><th><?php echo esc_ht"
+  },
+  {
+    "UI_ID": "UI_0203",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "post_ids[]",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 76,
+    "SNIPPET": "<th scope=\"row\" class=\"check-column\"><input type=\"checkbox\" name=\"post_ids[]\" value=\"<?php echo esc_attr((int) $post->ID"
+  },
+  {
+    "UI_ID": "UI_0204",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 100,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0205",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 102,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_rewrite_bulk_action\">"
+  },
+  {
+    "UI_ID": "UI_0206",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "bulk_action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 105,
+    "SNIPPET": "<select name=\"bulk_action\">"
+  },
+  {
+    "UI_ID": "UI_0207",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 116,
+    "SNIPPET": "<table class=\"widefat striped\">"
+  },
+  {
+    "UI_ID": "UI_0208",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 117,
+    "SNIPPET": "<thead><tr><td class=\"manage-column column-cb check-column\"><input type=\"checkbox\"></td><th>ID</th><th><?php echo esc_ht"
+  },
+  {
+    "UI_ID": "UI_0209",
+    "SCREEN": "rewrite-posts",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "queue_ids[]",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/rewrite-posts.php",
+    "SOURCE_LINE": 125,
+    "SNIPPET": "<th scope=\"row\" class=\"check-column\"><input type=\"checkbox\" name=\"queue_ids[]\" value=\"<?php echo esc_attr((int) $row->id"
+  },
+  {
+    "UI_ID": "UI_0210",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 50,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0211",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 52,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_save_settings\">"
+  },
+  {
+    "UI_ID": "UI_0212",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "api_key",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 53,
+    "SNIPPET": "<input type=\"hidden\" name=\"api_key\" value=\"\">"
+  },
+  {
+    "UI_ID": "UI_0213",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 54,
+    "SNIPPET": "<input type=\"hidden\" name=\"model\" value=\"<?php echo esc_attr($settings['model']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0214",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "word_count",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 55,
+    "SNIPPET": "<input type=\"hidden\" name=\"word_count\" value=\"<?php echo esc_attr($settings['word_count']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0215",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "language",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 56,
+    "SNIPPET": "<input type=\"hidden\" name=\"language\" value=\"<?php echo esc_attr($settings['language']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0216",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "ui_language",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 57,
+    "SNIPPET": "<input type=\"hidden\" name=\"ui_language\" value=\"<?php echo esc_attr($settings['ui_language'] ?? 'site'); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0217",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "default_category_ids[]",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 60,
+    "SNIPPET": "<input type=\"hidden\" name=\"default_category_ids[]\" value=\"<?php echo esc_attr((int) $default_category_id); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0218",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_source_mode",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 63,
+    "SNIPPET": "<input type=\"hidden\" name=\"image_source_mode\" value=\"<?php echo esc_attr($settings['image_source_mode']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0219",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_ai_provider",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 64,
+    "SNIPPET": "<input type=\"hidden\" name=\"image_ai_provider\" value=\"<?php echo esc_attr($settings['image_ai_provider']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0220",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_api_key",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 65,
+    "SNIPPET": "<input type=\"hidden\" name=\"image_api_key\" value=\"<?php echo esc_attr(SV_AI_Admin_Menu::masked_api_key($settings['image_a"
+  },
+  {
+    "UI_ID": "UI_0221",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 66,
+    "SNIPPET": "<input type=\"hidden\" name=\"image_model\" value=\"<?php echo esc_attr($settings['image_model']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0222",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_generation_size",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 67,
+    "SNIPPET": "<input type=\"hidden\" name=\"image_generation_size\" value=\"<?php echo esc_attr($settings['image_generation_size']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0223",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_generation_quality",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 68,
+    "SNIPPET": "<input type=\"hidden\" name=\"image_generation_quality\" value=\"<?php echo esc_attr($settings['image_generation_quality']); "
+  },
+  {
+    "UI_ID": "UI_0224",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_style_preset",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 69,
+    "SNIPPET": "<input type=\"hidden\" name=\"image_style_preset\" value=\"<?php echo esc_attr($settings['image_style_preset']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0225",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_negative_prompt",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 70,
+    "SNIPPET": "<input type=\"hidden\" name=\"image_negative_prompt\" value=\"<?php echo esc_attr($settings['image_negative_prompt']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0226",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_prompt_template",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 71,
+    "SNIPPET": "<input type=\"hidden\" name=\"image_prompt_template\" value=\"<?php echo esc_attr($settings['image_prompt_template']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0227",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_prompt_extra",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 72,
+    "SNIPPET": "<input type=\"hidden\" name=\"image_prompt_extra\" value=\"<?php echo esc_attr($settings['image_prompt_extra'] ?? ''); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0228",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_count",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 73,
+    "SNIPPET": "<input type=\"hidden\" name=\"image_count\" value=\"<?php echo esc_attr($settings['image_count']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0229",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "media_image_ids",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 74,
+    "SNIPPET": "<input type=\"hidden\" name=\"media_image_ids\" value=\"<?php echo esc_attr(implode(',', array_map('absint', (array) $setting"
+  },
+  {
+    "UI_ID": "UI_0230",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "content_image_size",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 75,
+    "SNIPPET": "<input type=\"hidden\" name=\"content_image_size\" value=\"<?php echo esc_attr($settings['content_image_size']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0231",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_alignment",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 76,
+    "SNIPPET": "<input type=\"hidden\" name=\"image_alignment\" value=\"<?php echo esc_attr($settings['image_alignment']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0232",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "promo_image_id",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 77,
+    "SNIPPET": "<input type=\"hidden\" name=\"promo_image_id\" value=\"<?php echo esc_attr((int) $settings['promo_image_id']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0233",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "promo_image_url",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 78,
+    "SNIPPET": "<input type=\"hidden\" name=\"promo_image_url\" value=\"<?php echo esc_attr($settings['promo_image_url']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0234",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "set_featured_image",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 79,
+    "SNIPPET": "<input type=\"hidden\" name=\"set_featured_image\" value=\"<?php echo esc_attr($settings['set_featured_image']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0235",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "append_cta",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 80,
+    "SNIPPET": "<input type=\"hidden\" name=\"append_cta\" value=\"<?php echo esc_attr($settings['append_cta']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0236",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "hosting_compatibility_mode",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 81,
+    "SNIPPET": "<input type=\"hidden\" name=\"hosting_compatibility_mode\" value=\"<?php echo esc_attr((string) ($settings['hosting_compatibi"
+  },
+  {
+    "UI_ID": "UI_0237",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "internal_links",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 82,
+    "SNIPPET": "<input type=\"hidden\" name=\"internal_links\" value=\"<?php echo esc_attr($settings['internal_links']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0238",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "external_links_title",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 83,
+    "SNIPPET": "<input type=\"hidden\" name=\"external_links_title\" value=\"<?php echo esc_attr((string) ($settings['external_links_title'] "
+  },
+  {
+    "UI_ID": "UI_0239",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "external_links",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 84,
+    "SNIPPET": "<input type=\"hidden\" name=\"external_links\" value=\"<?php echo esc_attr($settings['external_links']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0240",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "brand_prompt",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 85,
+    "SNIPPET": "<input type=\"hidden\" name=\"brand_prompt\" value=\"<?php echo esc_attr($settings['brand_prompt']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0241",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "cta_text",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 86,
+    "SNIPPET": "<input type=\"hidden\" name=\"cta_text\" value=\"<?php echo esc_attr($settings['cta_text']); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0242",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 87,
+    "SNIPPET": "<table class=\"form-table\" role=\"presentation\">"
+  },
+  {
+    "UI_ID": "UI_0243",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "auto_cron",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 88,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Tự động xử lý', 'Automatic processing', '自动处理')); ?></th><td><label><input ty"
+  },
+  {
+    "UI_ID": "UI_0244",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "cron_frequency",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 89,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Tần suất', 'Frequency', '频率')); ?></th><td><select name=\"cron_frequency\"><?ph"
+  },
+  {
+    "UI_ID": "UI_0245",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "cron_batch_size",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 90,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Số bài mỗi lần', 'Articles per run', '每次运行文章数')); ?></th><td><input type=\"num"
+  },
+  {
+    "UI_ID": "UI_0246",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "post_status",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 91,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Chế độ bài viết', 'Post mode', '文章模式')); ?></th><td><select name=\"post_status"
+  },
+  {
+    "UI_ID": "UI_0247",
+    "SCREEN": "schedule",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "future_interval_days",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/schedule.php",
+    "SOURCE_LINE": 92,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Khoảng cách bài lên lịch', 'Scheduled post interval', '定时文章间隔')); ?></th><td>"
+  },
+  {
+    "UI_ID": "UI_0248",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 140,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0249",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 142,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_save_settings\">"
+  },
+  {
+    "UI_ID": "UI_0250",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "sv_ai_full_settings_form",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 143,
+    "SNIPPET": "<input type=\"hidden\" name=\"sv_ai_full_settings_form\" value=\"1\">"
+  },
+  {
+    "UI_ID": "UI_0251",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TAB",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 145,
+    "SNIPPET": "<nav class=\"nav-tab-wrapper sv-ai-tabs\" aria-label=\"<?php echo esc_attr(SV_AI_I18N::t('Các nhóm cấu hình', 'Settings gro"
+  },
+  {
+    "UI_ID": "UI_0252",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TAB",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 146,
+    "SNIPPET": "<a href=\"#sv-ai-tab-general\" class=\"nav-tab nav-tab-active\" data-tab=\"sv-ai-tab-general\"><?php echo esc_html(SV_AI_I18N:"
+  },
+  {
+    "UI_ID": "UI_0253",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TAB",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 147,
+    "SNIPPET": "<a href=\"#sv-ai-tab-images\" class=\"nav-tab\" data-tab=\"sv-ai-tab-images\"><?php echo esc_html(SV_AI_I18N::t('Hình ảnh', 'I"
+  },
+  {
+    "UI_ID": "UI_0254",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TAB",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 148,
+    "SNIPPET": "<a href=\"#sv-ai-tab-content\" class=\"nav-tab\" data-tab=\"sv-ai-tab-content\"><?php echo esc_html(SV_AI_I18N::t('Nội dung', "
+  },
+  {
+    "UI_ID": "UI_0255",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TAB",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 149,
+    "SNIPPET": "<a href=\"#sv-ai-tab-automation\" class=\"nav-tab\" data-tab=\"sv-ai-tab-automation\"><?php echo esc_html(SV_AI_I18N::t('Tự độ"
+  },
+  {
+    "UI_ID": "UI_0256",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 153,
+    "SNIPPET": "<table class=\"form-table\" role=\"presentation\">"
+  },
+  {
+    "UI_ID": "UI_0257",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "sv-ai-provider",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 154,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Nhà cung cấp AI', 'AI Provider', 'AI 提供商')); ?></th><td><select name=\"ai_prov"
+  },
+  {
+    "UI_ID": "UI_0258",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "ai_base_url",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 155,
+    "SNIPPET": "<tr class=\"sv-ai-base-url-row\" <?php echo (string) ($settings['ai_provider'] ?? 'openai') === 'custom_openai' ? '' : 'st"
+  },
+  {
+    "UI_ID": "UI_0259",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "sv-ai-api-key",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 160,
+    "SNIPPET": "<input type=\"hidden\" id=\"sv-ai-api-key\" name=\"api_key\" value=\"<?php echo esc_attr($sv_ai_masked_api_key); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0260",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "sv-ai-api-key-display",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 161,
+    "SNIPPET": "<input type=\"text\" class=\"regular-text\" id=\"sv-ai-api-key-display\" value=\"<?php echo esc_attr($sv_ai_masked_api_key); ?>"
+  },
+  {
+    "UI_ID": "UI_0261",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "update_manifest_url",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 166,
+    "SNIPPET": "<input type=\"hidden\" name=\"update_manifest_url\" value=\"<?php echo esc_attr(SV_AI_WRITER_UPDATE_MANIFEST_URL); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0262",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "update_package_url",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 167,
+    "SNIPPET": "<input type=\"hidden\" name=\"update_package_url\" value=\"<?php echo esc_attr(SV_AI_WRITER_UPDATE_PACKAGE_URL); ?>\">"
+  },
+  {
+    "UI_ID": "UI_0263",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "sv-ai-model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 172,
+    "SNIPPET": "<input type=\"text\" class=\"regular-text\" id=\"sv-ai-model\" name=\"model\" value=\"<?php echo esc_attr($settings['model']); ?>"
+  },
+  {
+    "UI_ID": "UI_0264",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "sv-ai-open-model-reference",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 173,
+    "SNIPPET": "<button type=\"button\" class=\"button\" id=\"sv-ai-open-model-reference\"><?php echo esc_html(SV_AI_I18N::t('Tham khảo Model "
+  },
+  {
+    "UI_ID": "UI_0265",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "sv-ai-model-preset",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 183,
+    "SNIPPET": "<select name=\"model_preset\" id=\"sv-ai-model-preset\">"
+  },
+  {
+    "UI_ID": "UI_0266",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "title_model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 193,
+    "SNIPPET": "<label>Title / Meta / Tag / Slug<input type=\"text\" class=\"regular-text\" name=\"title_model\" value=\"<?php echo esc_attr($s"
+  },
+  {
+    "UI_ID": "UI_0267",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "analysis_model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 194,
+    "SNIPPET": "<label><?php echo esc_html(SV_AI_I18N::t('Phân tích từ khóa', 'Keyword analysis', '关键词分析')); ?><input type=\"text\" class="
+  },
+  {
+    "UI_ID": "UI_0268",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "keyword_cluster_model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 195,
+    "SNIPPET": "<label><?php echo esc_html(SV_AI_I18N::t('Phân tích cụm từ khóa', 'Keyword clustering', '关键词聚类')); ?><input type=\"text\" "
+  },
+  {
+    "UI_ID": "UI_0269",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "meta_model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 196,
+    "SNIPPET": "<label>Meta / Description<input type=\"text\" class=\"regular-text\" name=\"meta_model\" value=\"<?php echo esc_attr($settings["
+  },
+  {
+    "UI_ID": "UI_0270",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "tag_model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 197,
+    "SNIPPET": "<label><?php echo esc_html(SV_AI_I18N::t('Thẻ bài viết', 'Post tags', '文章标签')); ?><input type=\"text\" class=\"regular-text"
+  },
+  {
+    "UI_ID": "UI_0271",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "slug_model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 198,
+    "SNIPPET": "<label>Slug<input type=\"text\" class=\"regular-text\" name=\"slug_model\" value=\"<?php echo esc_attr($settings['slug_model'] "
+  },
+  {
+    "UI_ID": "UI_0272",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "outline_model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 199,
+    "SNIPPET": "<label><?php echo esc_html(SV_AI_I18N::t('Dàn ý', 'Outline', '大纲')); ?><input type=\"text\" class=\"regular-text\" name=\"out"
+  },
+  {
+    "UI_ID": "UI_0273",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "article_model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 200,
+    "SNIPPET": "<label><?php echo esc_html(SV_AI_I18N::t('Viết bài', 'Article writing', '正文写作')); ?><input type=\"text\" class=\"regular-te"
+  },
+  {
+    "UI_ID": "UI_0274",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "rewrite_model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 201,
+    "SNIPPET": "<label><?php echo esc_html(SV_AI_I18N::t('Biên tập lại', 'Rewrite / refine', '改写 / 精修')); ?><input type=\"text\" class=\"re"
+  },
+  {
+    "UI_ID": "UI_0275",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "pillar_content_model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 202,
+    "SNIPPET": "<label><?php echo esc_html(SV_AI_I18N::t('Bài pillar', 'Pillar content', '支柱内容')); ?><input type=\"text\" class=\"regular-t"
+  },
+  {
+    "UI_ID": "UI_0276",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "landing_page_model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 203,
+    "SNIPPET": "<label><?php echo esc_html(SV_AI_I18N::t('Landing page', 'Landing page', '落地页')); ?><input type=\"text\" class=\"regular-te"
+  },
+  {
+    "UI_ID": "UI_0277",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "premium_article_model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 204,
+    "SNIPPET": "<label><?php echo esc_html(SV_AI_I18N::t('Premium article', 'Premium article', '高级文章')); ?><input type=\"text\" class=\"reg"
+  },
+  {
+    "UI_ID": "UI_0278",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "word_count",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 209,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Số từ mỗi bài', 'Words per article', '每篇文章字数')); ?></th><td><input type=\"numb"
+  },
+  {
+    "UI_ID": "UI_0279",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "generation_mode",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 213,
+    "SNIPPET": "<select name=\"generation_mode\">"
+  },
+  {
+    "UI_ID": "UI_0280",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "language",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 223,
+    "SNIPPET": "<select name=\"language\">"
+  },
+  {
+    "UI_ID": "UI_0281",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "ui_language",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 234,
+    "SNIPPET": "<select name=\"ui_language\">"
+  },
+  {
+    "UI_ID": "UI_0282",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "keyword_analysis_max_groups",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 245,
+    "SNIPPET": "<input type=\"number\" name=\"keyword_analysis_max_groups\" value=\"<?php echo esc_attr((int) ($settings['keyword_analysis_ma"
+  },
+  {
+    "UI_ID": "UI_0283",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "keyword_analysis_max_variants",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 252,
+    "SNIPPET": "<input type=\"number\" name=\"keyword_analysis_max_variants\" value=\"<?php echo esc_attr((int) ($settings['keyword_analysis_"
+  },
+  {
+    "UI_ID": "UI_0284",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "post_status",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 256,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Chế độ đăng', 'Post mode', '发布模式')); ?></th><td><select name=\"post_status\"><?"
+  },
+  {
+    "UI_ID": "UI_0285",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "default_category_ids[]",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 270,
+    "SNIPPET": "<input type=\"checkbox\" name=\"default_category_ids[]\" value=\"<?php echo esc_attr((int) $sv_ai_category->term_id); ?>\" <?p"
+  },
+  {
+    "UI_ID": "UI_0286",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 283,
+    "SNIPPET": "<table class=\"form-table\" role=\"presentation\">"
+  },
+  {
+    "UI_ID": "UI_0287",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_count",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 284,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Số ảnh chèn', 'Number of inserted images', '插入图片数量')); ?></th><td><input type"
+  },
+  {
+    "UI_ID": "UI_0288",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "sv-ai-image-source-mode",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 285,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Nguồn ảnh cho bài viết', 'Image source for articles', '文章图片来源')); ?></th><td>"
+  },
+  {
+    "UI_ID": "UI_0289",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "image_context_strategy",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 289,
+    "SNIPPET": "<select name=\"image_context_strategy\">"
+  },
+  {
+    "UI_ID": "UI_0290",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "sv-ai-image-provider",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 297,
+    "SNIPPET": "<tr class=\"sv-ai-image-ai-row\"><th><?php echo esc_html(SV_AI_I18N::t('Nhà cung cấp tạo ảnh', 'Image generation provider'"
+  },
+  {
+    "UI_ID": "UI_0291",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "image_api_key",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 298,
+    "SNIPPET": "<tr class=\"sv-ai-image-ai-row\"><th><?php echo esc_html(SV_AI_I18N::t('API key tạo ảnh', 'Image generation API key', '图片生"
+  },
+  {
+    "UI_ID": "UI_0292",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "sv-ai-image-model",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 299,
+    "SNIPPET": "<tr class=\"sv-ai-image-ai-row\"><th><?php echo esc_html(SV_AI_I18N::t('Model tạo ảnh', 'Image model', '图片模型')); ?></th><t"
+  },
+  {
+    "UI_ID": "UI_0293",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "image_generation_size",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 300,
+    "SNIPPET": "<tr class=\"sv-ai-image-ai-row\"><th><?php echo esc_html(SV_AI_I18N::t('Kích thước ảnh AI', 'AI image size', 'AI 图片尺寸')); "
+  },
+  {
+    "UI_ID": "UI_0294",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "image_generation_quality",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 301,
+    "SNIPPET": "<tr class=\"sv-ai-image-ai-row\"><th><?php echo esc_html(SV_AI_I18N::t('Chất lượng ảnh AI', 'AI image quality', 'AI 图片质量')"
+  },
+  {
+    "UI_ID": "UI_0295",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "image_style_preset",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 302,
+    "SNIPPET": "<tr class=\"sv-ai-image-ai-row\"><th><?php echo esc_html(SV_AI_I18N::t('Style preset ảnh', 'Image style preset', '图片风格预设')"
+  },
+  {
+    "UI_ID": "UI_0296",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "image_negative_prompt",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 303,
+    "SNIPPET": "<tr class=\"sv-ai-image-ai-row\"><th><?php echo esc_html(SV_AI_I18N::t('Negative prompt', 'Negative prompt', '负向提示词')); ?>"
+  },
+  {
+    "UI_ID": "UI_0297",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "image_prompt_template",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 304,
+    "SNIPPET": "<tr class=\"sv-ai-image-ai-row\"><th><?php echo esc_html(SV_AI_I18N::t('Prompt tạo ảnh', 'Image prompt', '图片提示词')); ?></th"
+  },
+  {
+    "UI_ID": "UI_0298",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "image_prompt_extra",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 305,
+    "SNIPPET": "<tr class=\"sv-ai-image-ai-row\"><th><?php echo esc_html(SV_AI_I18N::t('Prompt bổ sung cho ảnh', 'Additional image prompt'"
+  },
+  {
+    "UI_ID": "UI_0299",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "sv-ai-media-image-ids",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 309,
+    "SNIPPET": "<input type=\"hidden\" id=\"sv-ai-media-image-ids\" name=\"media_image_ids\" value=\"<?php echo esc_attr(implode(',', array_map"
+  },
+  {
+    "UI_ID": "UI_0300",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "sv-ai-select-images",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 310,
+    "SNIPPET": "<button type=\"button\" class=\"button\" id=\"sv-ai-select-images\"><?php echo esc_html(SV_AI_I18N::t('Chọn ảnh từ thư viện', "
+  },
+  {
+    "UI_ID": "UI_0301",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "sv-ai-clear-images",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 311,
+    "SNIPPET": "<button type=\"button\" class=\"button\" id=\"sv-ai-clear-images\"><?php echo esc_html(SV_AI_I18N::t('Xóa danh sách ảnh', 'Cle"
+  },
+  {
+    "UI_ID": "UI_0302",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "<?php echo esc_attr($image_id); ?>",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 318,
+    "SNIPPET": "<button type=\"button\" class=\"sv-ai-remove-selected-image\" data-id=\"<?php echo esc_attr($image_id); ?>\" aria-label=\"<?php"
+  },
+  {
+    "UI_ID": "UI_0303",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "content_image_size",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 325,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Kích thước ảnh khi chèn', 'Inserted image size', '插入图片尺寸')); ?></th><td><sele"
+  },
+  {
+    "UI_ID": "UI_0304",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "image_alignment",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 326,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Canh lề ảnh trong bài', 'Image alignment in article', '文章图片对齐方式')); ?></th><t"
+  },
+  {
+    "UI_ID": "UI_0305",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "sv-ai-promo-image-id",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 330,
+    "SNIPPET": "<input type=\"hidden\" id=\"sv-ai-promo-image-id\" name=\"promo_image_id\" value=\"<?php echo esc_attr((int) $settings['promo_i"
+  },
+  {
+    "UI_ID": "UI_0306",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "sv-ai-select-promo-image",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 331,
+    "SNIPPET": "<button type=\"button\" class=\"button\" id=\"sv-ai-select-promo-image\"><?php echo esc_html(SV_AI_I18N::t('Chọn ảnh CTA', 'Se"
+  },
+  {
+    "UI_ID": "UI_0307",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "sv-ai-clear-promo-image",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 332,
+    "SNIPPET": "<button type=\"button\" class=\"button\" id=\"sv-ai-clear-promo-image\"><?php echo esc_html(SV_AI_I18N::t('Xóa ảnh CTA', 'Clea"
+  },
+  {
+    "UI_ID": "UI_0308",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "promo_image_url",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 341,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Link CTA cuối bài', 'CTA link at article end', '文末 CTA 链接')); ?></th><td><inp"
+  },
+  {
+    "UI_ID": "UI_0309",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "set_featured_image",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 342,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Ảnh đại diện', 'Featured image', '特色图片')); ?></th><td><label><input type=\"che"
+  },
+  {
+    "UI_ID": "UI_0310",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 348,
+    "SNIPPET": "<table class=\"form-table\" role=\"presentation\">"
+  },
+  {
+    "UI_ID": "UI_0311",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "append_cta",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 349,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Thêm CTA', 'Append CTA', '追加 CTA')); ?></th><td><label><input type=\"checkbox\""
+  },
+  {
+    "UI_ID": "UI_0312",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "force_numbered_title",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 353,
+    "SNIPPET": "<label><input type=\"checkbox\" name=\"force_numbered_title\" value=\"1\" <?php checked((int) ($settings['force_numbered_title"
+  },
+  {
+    "UI_ID": "UI_0313",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "title_prompt_extra",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 360,
+    "SNIPPET": "<textarea name=\"title_prompt_extra\" rows=\"3\" class=\"large-text\" placeholder=\"<?php echo esc_attr(SV_AI_I18N::t('Ví dụ: ư"
+  },
+  {
+    "UI_ID": "UI_0314",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "attach_product_tags",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 367,
+    "SNIPPET": "<label><input type=\"checkbox\" name=\"attach_product_tags\" value=\"1\" <?php checked((int) ($settings['attach_product_tags']"
+  },
+  {
+    "UI_ID": "UI_0315",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "product_tag_position",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 373,
+    "SNIPPET": "<select name=\"product_tag_position\">"
+  },
+  {
+    "UI_ID": "UI_0316",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "sv-ai-select-all-products",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 389,
+    "SNIPPET": "<button type=\"button\" class=\"button button-secondary\" id=\"sv-ai-select-all-products\"><?php echo esc_html(SV_AI_I18N::t('"
+  },
+  {
+    "UI_ID": "UI_0317",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "sv-ai-clear-all-products",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 390,
+    "SNIPPET": "<button type=\"button\" class=\"button button-secondary\" id=\"sv-ai-clear-all-products\"><?php echo esc_html(SV_AI_I18N::t('B"
+  },
+  {
+    "UI_ID": "UI_0318",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "selected_product_ids[]",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 395,
+    "SNIPPET": "<input type=\"checkbox\" name=\"selected_product_ids[]\" value=\"<?php echo esc_attr((int) $sv_ai_product->ID); ?>\" <?php che"
+  },
+  {
+    "UI_ID": "UI_0319",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "content_heading_depth",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 407,
+    "SNIPPET": "<select name=\"content_heading_depth\">"
+  },
+  {
+    "UI_ID": "UI_0320",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "sv-ai-heading-numbering-style",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 418,
+    "SNIPPET": "<select name=\"heading_numbering_style\" id=\"sv-ai-heading-numbering-style\">"
+  },
+  {
+    "UI_ID": "UI_0321",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "seo_enforcement_mode",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 436,
+    "SNIPPET": "<select name=\"seo_enforcement_mode\">"
+  },
+  {
+    "UI_ID": "UI_0322",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "editorial_goal",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 444,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Mục tiêu nội dung', 'Editorial goal', '内容目标')); ?></th><td><textarea name=\"ed"
+  },
+  {
+    "UI_ID": "UI_0323",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "editorial_voice",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 445,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Giọng văn mong muốn', 'Desired voice and tone', '期望语气')); ?></th><td><textare"
+  },
+  {
+    "UI_ID": "UI_0324",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "editorial_must_include",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 446,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Yêu cầu AI phải khai thác', 'Must-cover instructions', 'AI 必须覆盖')); ?></th><t"
+  },
+  {
+    "UI_ID": "UI_0325",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "editorial_must_avoid",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 447,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Điều AI phải tránh', 'Must-avoid instructions', 'AI 必须避免')); ?></th><td><text"
+  },
+  {
+    "UI_ID": "UI_0326",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "editorial_structure",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 448,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Cấu trúc mong muốn', 'Preferred article structure', '期望结构')); ?></th><td><tex"
+  },
+  {
+    "UI_ID": "UI_0327",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "auto_internal_links_enabled",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 452,
+    "SNIPPET": "<label><input type=\"checkbox\" name=\"auto_internal_links_enabled\" value=\"1\" <?php checked((int) ($settings['auto_internal"
+  },
+  {
+    "UI_ID": "UI_0328",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "auto_internal_links_max",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 456,
+    "SNIPPET": "<input type=\"number\" name=\"auto_internal_links_max\" value=\"<?php echo esc_attr((int) ($settings['auto_internal_links_max"
+  },
+  {
+    "UI_ID": "UI_0329",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "quality_refine_enabled",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 464,
+    "SNIPPET": "<label><input type=\"checkbox\" name=\"quality_refine_enabled\" value=\"1\" <?php checked((int) ($settings['quality_refine_ena"
+  },
+  {
+    "UI_ID": "UI_0330",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "product_content_enabled",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 470,
+    "SNIPPET": "<label><input type=\"checkbox\" name=\"product_content_enabled\" value=\"1\" <?php checked((int) ($settings['product_content_e"
+  },
+  {
+    "UI_ID": "UI_0331",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "product_min_content_words",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 473,
+    "SNIPPET": "<input type=\"number\" name=\"product_min_content_words\" value=\"<?php echo esc_attr((int) ($settings['product_min_content_w"
+  },
+  {
+    "UI_ID": "UI_0332",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "product_target_word_count",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 478,
+    "SNIPPET": "<input type=\"number\" name=\"product_target_word_count\" value=\"<?php echo esc_attr((int) ($settings['product_target_word_c"
+  },
+  {
+    "UI_ID": "UI_0333",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "product_content_target",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 484,
+    "SNIPPET": "<select name=\"product_content_target\">"
+  },
+  {
+    "UI_ID": "UI_0334",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "product_image_source_mode",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 493,
+    "SNIPPET": "<select name=\"product_image_source_mode\">"
+  },
+  {
+    "UI_ID": "UI_0335",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "product_new_status",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 502,
+    "SNIPPET": "<select name=\"product_new_status\">"
+  },
+  {
+    "UI_ID": "UI_0336",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "product_preserve_existing_content",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 510,
+    "SNIPPET": "<label><input type=\"checkbox\" name=\"product_preserve_existing_content\" value=\"1\" <?php checked((int) ($settings['product"
+  },
+  {
+    "UI_ID": "UI_0337",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "rewrite_enabled",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 518,
+    "SNIPPET": "<label><input type=\"checkbox\" name=\"rewrite_enabled\" value=\"1\" <?php checked((int) ($settings['rewrite_enabled'] ?? 1), "
+  },
+  {
+    "UI_ID": "UI_0338",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "rewrite_min_rank_math_score",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 521,
+    "SNIPPET": "<input type=\"number\" name=\"rewrite_min_rank_math_score\" value=\"<?php echo esc_attr((int) ($settings['rewrite_min_rank_ma"
+  },
+  {
+    "UI_ID": "UI_0339",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "rewrite_min_word_count",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 524,
+    "SNIPPET": "<input type=\"number\" name=\"rewrite_min_word_count\" value=\"<?php echo esc_attr((int) ($settings['rewrite_min_word_count']"
+  },
+  {
+    "UI_ID": "UI_0340",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "rewrite_target_word_count",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 529,
+    "SNIPPET": "<input type=\"number\" name=\"rewrite_target_word_count\" value=\"<?php echo esc_attr((int) ($settings['rewrite_target_word_c"
+  },
+  {
+    "UI_ID": "UI_0341",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "rewrite_output_mode",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 534,
+    "SNIPPET": "<select name=\"rewrite_output_mode\">"
+  },
+  {
+    "UI_ID": "UI_0342",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "rewrite_allow_overwrite",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 541,
+    "SNIPPET": "<label><input type=\"checkbox\" name=\"rewrite_allow_overwrite\" value=\"1\" <?php checked((int) ($settings['rewrite_allow_ove"
+  },
+  {
+    "UI_ID": "UI_0343",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "rewrite_preserve_slug",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 544,
+    "SNIPPET": "<label><input type=\"checkbox\" name=\"rewrite_preserve_slug\" value=\"1\" <?php checked((int) ($settings['rewrite_preserve_sl"
+  },
+  {
+    "UI_ID": "UI_0344",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "rewrite_preserve_categories_tags",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 545,
+    "SNIPPET": "<label style=\"margin-left:12px;\"><input type=\"checkbox\" name=\"rewrite_preserve_categories_tags\" value=\"1\" <?php checked("
+  },
+  {
+    "UI_ID": "UI_0345",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "rewrite_preserve_featured_image",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 546,
+    "SNIPPET": "<label style=\"margin-left:12px;\"><input type=\"checkbox\" name=\"rewrite_preserve_featured_image\" value=\"1\" <?php checked(("
+  },
+  {
+    "UI_ID": "UI_0346",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "quality_refine_max_passes",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 554,
+    "SNIPPET": "<input type=\"number\" name=\"quality_refine_max_passes\" value=\"<?php echo esc_attr($is_pro ? (int) ($settings['quality_ref"
+  },
+  {
+    "UI_ID": "UI_0347",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "quality_refine_max_passes",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 555,
+    "SNIPPET": "<?php if (!$is_pro) : ?><input type=\"hidden\" name=\"quality_refine_max_passes\" value=\"1\"><?php endif; ?>"
+  },
+  {
+    "UI_ID": "UI_0348",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "internal_links",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 559,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Liên kết nội bộ ưu tiên', 'Preferred internal links', '优先内链')); ?></th><td><t"
+  },
+  {
+    "UI_ID": "UI_0349",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "external_links_title",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 560,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Tiêu đề khối liên kết ngoài', 'External links block title', '外链区块标题')); ?></t"
+  },
+  {
+    "UI_ID": "UI_0350",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "external_links",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 561,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Liên kết ngoài / SEO chéo', 'External links / cross-SEO', '外链 / 交叉 SEO')); ?>"
+  },
+  {
+    "UI_ID": "UI_0351",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "brand_prompt",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 562,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Prompt thương hiệu', 'Brand prompt', '品牌提示词')); ?></th><td><textarea name=\"br"
+  },
+  {
+    "UI_ID": "UI_0352",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TEXTAREA",
+    "IDENTIFIER": "cta_text",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 563,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('CTA mặc định', 'Default CTA', '默认 CTA')); ?></th><td><textarea name=\"cta_text"
+  },
+  {
+    "UI_ID": "UI_0353",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 569,
+    "SNIPPET": "<table class=\"form-table\" role=\"presentation\">"
+  },
+  {
+    "UI_ID": "UI_0354",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "CHECKBOX",
+    "IDENTIFIER": "auto_cron",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 570,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Tự động cron', 'Automatic cron', '自动 cron')); ?></th><td><label><input type=\""
+  },
+  {
+    "UI_ID": "UI_0355",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "cron_frequency",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 571,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Tần suất cron', 'Cron frequency', 'Cron 频率')); ?></th><td><select name=\"cron_"
+  },
+  {
+    "UI_ID": "UI_0356",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "cron_batch_size",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 572,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Số bài mỗi cron', 'Articles per cron run', '每次 cron 处理文章数')); ?></th><td><inp"
+  },
+  {
+    "UI_ID": "UI_0357",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "hosting_compatibility_mode",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 573,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Chế độ tương thích hosting', 'Hosting compatibility mode', '主机兼容模式')); ?></th"
+  },
+  {
+    "UI_ID": "UI_0358",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "future_interval_days",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 574,
+    "SNIPPET": "<tr><th><?php echo esc_html(SV_AI_I18N::t('Khoảng cách bài lên lịch', 'Scheduled article interval', '定时文章间隔')); ?></th><"
+  },
+  {
+    "UI_ID": "UI_0359",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "SELECT",
+    "IDENTIFIER": "performance_mode",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 578,
+    "SNIPPET": "<select name=\"performance_mode\">"
+  },
+  {
+    "UI_ID": "UI_0360",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "sv-ai-run-loopback-diagnostic",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 589,
+    "SNIPPET": "<button type=\"button\" class=\"button\" id=\"sv-ai-run-loopback-diagnostic\"><?php echo esc_html(SV_AI_I18N::t('Chẩn đoán loo"
+  },
+  {
+    "UI_ID": "UI_0361",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 603,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" style=\"display:inline-block;\">"
+  },
+  {
+    "UI_ID": "UI_0362",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 605,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_force_update_check\">"
+  },
+  {
+    "UI_ID": "UI_0363",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 615,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" style=\"margin:0;\">"
+  },
+  {
+    "UI_ID": "UI_0364",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 617,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_export_settings\">"
+  },
+  {
+    "UI_ID": "UI_0365",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 620,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" enctype=\"multipart/form-data\" style=\"ma"
+  },
+  {
+    "UI_ID": "UI_0366",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 622,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_import_settings\">"
+  },
+  {
+    "UI_ID": "UI_0367",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "settings_json_file",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 623,
+    "SNIPPET": "<input type=\"file\" name=\"settings_json_file\" accept=\"application/json,.json\" required style=\"display:block;margin-bottom"
+  },
+  {
+    "UI_ID": "UI_0368",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "MODAL",
+    "IDENTIFIER": "sv-ai-model-reference-modal",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 630,
+    "SNIPPET": "<div id=\"sv-ai-model-reference-modal\" class=\"sv-ai-modal\" hidden>"
+  },
+  {
+    "UI_ID": "UI_0369",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "MODAL",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 631,
+    "SNIPPET": "<div class=\"sv-ai-modal__backdrop\"></div>"
+  },
+  {
+    "UI_ID": "UI_0370",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "MODAL",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 632,
+    "SNIPPET": "<div class=\"sv-ai-modal__dialog\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"sv-ai-model-reference-title\">"
+  },
+  {
+    "UI_ID": "UI_0371",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "MODAL",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 633,
+    "SNIPPET": "<div class=\"sv-ai-modal__header\">"
+  },
+  {
+    "UI_ID": "UI_0372",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "BUTTON",
+    "IDENTIFIER": "sv-ai-close-model-reference",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 635,
+    "SNIPPET": "<button type=\"button\" class=\"button-link\" id=\"sv-ai-close-model-reference\" aria-label=\"<?php echo esc_attr(SV_AI_I18N::t"
+  },
+  {
+    "UI_ID": "UI_0373",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "MODAL",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 637,
+    "SNIPPET": "<div class=\"sv-ai-modal__body\">"
+  },
+  {
+    "UI_ID": "UI_0374",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 645,
+    "SNIPPET": "<table class=\"widefat striped sv-ai-model-reference-table\">"
+  },
+  {
+    "UI_ID": "UI_0375",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 687,
+    "SNIPPET": "<table class=\"widefat striped sv-ai-model-reference-table\">"
+  },
+  {
+    "UI_ID": "UI_0376",
+    "SCREEN": "settings",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/settings.php",
+    "SOURCE_LINE": 732,
+    "SNIPPET": "<table class=\"widefat striped sv-ai-model-reference-table\">"
+  },
+  {
+    "UI_ID": "UI_0377",
+    "SCREEN": "updates",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/updates.php",
+    "SOURCE_LINE": 12,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" style=\"display:inline-block;margin-righ"
+  },
+  {
+    "UI_ID": "UI_0378",
+    "SCREEN": "updates",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/updates.php",
+    "SOURCE_LINE": 14,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_download_sample_manifest\">"
+  },
+  {
+    "UI_ID": "UI_0379",
+    "SCREEN": "updates",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/updates.php",
+    "SOURCE_LINE": 19,
+    "SNIPPET": "<table class=\"widefat striped\" style=\"max-width:960px;\">"
+  },
+  {
+    "UI_ID": "UI_0380",
+    "SCREEN": "updates",
+    "CONTROL_TYPE": "FORM",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/updates.php",
+    "SOURCE_LINE": 32,
+    "SNIPPET": "<form method=\"post\" action=\"<?php echo esc_url(admin_url('admin-post.php')); ?>\" enctype=\"multipart/form-data\" style=\"ma"
+  },
+  {
+    "UI_ID": "UI_0381",
+    "SCREEN": "updates",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "action",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/updates.php",
+    "SOURCE_LINE": 34,
+    "SNIPPET": "<input type=\"hidden\" name=\"action\" value=\"sv_ai_upload_update_assets\">"
+  },
+  {
+    "UI_ID": "UI_0382",
+    "SCREEN": "updates",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/updates.php",
+    "SOURCE_LINE": 35,
+    "SNIPPET": "<table class=\"form-table\" role=\"presentation\">"
+  },
+  {
+    "UI_ID": "UI_0383",
+    "SCREEN": "updates",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "manifest_json_file",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/updates.php",
+    "SOURCE_LINE": 39,
+    "SNIPPET": "<input type=\"file\" name=\"manifest_json_file\" accept=\"application/json,.json\">"
+  },
+  {
+    "UI_ID": "UI_0384",
+    "SCREEN": "updates",
+    "CONTROL_TYPE": "INPUT",
+    "IDENTIFIER": "package_zip_file",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/updates.php",
+    "SOURCE_LINE": 46,
+    "SNIPPET": "<input type=\"file\" name=\"package_zip_file\" accept=\".zip,application/zip\">"
+  },
+  {
+    "UI_ID": "UI_0385",
+    "SCREEN": "upgrade",
+    "CONTROL_TYPE": "TABLE",
+    "IDENTIFIER": "",
+    "SOURCE_FILE": "softviet-ai-seo-writer/admin/views/upgrade.php",
+    "SOURCE_LINE": 6,
+    "SNIPPET": "<table class=\"widefat striped\">"
+  }
+]

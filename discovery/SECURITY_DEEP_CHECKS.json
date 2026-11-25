@@ -1,0 +1,117 @@
+{
+  "ui_controls_count": 385,
+  "ui_by_screen": {
+    "chatgpt-connection": 6,
+    "free-clients": 17,
+    "keyword-audit": 32,
+    "keywords": 38,
+    "license-client": 15,
+    "license-server": 38,
+    "logs": 8,
+    "products": 32,
+    "rewrite-posts": 23,
+    "schedule": 38,
+    "settings": 129,
+    "updates": 8,
+    "upgrade": 1
+  },
+  "sql_unprepared_with_vars": [
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-db.php",
+      "line": 153,
+      "snippet": "$wpdb->query($sql);"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-db.php",
+      "line": 164,
+      "snippet": "$wpdb->query($sql);"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-db.php",
+      "line": 413,
+      "snippet": "$wpdb->query($sql);"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-post-publisher.php",
+      "line": 267,
+      "snippet": "$latest = $wpdb->get_var(\"SELECT MAX(post_date) FROM {$wpdb->posts} WHERE post_status = 'future' AND post_type = 'post'\");"
+    },
+    {
+      "file": "softviet-ai-seo-writer/includes/class-sv-ai-product-service.php",
+      "line": 310,
+      "snippet": "return (int) $wpdb->get_var("
+    }
+  ],
+  "ajax_handler_security": [
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 1598,
+      "func": "ajax_generate_post",
+      "has_nonce": true,
+      "has_cap": true
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 1626,
+      "func": "ajax_queue_generate_post",
+      "has_nonce": true,
+      "has_cap": true
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 1696,
+      "func": "ajax_keyword_status",
+      "has_nonce": true,
+      "has_cap": true
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 1728,
+      "func": "ajax_analyze_keyword_clusters",
+      "has_nonce": true,
+      "has_cap": true
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 1755,
+      "func": "ajax_accept_keyword_clusters",
+      "has_nonce": true,
+      "has_cap": true
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 1782,
+      "func": "ajax_update_keyword_title",
+      "has_nonce": true,
+      "has_cap": true
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 1803,
+      "func": "ajax_update_keyword_images",
+      "has_nonce": true,
+      "has_cap": true
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 1847,
+      "func": "ajax_update_keyword_categories",
+      "has_nonce": true,
+      "has_cap": true
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php",
+      "line": 1873,
+      "func": "ajax_run_loopback_diagnostic",
+      "has_nonce": true,
+      "has_cap": true
+    },
+    {
+      "file": "softviet-ai-seo-writer/admin/class-sv-ai-license-server-admin.php",
+      "line": 156,
+      "func": "ajax_mark_license_sent",
+      "has_nonce": true,
+      "has_cap": true
+    }
+  ]
+}

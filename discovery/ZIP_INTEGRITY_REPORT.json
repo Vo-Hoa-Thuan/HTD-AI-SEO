@@ -1,0 +1,17 @@
+{
+  "zip_path": "D:\\HTD-AI-SEO\\softviet-ai-seo-writer.zip",
+  "zip_size_bytes": 789309,
+  "zip_sha256": "fb423524b51bc057a8fb5babad8eda744d4d3d91d57620226fe44f328beb3b10",
+  "testzip_bad_file": null,
+  "total_entries": 60,
+  "dir_entries": 0,
+  "file_entries": 60,
+  "total_uncompressed_bytes": 1663007,
+  "compression_ratio": 2.11,
+  "path_traversal_issues": [],
+  "symlink_entries": [],
+  "duplicate_entries": [],
+  "nested_archives_or_executables": [],
+  "unusual_paths": [],
+  "extracted": true
+}

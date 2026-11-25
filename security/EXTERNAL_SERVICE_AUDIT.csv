@@ -1,0 +1,12 @@
+SERVICE_ID,DOMAIN,ENDPOINT_OR_URL,CLASSIFICATION,HTTP_METHOD,DATA_SENT,AUTH_METHOD,SSL_VERIFY,HTD_DECISION
+EXT_001,softviet.vn,https://softviet.vn/wp-json/sv-ai-writer/v1/license/*,SOFTVIET_LICENSE_SERVICE,POST,"license_key, site_url, instance_id, email, phone",License Key,true,REMOVE_COMPLETELY
+EXT_002,softviet.vn,https://softviet.vn/wp-json/sv-ai-writer/v1/ai/prompt-bundle,SOFTVIET_PROMPT_SERVICE,POST,"license_key, site_url, keyword, settings",License Key,true,REPLACE_WITH_HTD_LOCAL_PROMPT_ENGINE
+EXT_003,softviet.vn,https://softviet.vn/wp-json/sv-ai-writer/v1/ai/keyword-cluster-prompt,SOFTVIET_PROMPT_SERVICE,POST,"license_key, site_url, seed_keywords",License Key,true,REPLACE_WITH_HTD_LOCAL_PROMPT_ENGINE
+EXT_004,softviet.vn,https://softviet.vn/softviet-ai-seo-writer.json & .zip,SOFTVIET_UPDATE_SERVICE,GET,Plugin version check & ZIP download,None,true,REPLACE_WITH_HTD_UPDATE_MANAGER
+EXT_005,api.openai.com,https://api.openai.com/v1/chat/completions,REQUIRED_OFFICIAL_AI_API,POST,"Prompts, keywords, article structure",Bearer API Key,true,KEEP_WITH_HTD_PROVIDER_ADAPTER
+EXT_006,api.openai.com,https://api.openai.com/v1/images/generations,OPTIONAL_EXTERNAL_SERVICE,POST,"Image prompt, size, model",Bearer API Key,true,KEEP_WITH_HTD_MEDIA_ENGINE
+EXT_007,generativelanguage.googleapis.com,https://generativelanguage.googleapis.com/v1beta/models/,REQUIRED_OFFICIAL_AI_API,POST,"Prompts, keywords, article structure",x-goog-api-key,true,KEEP_WITH_HTD_PROVIDER_ADAPTER
+EXT_008,api.anthropic.com,https://api.anthropic.com/v1/messages,REQUIRED_OFFICIAL_AI_API,POST,"Prompts, keywords, article structure",x-api-key,true,KEEP_WITH_HTD_PROVIDER_ADAPTER
+EXT_009,api.deepseek.com,https://api.deepseek.com/chat/completions,OPTIONAL_EXTERNAL_SERVICE,POST,"Prompts, keywords, article structure",Bearer API Key,true,KEEP_WITH_HTD_PROVIDER_ADAPTER
+EXT_010,api.x.ai,https://api.x.ai/v1/chat/completions,OPTIONAL_EXTERNAL_SERVICE,POST,"Prompts, keywords, article structure",Bearer API Key,true,KEEP_WITH_HTD_PROVIDER_ADAPTER
+EXT_011,auth.openai.com & chatgpt.com,"https://auth.openai.com/oauth/*, https://chatgpt.com/backend-api/codex/*",OPTIONAL_EXTERNAL_SERVICE,GET/POST,"OAuth PKCE, refresh token, prompts",OAuth2 + JWKS,true,OPTIONAL_WITH_EXPLICIT_USER_CONSENT

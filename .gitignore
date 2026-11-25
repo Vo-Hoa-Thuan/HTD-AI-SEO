@@ -1,0 +1,11 @@
+# HTD-AI-SEO-WRITER-PRO .gitignore
+reference/
+build/*.zip
+*.log
+.env
+.env.*
+*.sql
+*.sqlite
+secrets/
+vendor/
+node_modules/

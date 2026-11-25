@@ -1,0 +1,82 @@
+# SOURCE COVERAGE REPORT
+
+- **Source Archive**: `softviet-ai-seo-writer.zip`
+- **Archive SHA-256**: `fb423524b51bc057a8fb5babad8eda744d4d3d91d57620226fe44f328beb3b10`
+- **Archive Entries**: 60 (Files: 60, Dir entries: 0)
+- **Extracted Actual Directories**: 8
+- **Extracted Actual Files**: 60
+- **Files Analyzed**: 60
+- **Source Coverage**: 100.0%
+- **PHP Lint Errors**: 0
+
+## File Type Breakdown
+- `css`: 1
+- `js`: 2
+- `md`: 2
+- `no_ext`: 1
+- `php`: 43
+- `png`: 7
+- `po`: 1
+- `txt`: 3
+
+## File List
+- `F001` `softviet-ai-seo-writer/WORDPRESS-ORG-LITE-CHECKLIST.md` (md, 2748 bytes) — MD (81 lines)
+- `F002` `softviet-ai-seo-writer/license.txt` (txt, 601 bytes) — TXT (11 lines)
+- `F003` `softviet-ai-seo-writer/readme-public.txt` (txt, 4771 bytes) — TXT (205 lines)
+- `F004` `softviet-ai-seo-writer/readme.txt` (txt, 8970 bytes) — TXT (262 lines)
+- `F005` `softviet-ai-seo-writer/softviet-ai-seo-writer.php` (php, 6716 bytes) — classes:0, methods:0, funcs:9, hooks:5
+- `F006` `softviet-ai-seo-writer/uninstall.php` (php, 978 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F007` `softviet-ai-seo-writer/wporg-assets` (no_ext, 125555 bytes) — Binary/Asset (no_ext, 125555 bytes)
+- `F008` `softviet-ai-seo-writer/admin/class-sv-ai-admin-menu.php` (php, 102004 bytes) — classes:1, methods:7, funcs:63, hooks:38
+- `F009` `softviet-ai-seo-writer/admin/class-sv-ai-license-server-admin.php` (php, 6828 bytes) — classes:1, methods:6, funcs:0, hooks:4
+- `F010` `softviet-ai-seo-writer/admin/assets/admin.css` (css, 16630 bytes) — CSS (268 lines)
+- `F011` `softviet-ai-seo-writer/admin/assets/admin.js` (js, 35682 bytes) — funcs:29, events:24, ajax:9
+- `F012` `softviet-ai-seo-writer/admin/assets/chatgpt.js` (js, 3271 bytes) — funcs:4, events:2, ajax:1
+- `F013` `softviet-ai-seo-writer/admin/views/chatgpt-connection.php` (php, 7130 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F014` `softviet-ai-seo-writer/admin/views/free-clients.php` (php, 8003 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F015` `softviet-ai-seo-writer/admin/views/keyword-audit.php` (php, 19333 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F016` `softviet-ai-seo-writer/admin/views/keywords.php` (php, 33864 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F017` `softviet-ai-seo-writer/admin/views/license-client.php` (php, 9528 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F018` `softviet-ai-seo-writer/admin/views/license-server.php` (php, 22474 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F019` `softviet-ai-seo-writer/admin/views/license.php` (php, 2530 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F020` `softviet-ai-seo-writer/admin/views/logs.php` (php, 2395 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F021` `softviet-ai-seo-writer/admin/views/products.php` (php, 19688 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F022` `softviet-ai-seo-writer/admin/views/rewrite-posts.php` (php, 15220 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F023` `softviet-ai-seo-writer/admin/views/schedule.php` (php, 15813 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F024` `softviet-ai-seo-writer/admin/views/settings.php` (php, 134499 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F025` `softviet-ai-seo-writer/admin/views/updates.php` (php, 3910 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F026` `softviet-ai-seo-writer/admin/views/upgrade.php` (php, 3276 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F027` `softviet-ai-seo-writer/docs/chatgpt-oauth.md` (md, 8090 bytes) — MD (68 lines)
+- `F028` `softviet-ai-seo-writer/includes/class-sv-ai-activator.php` (php, 586 bytes) — classes:1, methods:2, funcs:0, hooks:0
+- `F029` `softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-client.php` (php, 10231 bytes) — classes:3, methods:6, funcs:0, hooks:0
+- `F030` `softviet-ai-seo-writer/includes/class-sv-ai-chatgpt-oauth.php` (php, 20127 bytes) — classes:1, methods:16, funcs:9, hooks:1
+- `F031` `softviet-ai-seo-writer/includes/class-sv-ai-content-generator.php` (php, 185712 bytes) — classes:1, methods:11, funcs:114, hooks:0
+- `F032` `softviet-ai-seo-writer/includes/class-sv-ai-credential-store.php` (php, 2866 bytes) — classes:1, methods:6, funcs:1, hooks:0
+- `F033` `softviet-ai-seo-writer/includes/class-sv-ai-cron.php` (php, 39976 bytes) — classes:1, methods:44, funcs:0, hooks:18
+- `F034` `softviet-ai-seo-writer/includes/class-sv-ai-db.php` (php, 15433 bytes) — classes:1, methods:5, funcs:14, hooks:0
+- `F035` `softviet-ai-seo-writer/includes/class-sv-ai-i18n.php` (php, 1969 bytes) — classes:1, methods:5, funcs:0, hooks:0
+- `F036` `softviet-ai-seo-writer/includes/class-sv-ai-image-generator-runtime.php` (php, 25718 bytes) — classes:1, methods:25, funcs:0, hooks:0
+- `F037` `softviet-ai-seo-writer/includes/class-sv-ai-image-generator.php` (php, 316 bytes) — classes:0, methods:0, funcs:0, hooks:0
+- `F038` `softviet-ai-seo-writer/includes/class-sv-ai-keyword-action-service.php` (php, 16473 bytes) — classes:1, methods:23, funcs:0, hooks:0
+- `F039` `softviet-ai-seo-writer/includes/class-sv-ai-keyword-audit-service.php` (php, 17144 bytes) — classes:1, methods:2, funcs:22, hooks:0
+- `F040` `softviet-ai-seo-writer/includes/class-sv-ai-keyword-service.php` (php, 75830 bytes) — classes:1, methods:29, funcs:55, hooks:0
+- `F041` `softviet-ai-seo-writer/includes/class-sv-ai-license-api.php` (php, 11938 bytes) — classes:1, methods:16, funcs:0, hooks:1
+- `F042` `softviet-ai-seo-writer/includes/class-sv-ai-license-service.php` (php, 23807 bytes) — classes:1, methods:3, funcs:32, hooks:0
+- `F043` `softviet-ai-seo-writer/includes/class-sv-ai-media-picker.php` (php, 11488 bytes) — classes:1, methods:13, funcs:0, hooks:0
+- `F044` `softviet-ai-seo-writer/includes/class-sv-ai-openai-client.php` (php, 49139 bytes) — classes:1, methods:54, funcs:0, hooks:0
+- `F045` `softviet-ai-seo-writer/includes/class-sv-ai-post-publisher.php` (php, 8869 bytes) — classes:1, methods:10, funcs:3, hooks:0
+- `F046` `softviet-ai-seo-writer/includes/class-sv-ai-post-rewrite-publisher.php` (php, 7780 bytes) — classes:1, methods:11, funcs:2, hooks:0
+- `F047` `softviet-ai-seo-writer/includes/class-sv-ai-post-rewrite-service.php` (php, 21715 bytes) — classes:1, methods:25, funcs:0, hooks:0
+- `F048` `softviet-ai-seo-writer/includes/class-sv-ai-product-publisher.php` (php, 6927 bytes) — classes:1, methods:6, funcs:0, hooks:0
+- `F049` `softviet-ai-seo-writer/includes/class-sv-ai-product-service.php` (php, 13606 bytes) — classes:1, methods:14, funcs:2, hooks:0
+- `F050` `softviet-ai-seo-writer/includes/class-sv-ai-seo-enhancer.php` (php, 37015 bytes) — classes:1, methods:43, funcs:0, hooks:0
+- `F051` `softviet-ai-seo-writer/includes/class-sv-ai-seo-meta.php` (php, 6010 bytes) — classes:1, methods:7, funcs:0, hooks:0
+- `F052` `softviet-ai-seo-writer/includes/class-sv-ai-updater.php` (php, 13819 bytes) — classes:1, methods:20, funcs:0, hooks:4
+- `F053` `softviet-ai-seo-writer/languages/softviet-ai-seo-writer-vi.po` (po, 138 bytes) — PO (5 lines)
+- `F054` `softviet-ai-seo-writer/wordpress-org-assets/banner-1544x500.png` (png, 114264 bytes) — Binary/Asset (png, 114264 bytes)
+- `F055` `softviet-ai-seo-writer/wordpress-org-assets/banner-772x250.png` (png, 45484 bytes) — Binary/Asset (png, 45484 bytes)
+- `F056` `softviet-ai-seo-writer/wordpress-org-assets/icon-128x128.png` (png, 9723 bytes) — Binary/Asset (png, 9723 bytes)
+- `F057` `softviet-ai-seo-writer/wordpress-org-assets/icon-256x256.png` (png, 28091 bytes) — Binary/Asset (png, 28091 bytes)
+- `F058` `softviet-ai-seo-writer/wordpress-org-assets/screenshot-1.png` (png, 70394 bytes) — Binary/Asset (png, 70394 bytes)
+- `F059` `softviet-ai-seo-writer/wordpress-org-assets/screenshot-2.png` (png, 75085 bytes) — Binary/Asset (png, 75085 bytes)
+- `F060` `softviet-ai-seo-writer/wordpress-org-assets/screenshot-3.png` (png, 74827 bytes) — Binary/Asset (png, 74827 bytes)

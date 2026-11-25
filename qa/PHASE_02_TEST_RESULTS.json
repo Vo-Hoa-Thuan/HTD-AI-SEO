@@ -1,0 +1,58 @@
+{
+    "pass": 13,
+    "fail": 0,
+    "cases": [
+        {
+            "name": "DB_01_FreshMigration_CustomPrefix",
+            "status": "PASS"
+        },
+        {
+            "name": "DB_02_IdempotentReMigration_PreservesData",
+            "status": "PASS"
+        },
+        {
+            "name": "DB_03_RollbackAndReMigrate",
+            "status": "PASS"
+        },
+        {
+            "name": "SET_01_SafeDefaultsEnforced",
+            "status": "PASS"
+        },
+        {
+            "name": "SET_02_TypedSanitization",
+            "status": "PASS"
+        },
+        {
+            "name": "VAULT_01_FailClosedWithoutOpenSSL",
+            "status": "PASS"
+        },
+        {
+            "name": "HTTP_01_DefaultDenyAndSoftVietBlocked",
+            "status": "PASS"
+        },
+        {
+            "name": "APPR_01_MutationGuardEnforcesReadOnlyAndApproval",
+            "status": "PASS"
+        },
+        {
+            "name": "LOG_01_SecretRedaction",
+            "status": "PASS"
+        },
+        {
+            "name": "QUEUE_01_IdempotencyAndConcurrentClaim",
+            "status": "PASS"
+        },
+        {
+            "name": "QUEUE_02_EmergencyStopBlocksEnqueueAndClaim",
+            "status": "PASS"
+        },
+        {
+            "name": "SEC_01_AiHtmlSanitizer",
+            "status": "PASS"
+        },
+        {
+            "name": "CORE_01_ModuleRegistryAndHealthCheck",
+            "status": "PASS"
+        }
+    ]
+}
