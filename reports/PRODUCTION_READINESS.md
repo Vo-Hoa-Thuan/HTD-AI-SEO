@@ -1,10 +1,9 @@
-# PRODUCTION READINESS ASSESSMENT — PHASE 07
+# PRODUCTION READINESS — PHASE 08
 
-- **Verdict**: `NO_GO` for immediate Production deployment (`CONDITIONAL_GO` for Phase 08 Staging).
-- **Why NO_GO for Production right now**:
-  1. `BLK-002`: Live WordPress + MySQL + WooCommerce + Rank Math runtime has NOT been executed (Docker Desktop daemon not running).
-  2. `BLK-001`: External SAST/AV scanners (`phpcs`, `phpstan`, `semgrep`, `yara`, `clamscan`, `gitleaks`) have NOT been run.
-  3. `BLK-005`: Live AI, GSC, and GA4 API credentials have NOT been smoke-tested.
-  4. `BLK-004`: QA15 Independent Review is `NOT_VERIFIED`.
-  5. `BLK-006`: `FEAT_007` (ChatGPT/Codex OAuth) requires user scope decision.
-- **Packaging**: Packaged as `htd-ai-seo-writer-pro-0.7.0-dev.zip` (NOT labeled RC1 per Section 31).
+- **Verdict**: `NO_GO` for Production (`CONDITIONAL_RELEASE` as `0.8.0-dev` for Staging).
+- **Mandatory Gates Remaining Before `1.0.0` Production**:
+  1. Start Docker Desktop & verify WordPress + MySQL + WooCommerce + Rank Math + Browser UI (`BLK-002`).
+  2. Run `phpcs`, `phpstan`, `semgrep`, `yara`, `clamscan`, `gitleaks` (`BLK-001`).
+  3. Smoke-test live AI/GSC/GA4 credentials in staging (`BLK-005`).
+  4. Resolve `FEAT_007` scope decision (`BLK-006`).
+  5. Complete independent QA15 sign-off (`BLK-004`).

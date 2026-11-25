@@ -1,7 +1,9 @@
-# BLOCKERS & OPEN GAPS — PHASE 06
+# BLOCKERS & OPEN GAPS — PHASE 08 (FINAL HANDOVER)
 
-1. **BLK-001 (Security Scanner Binaries Missing — QA04/QA10 PARTIAL)**: `phpcs`, `phpstan`, `semgrep`, `yara`, `clamscan`, and `gitleaks` are not installed locally. Deferred to Phase 07 or CI/CD runner.
-2. **BLK-002 (BLOCKED_RUNTIME — Docker Desktop Daemon Not Running)**: Docker Desktop daemon is not started (`//./pipe/docker_engine` unavailable) and `wp`/`mysql`/`mariadb` are not installed locally. *Action Required*: Start Docker Desktop and run `docker compose -f tests/docker-compose.staging.yml up -d`.
-3. **BLK-004 (Independent Reviewer — QA15 NOT_VERIFIED)**: No independent reviewer sign-off yet (scheduled for Phase 08).
-4. **BLK-005 (No Live AI/GSC/GA4 Credentials — QA06 PARTIAL)**: All AI, GSC, and GA4 adapters verified via mock HTTP contracts & CSV imports (`MOCK_PASS`), not `LIVE_API_VERIFIED`.
-5. **BLK-006 (FEAT_007 ChatGPT/Codex OAuth — BLOCKED)**: `FEAT_007` (`chatgpt.com/backend-api/codex/*`) remains `BLOCKED` pending explicit user decision on OAuth2 PKCE vs official OpenAI API Key (`api.openai.com/v1/*`).
+| ID | Category | Root Cause | Required Action | Responsible | Status |
+|---|---|---|---|---|---|
+| `BLK-001` | Security Toolchain | `phpcs`, `phpstan`, `semgrep`, `yara`, `clamscan`, `gitleaks` not installed locally | Install toolchain in CI/container and run full scan | DevOps / User | `BLOCKED_BY_ENVIRONMENT` |
+| `BLK-002` | WordPress Runtime | Docker Desktop daemon not started (`//./pipe/docker_engine` unavailable) | Start Docker Desktop & run `docker compose -f tests/docker-compose.staging.yml up -d` | User | `BLOCKED_BY_USER` |
+| `BLK-004` | Independent QA15 | No independent human reviewer assigned yet | Assign independent reviewer to audit package & sign off QA15 | User / QA Lead | `BLOCKED_BY_USER` |
+| `BLK-005` | Live API Credentials | No live OpenAI/Gemini/Claude/DeepSeek/Grok/GSC/GA4 credentials provided | Configure staging credentials in Vault & run minimal smoke tests | User | `BLOCKED_BY_USER` |
+| `BLK-006` | `FEAT_007` OAuth | ChatGPT/Codex OAuth (`chatgpt.com/backend-api/codex/*`) awaits policy decision | Approve replacement with official OpenAI API Key (`api.openai.com`) or official OAuth spec | User | `BLOCKED_BY_USER` |

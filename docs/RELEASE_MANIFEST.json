@@ -1,0 +1,29 @@
+{
+  "plugin_name": "HTD AI SEO Writer Pro",
+  "plugin_slug": "htd-ai-seo-writer-pro",
+  "version": "0.8.0-dev",
+  "release_status": "CONDITIONAL_RELEASE",
+  "production_ready": false,
+  "license": "GPL-2.0-or-later",
+  "zip_file": "build/htd-ai-seo-writer-pro-0.8.0-dev.zip",
+  "zip_sha256": "50046f8186d398c52ad882eeeea5e4c470a544f4499da1f9f4d2a25f6412aec5",
+  "zip_size_bytes": 133391,
+  "original_source_sha256": "fb423524b51bc057a8fb5babad8eda744d4d3d91d57620226fe44f328beb3b10",
+  "automated_tests": {
+    "total": 48,
+    "pass": 48,
+    "fail": 0
+  },
+  "php_lint": {
+    "files": 98,
+    "errors": 0
+  },
+  "blockers_open": [
+    "BLK-001",
+    "BLK-002",
+    "BLK-004",
+    "BLK-005",
+    "BLK-006"
+  ],
+  "generated_at_utc": "2026-11-25T08:55:00Z"
+}

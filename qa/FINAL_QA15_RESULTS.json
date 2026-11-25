@@ -1,0 +1,171 @@
+{
+  "phase": "PHASE_08",
+  "release_status": "CONDITIONAL_RELEASE (0.8.0-dev; NOT v1.0.0 production-ready)",
+  "qa15_matrix": [
+    {
+      "QA_ID": "QA01",
+      "SCOPE": "Feature Parity",
+      "TEST_CASES": "39 Original + 6 Foundation + 10 Extensions + 17 Subfeatures",
+      "EXPECTED_RESULT": "All tracked & reconciled",
+      "ACTUAL_RESULT": "36/39 Original impl (1 blocked FEAT_007, 2 excluded); 10/10 Extensions impl",
+      "EVIDENCE": "qa/FINAL_FEATURE_COVERAGE_MATRIX.csv",
+      "STATUS": "PASS",
+      "BLOCKER": "NONE",
+      "REGRESSION_REQUIREMENT": "Resolve FEAT_007"
+    },
+    {
+      "QA_ID": "QA02",
+      "SCOPE": "License Compliance",
+      "TEST_CASES": "GPLv2+ headers, THIRD_PARTY_NOTICES, 0 SoftViet assets",
+      "EXPECTED_RESULT": "Full compliance",
+      "ACTUAL_RESULT": "103 HTD files audited; 0 SoftViet assets",
+      "EVIDENCE": "compliance/LICENSE_COMPLIANCE.md",
+      "STATUS": "PASS",
+      "BLOCKER": "NONE",
+      "REGRESSION_REQUIREMENT": "Maintain headers"
+    },
+    {
+      "QA_ID": "QA03",
+      "SCOPE": "Architecture",
+      "TEST_CASES": "22 modules registered & dependency-ordered",
+      "EXPECTED_RESULT": "Clean boundaries",
+      "ACTUAL_RESULT": "22/22 ACTIVE in Plugin.php",
+      "EVIDENCE": "src/htd-ai-seo-writer-pro/src/Core/Plugin.php",
+      "STATUS": "PASS",
+      "BLOCKER": "NONE",
+      "REGRESSION_REQUIREMENT": "Maintain contracts"
+    },
+    {
+      "QA_ID": "QA04",
+      "SCOPE": "Code Quality",
+      "TEST_CASES": "php -l (98 PHP files), node --check; WPCS/PHPStan",
+      "EXPECTED_RESULT": "0 syntax & static errors",
+      "ACTUAL_RESULT": "98/98 PHP lint 0 errors; admin.js 0 errors; phpcs/phpstan NOT_RUN",
+      "EVIDENCE": "qa/PHASE_07_TEST_RESULTS.json",
+      "STATUS": "PARTIAL",
+      "BLOCKER": "BLK-001 (phpcs/phpstan missing)",
+      "REGRESSION_REQUIREMENT": "Run WPCS/PHPStan in CI"
+    },
+    {
+      "QA_ID": "QA05",
+      "SCOPE": "Database",
+      "TEST_CASES": "v0.6.0 23 tables migration, backup/restore checksum",
+      "EXPECTED_RESULT": "MySQL runtime & integrity",
+      "ACTUAL_RESULT": "DB6_01 & LIFE7_01 PASS (in-memory); live MySQL NOT_RUN",
+      "EVIDENCE": "qa/PHASE_07_TEST_RESULTS.json",
+      "STATUS": "PARTIAL",
+      "BLOCKER": "BLK-002 (Docker/MySQL not running)",
+      "REGRESSION_REQUIREMENT": "Run on MySQL staging"
+    },
+    {
+      "QA_ID": "QA06",
+      "SCOPE": "API Integration",
+      "TEST_CASES": "AI, FEAT_002, GSC, GA4, Vault AES-256-GCM",
+      "EXPECTED_RESULT": "Contracts & crypto pass",
+      "ACTUAL_RESULT": "48 tests PASS (OpenSSL real; APIs MOCK_PASS); live APIs NOT_RUN",
+      "EVIDENCE": "qa/PHASE_06_TEST_RESULTS.json",
+      "STATUS": "PARTIAL",
+      "BLOCKER": "BLK-005 (No live API keys)",
+      "REGRESSION_REQUIREMENT": "Run live smoke tests"
+    },
+    {
+      "QA_ID": "QA07",
+      "SCOPE": "Admin UI",
+      "TEST_CASES": "18 screens, 20 UI matrix rows, nonces & handlers",
+      "EXPECTED_RESULT": "All controls verified in WP",
+      "ACTUAL_RESULT": "20/20 UI controls have handler & nonce statically; WP runtime NOT_RUN",
+      "EVIDENCE": "qa/UI_CONTROL_TEST_MATRIX.csv",
+      "STATUS": "PARTIAL",
+      "BLOCKER": "BLK-002 (No WP runtime)",
+      "REGRESSION_REQUIREMENT": "Run Playwright/WP staging"
+    },
+    {
+      "QA_ID": "QA08",
+      "SCOPE": "WordPress & WooCommerce",
+      "TEST_CASES": "Activation, publishing, WooCommerce CRUD",
+      "EXPECTED_RESULT": "Verified on WP+WC staging",
+      "ACTUAL_RESULT": "Unit/mock PASS; live WP/WC runtime NOT_RUN",
+      "EVIDENCE": "qa/PHASE_05_TEST_RESULTS.json",
+      "STATUS": "PARTIAL",
+      "BLOCKER": "BLK-002 (No WP/WC runtime)",
+      "REGRESSION_REQUIREMENT": "Run on WP+WC staging"
+    },
+    {
+      "QA_ID": "QA09",
+      "SCOPE": "Rank Math & SEO",
+      "TEST_CASES": "RankMathAdapter, CategorySEO, TechAudit, TrafficGuard",
+      "EXPECTED_RESULT": "Verified on Rank Math staging",
+      "ACTUAL_RESULT": "Unit/mock PASS; live Rank Math NOT_RUN",
+      "EVIDENCE": "qa/PHASE_06_TEST_RESULTS.json",
+      "STATUS": "PARTIAL",
+      "BLOCKER": "BLK-002 (No Rank Math runtime)",
+      "REGRESSION_REQUIREMENT": "Run on WP+RM staging"
+    },
+    {
+      "QA_ID": "QA10",
+      "SCOPE": "Security",
+      "TEST_CASES": "SSRF/IPv6, Prompt/CSV/Log injection, 103-file malware/secret scan",
+      "EXPECTED_RESULT": "0 critical/high vulns",
+      "ACTUAL_RESULT": "0 malware/secrets in 103 files; SEC7_01-02 PASS; SAST/AV NOT_RUN",
+      "EVIDENCE": "security/FINAL_SECURITY_AUDIT.md",
+      "STATUS": "PARTIAL",
+      "BLOCKER": "BLK-001 (SAST/AV binaries missing)",
+      "REGRESSION_REQUIREMENT": "Run YARA/ClamAV/Semgrep"
+    },
+    {
+      "QA_ID": "QA11",
+      "SCOPE": "External Services & Privacy",
+      "TEST_CASES": "Allowlist, HTTPS-only, 0 SoftViet calls",
+      "EXPECTED_RESULT": "0 SoftViet calls",
+      "ACTUAL_RESULT": "HTTP_01 & SEC7_01 PASS; 0 outbound SoftViet calls",
+      "EVIDENCE": "qa/PHASE_07_TEST_RESULTS.json",
+      "STATUS": "PASS",
+      "BLOCKER": "NONE",
+      "REGRESSION_REQUIREMENT": "Verify packet trace on staging"
+    },
+    {
+      "QA_ID": "QA12",
+      "SCOPE": "Performance",
+      "TEST_CASES": "1000 kw + 1000 GSC + 200 jobs PHP CLI benchmark",
+      "EXPECTED_RESULT": "Within hosting limits",
+      "ACTUAL_RESULT": "44.49ms, 8MB peak (PHP CLI synthetic); LiteSpeed runtime NOT_RUN",
+      "EVIDENCE": "qa/PERFORMANCE_BENCHMARK.json",
+      "STATUS": "PARTIAL",
+      "BLOCKER": "BLK-002 (No hosting runtime)",
+      "REGRESSION_REQUIREMENT": "Run staging load test"
+    },
+    {
+      "QA_ID": "QA13",
+      "SCOPE": "E2E Workflows",
+      "TEST_CASES": "15 E2E scenarios across Phases 05-06",
+      "EXPECTED_RESULT": "Real runtime E2E pass",
+      "ACTUAL_RESULT": "15/15 MOCK_PASS; live WP E2E NOT_RUN",
+      "EVIDENCE": "qa/PHASE_06_TEST_RESULTS.json",
+      "STATUS": "PARTIAL",
+      "BLOCKER": "BLK-002 (No WP runtime)",
+      "REGRESSION_REQUIREMENT": "Run E2E on WP staging"
+    },
+    {
+      "QA_ID": "QA14",
+      "SCOPE": "Lifecycle & Backup",
+      "TEST_CASES": "0.7.0-dev ZIP built, backup/restore checksum, rollback",
+      "EXPECTED_RESULT": "Clean install & restore",
+      "ACTUAL_RESULT": "ZIP built + LIFE7_01 PASS; WP install NOT_RUN",
+      "EVIDENCE": "build/htd-ai-seo-writer-pro-0.7.0-dev.zip",
+      "STATUS": "PARTIAL",
+      "BLOCKER": "BLK-002 (No WP runtime)",
+      "REGRESSION_REQUIREMENT": "Test ZIP install on staging"
+    },
+    {
+      "QA_ID": "QA15",
+      "SCOPE": "Independent Acceptance",
+      "TEST_CASES": "Independent reviewer sign-off",
+      "EXPECTED_RESULT": "Formal independent review",
+      "ACTUAL_RESULT": "No independent reviewer performed",
+      "EVIDENCE": "qa/QA_EVIDENCE.json",
+      "STATUS": "NOT_VERIFIED",
+      "BLOCKER": "BLK-004 (Awaiting Phase 08)",
+      "REGRESSION_REQUIREMENT": "Required before release"
+    }
+  ]
+}
