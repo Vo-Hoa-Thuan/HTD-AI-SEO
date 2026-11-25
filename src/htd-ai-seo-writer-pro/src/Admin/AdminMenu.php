@@ -3,16 +3,20 @@ declare(strict_types=1);
 
 namespace HTD\AISEO\Admin;
 
+use HTD\AISEO\AI\ProviderConfiguration;
 use HTD\AISEO\Approval\ApprovalEngine;
+use HTD\AISEO\Brand\BrandProfile;
 use HTD\AISEO\Core\Container;
 use HTD\AISEO\Core\HealthCheck;
 use HTD\AISEO\Core\ModuleRegistry;
 use HTD\AISEO\Credentials\CredentialVault;
 use HTD\AISEO\Logging\Logger;
+use HTD\AISEO\Prompt\PromptRegistry;
 use HTD\AISEO\Security\RequestVerifier;
 use HTD\AISEO\Security\Sanitizer;
 use HTD\AISEO\Settings\SettingsRegistry;
 use HTD\AISEO\Support\Capabilities;
+use HTD\AISEO\Token\TokenBudgetManager;
 
 if (!defined('ABSPATH')) {
 	exit;
@@ -38,6 +42,8 @@ final class AdminMenu {
 		add_action('admin_post_htd_ai_seo_save_credential', [$this, 'handleSaveCredential']);
 		add_action('admin_post_htd_ai_seo_delete_credential', [$this, 'handleDeleteCredential']);
 		add_action('admin_post_htd_ai_seo_approval_decision', [$this, 'handleApprovalDecision']);
+		add_action('admin_post_htd_ai_seo_save_provider', [$this, 'handleSaveProvider']);
+		add_action('admin_post_htd_ai_seo_save_brand', [$this, 'handleSaveBrand']);
 	}
 
 	public function addMenus(): void {
@@ -55,6 +61,11 @@ final class AdminMenu {
 		$submenus = [
 			['htd-ai-seo-dashboard', 'Dashboard', $cap, [$this, 'renderDashboard']],
 			['htd-ai-seo-settings', 'Settings', Capabilities::MANAGE_SETTINGS, [$this, 'renderSettings']],
+			['htd-ai-seo-ai-providers', 'AI Providers', Capabilities::MANAGE_SETTINGS, [$this, 'renderAiProviders']],
+			['htd-ai-seo-prompts', 'Prompt Library', $cap, [$this, 'renderPrompts']],
+			['htd-ai-seo-brand', 'Brand Profile', Capabilities::MANAGE_SETTINGS, [$this, 'renderBrandProfile']],
+			['htd-ai-seo-ai-usage', 'AI Usage', $cap, [$this, 'renderAiUsage']],
+			['htd-ai-seo-playground', 'AI Playground', $cap, [$this, 'renderAiPlayground']],
 			['htd-ai-seo-health', 'System Health', $cap, [$this, 'renderHealth']],
 			['htd-ai-seo-security', 'Security', $cap, [$this, 'renderSecurity']],
 			['htd-ai-seo-logs', 'Audit Logs', Capabilities::VIEW_LOGS, [$this, 'renderLogs']],
@@ -116,6 +127,60 @@ final class AdminMenu {
 			$vaultError = $e->getMessage();
 		}
 		$this->renderTemplate('credentials', ['credentials' => $credentials, 'vaultError' => $vaultError]);
+	}
+
+	public function renderAiProviders(): void {
+		$configs = $this->container->get(ProviderConfiguration::class)->all();
+		$maskedCreds = [];
+		try {
+			$maskedCreds = $this->container->get(CredentialVault::class)->listMasked();
+		} catch (\Throwable) {}
+		$this->renderTemplate('ai-providers', ['configs' => $configs, 'maskedCreds' => $maskedCreds]);
+	}
+
+	public function renderPrompts(): void {
+		$prompts = $this->container->get(PromptRegistry::class)->all();
+		$this->renderTemplate('prompts', ['prompts' => $prompts]);
+	}
+
+	public function renderBrandProfile(): void {
+		$brand = $this->container->get(BrandProfile::class)->get();
+		$this->renderTemplate('brand-profile', ['brand' => $brand]);
+	}
+
+	public function renderAiUsage(): void {
+		$usage = $this->container->get(TokenBudgetManager::class)->usageSummary();
+		$this->renderTemplate('ai-usage', ['usage' => $usage]);
+	}
+
+	public function renderAiPlayground(): void {
+		$settings = $this->container->get(SettingsRegistry::class)->all();
+		$this->renderTemplate('ai-playground', ['settings' => $settings]);
+	}
+
+	public function handleSaveProvider(): void {
+		RequestVerifier::verifyAdminAction('htd_ai_seo_save_provider', Capabilities::MANAGE_SETTINGS);
+		$providerId = Sanitizer::sanitizeIdentifier((string) wp_unslash($_POST['provider_id'] ?? ''));
+		if ($providerId !== '') {
+			$this->container->get(ProviderConfiguration::class)->save($providerId, [
+				'enabled'          => !empty($_POST['enabled']),
+				'model'            => wp_unslash($_POST['model'] ?? ''),
+				'max_tokens'       => $_POST['max_tokens'] ?? 2048,
+				'timeout'          => $_POST['timeout'] ?? 45,
+				'daily_budget_usd' => $_POST['daily_budget_usd'] ?? 5.0,
+			]);
+			$this->container->get(Logger::class)->log('ai_providers', 'provider_updated', 'AUDIT', 'OK', ['provider' => $providerId]);
+		}
+		wp_safe_redirect(admin_url('admin.php?page=htd-ai-seo-ai-providers&updated=1'));
+		exit;
+	}
+
+	public function handleSaveBrand(): void {
+		RequestVerifier::verifyAdminAction('htd_ai_seo_save_brand', Capabilities::MANAGE_SETTINGS);
+		$this->container->get(BrandProfile::class)->save(wp_unslash($_POST));
+		$this->container->get(Logger::class)->log('brand', 'brand_updated', 'AUDIT', 'OK');
+		wp_safe_redirect(admin_url('admin.php?page=htd-ai-seo-brand&updated=1'));
+		exit;
 	}
 
 	public function handleSaveSettings(): void {

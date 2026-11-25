@@ -1,0 +1,38 @@
+{
+    "pass": 8,
+    "fail": 0,
+    "cases": [
+        {
+            "name": "AI_01_AllFiveAdaptersBuildAndParseMocks",
+            "status": "PASS"
+        },
+        {
+            "name": "AI_02_ErrorNormalizationAndCapabilityCheck",
+            "status": "PASS"
+        },
+        {
+            "name": "PROMPT_01_Default20TemplatesAndRendering",
+            "status": "PASS"
+        },
+        {
+            "name": "PROMPT_02_SafetyGuardVersioningImportExport",
+            "status": "PASS"
+        },
+        {
+            "name": "BRAND_01_DefaultsAndConfig",
+            "status": "PASS"
+        },
+        {
+            "name": "TOKEN_01_BudgetTrimmingAndCaching",
+            "status": "PASS"
+        },
+        {
+            "name": "VAL_01_SchemaAndHtmlSanitization",
+            "status": "PASS"
+        },
+        {
+            "name": "ORCH_01_BlocksWhenExternalDisabledOrEmergencyStop",
+            "status": "PASS"
+        }
+    ]
+}

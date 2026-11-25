@@ -1,5 +1,5 @@
 {
-    "pass": 13,
+    "pass": 14,
     "fail": 0,
     "cases": [
         {
@@ -23,7 +23,11 @@
             "status": "PASS"
         },
         {
-            "name": "VAULT_01_FailClosedWithoutOpenSSL",
+            "name": "VAULT_01_SealOpenAndMask",
+            "status": "PASS"
+        },
+        {
+            "name": "VAULT_02_TamperRejectionAndKeyRotation",
             "status": "PASS"
         },
         {

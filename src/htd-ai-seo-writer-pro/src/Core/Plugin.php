@@ -4,14 +4,28 @@ declare(strict_types=1);
 namespace HTD\AISEO\Core;
 
 use HTD\AISEO\Admin\AdminMenu;
+use HTD\AISEO\AI\AIOrchestrator;
+use HTD\AISEO\AI\ModelRegistry;
+use HTD\AISEO\AI\OutputValidator;
+use HTD\AISEO\AI\ProviderConfiguration;
+use HTD\AISEO\AI\ProviderRegistry;
+use HTD\AISEO\AI\Providers\ClaudeProvider;
+use HTD\AISEO\AI\Providers\DeepSeekProvider;
+use HTD\AISEO\AI\Providers\GeminiProvider;
+use HTD\AISEO\AI\Providers\GrokProvider;
+use HTD\AISEO\AI\Providers\OpenAIProvider;
 use HTD\AISEO\Approval\ApprovalEngine;
+use HTD\AISEO\Brand\BrandProfile;
 use HTD\AISEO\Credentials\CredentialVault;
 use HTD\AISEO\Database\Migrator;
 use HTD\AISEO\Logging\Logger;
+use HTD\AISEO\Prompt\PromptRegistry;
+use HTD\AISEO\Prompt\PromptRenderer;
 use HTD\AISEO\Queue\QueueEngine;
 use HTD\AISEO\Security\ExternalRequestGuard;
 use HTD\AISEO\Security\MutationGuard;
 use HTD\AISEO\Settings\SettingsRegistry;
+use HTD\AISEO\Token\TokenBudgetManager;
 
 if (!defined('ABSPATH')) {
 	exit;
@@ -84,6 +98,38 @@ final class Plugin {
 				$c->get(QueueEngine::class)
 			);
 		});
+		$this->container->singleton(ModelRegistry::class, static fn(): ModelRegistry => new ModelRegistry());
+		$this->container->singleton(ProviderConfiguration::class, static fn(): ProviderConfiguration => new ProviderConfiguration());
+		$this->container->singleton(ProviderRegistry::class, static function (Container $c): ProviderRegistry {
+			$reg = new ProviderRegistry();
+			$guard = $c->get(ExternalRequestGuard::class);
+			$models = $c->get(ModelRegistry::class);
+			$reg->register(new OpenAIProvider($guard, $models));
+			$reg->register(new GeminiProvider($guard, $models));
+			$reg->register(new ClaudeProvider($guard, $models));
+			$reg->register(new DeepSeekProvider($guard, $models));
+			$reg->register(new GrokProvider($guard, $models));
+			return $reg;
+		});
+		$this->container->singleton(PromptRenderer::class, static fn(): PromptRenderer => new PromptRenderer());
+		$this->container->singleton(PromptRegistry::class, static fn(Container $c): PromptRegistry => new PromptRegistry($c->get(PromptRenderer::class)));
+		$this->container->singleton(BrandProfile::class, static fn(): BrandProfile => new BrandProfile());
+		$this->container->singleton(TokenBudgetManager::class, static fn(Container $c): TokenBudgetManager => new TokenBudgetManager($c->get(ProviderConfiguration::class)));
+		$this->container->singleton(OutputValidator::class, static fn(): OutputValidator => new OutputValidator());
+		$this->container->singleton(AIOrchestrator::class, static function (Container $c): AIOrchestrator {
+			return new AIOrchestrator(
+				$c->get(SettingsRegistry::class),
+				$c->get(ProviderRegistry::class),
+				$c->get(ProviderConfiguration::class),
+				$c->get(CredentialVault::class),
+				$c->get(PromptRegistry::class),
+				$c->get(PromptRenderer::class),
+				$c->get(BrandProfile::class),
+				$c->get(TokenBudgetManager::class),
+				$c->get(OutputValidator::class),
+				$c->get(Logger::class)
+			);
+		});
 		$this->container->singleton(AdminMenu::class, function (Container $c): AdminMenu {
 			return new AdminMenu($c, $this->modules);
 		});
@@ -100,10 +146,9 @@ final class Plugin {
 		$this->modules->register('mutation_guard', 'ACTIVE', 'PHASE_02', ['settings', 'approval', 'logging']);
 		$this->modules->register('queue', 'ACTIVE', 'PHASE_02', ['database', 'settings', 'logging']);
 		$this->modules->register('admin_ui', 'ACTIVE', 'PHASE_02', ['core', 'settings', 'logging', 'approval']);
-
-		// Future phases explicitly marked NOT_IMPLEMENTED
-		$this->modules->register('ai_providers', 'NOT_IMPLEMENTED', 'PHASE_03', ['credentials', 'http_guard'], 'COMING_IN_PHASE_03');
-		$this->modules->register('prompt_engine', 'NOT_IMPLEMENTED', 'PHASE_03', ['settings'], 'COMING_IN_PHASE_03');
+		$this->modules->register('ai_providers', 'ACTIVE', 'PHASE_03', ['credentials', 'http_guard']);
+		$this->modules->register('prompt_engine', 'ACTIVE', 'PHASE_03', ['settings']);
+		$this->modules->register('token_engine', 'ACTIVE', 'PHASE_03', ['ai_providers']);
 		$this->modules->register('keyword_engine', 'NOT_IMPLEMENTED', 'PHASE_04', ['database', 'ai_providers'], 'COMING_IN_PHASE_04');
 		$this->modules->register('content_engine', 'NOT_IMPLEMENTED', 'PHASE_04', ['prompt_engine', 'ai_providers', 'mutation_guard'], 'COMING_IN_PHASE_04');
 		$this->modules->register('woocommerce_seo', 'NOT_IMPLEMENTED', 'PHASE_05', ['content_engine'], 'COMING_IN_PHASE_05');
