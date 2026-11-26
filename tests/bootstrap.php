@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 define('ABSPATH', __DIR__ . '/');
 define('ARRAY_A', 'ARRAY_A');
-define('HTD_AI_SEO_VERSION', '0.9.0-dev');
+define('HTD_AI_SEO_VERSION', '0.9.1-dev');
 define('ABSPATH_VER_CHECK', true);
 define('HTD_AI_SEO_DB_VERSION', '0.6.0');
 define('HTD_AI_SEO_PATH', dirname(__DIR__) . '/src/htd-ai-seo-writer-pro/');
@@ -132,10 +132,10 @@ final class TestWpdb {
 			return 0;
 		}
 		// Queue heartbeat
-		if (preg_match('/^UPDATE\s+([a-zA-Z0-9_]+queue)\s+SET\s+heartbeat_at\s*=\s*\'([^\']+)\',\s*lease_expires_at\s*=\s*\'([^\']+)\',\s*updated_at_utc\s*=\s*\'([^\']+)\'\s+WHERE\s+id\s*=\s*(\d+)\s+AND\s+status\s*=\s*\'([^\']+)\'\s+AND\s+lock_owner\s*=\s*\'([^\']+)\'/i', $s, $m)) {
+		if (preg_match('/^UPDATE\s+([a-zA-Z0-9_]+queue)\s+SET\s+heartbeat_at\s*=\s*\'([^\']+)\',\s*lease_expires_at\s*=\s*\'([^\']+)\',\s*updated_at_utc\s*=\s*\'([^\']+)\'\s+WHERE\s+id\s*=\s*(\d+)\s+AND\s+status\s*=\s*\'([^\']+)\'\s+AND\s+lock_owner\s*=\s*\'([^\']+)\'\s+AND\s+lease_expires_at\s*>=\s*\'([^\']+)\'/i', $s, $m)) {
 			$tbl = $m[1];
 			$id = (int) $m[5];
-			if (isset($this->tables[$tbl][$id]) && $this->tables[$tbl][$id]['status'] === $m[6] && $this->tables[$tbl][$id]['lock_owner'] === $m[7]) {
+			if (isset($this->tables[$tbl][$id]) && $this->tables[$tbl][$id]['status'] === $m[6] && $this->tables[$tbl][$id]['lock_owner'] === $m[7] && !empty($this->tables[$tbl][$id]['lease_expires_at']) && $this->tables[$tbl][$id]['lease_expires_at'] >= $m[8]) {
 				$this->tables[$tbl][$id]['heartbeat_at'] = $m[2];
 				$this->tables[$tbl][$id]['lease_expires_at'] = $m[3];
 				$this->tables[$tbl][$id]['updated_at_utc'] = $m[4];
@@ -165,10 +165,10 @@ final class TestWpdb {
 			return 1;
 		}
 		// Queue complete
-		if (preg_match('/^UPDATE\s+([a-zA-Z0-9_]+queue)\s+SET\s+status\s*=\s*\'COMPLETED\',\s*lock_owner\s*=\s*NULL,\s*lease_expires_at\s*=\s*NULL,\s*updated_at_utc\s*=\s*\'([^\']+)\'\s+WHERE\s+id\s*=\s*(\d+)\s+AND\s+status\s*=\s*\'RUNNING\'\s+AND\s+lock_owner\s*=\s*\'([^\']+)\'/i', $s, $m)) {
+		if (preg_match('/^UPDATE\s+([a-zA-Z0-9_]+queue)\s+SET\s+status\s*=\s*\'COMPLETED\',\s*lock_owner\s*=\s*NULL,\s*lease_expires_at\s*=\s*NULL,\s*updated_at_utc\s*=\s*\'([^\']+)\'\s+WHERE\s+id\s*=\s*(\d+)\s+AND\s+status\s*=\s*\'RUNNING\'\s+AND\s+lock_owner\s*=\s*\'([^\']+)\'\s+AND\s+lease_expires_at\s*>=\s*\'([^\']+)\'/i', $s, $m)) {
 			$tbl = $m[1];
 			$id = (int) $m[3];
-			if (isset($this->tables[$tbl][$id]) && $this->tables[$tbl][$id]['status'] === 'RUNNING' && $this->tables[$tbl][$id]['lock_owner'] === $m[4]) {
+			if (isset($this->tables[$tbl][$id]) && $this->tables[$tbl][$id]['status'] === 'RUNNING' && $this->tables[$tbl][$id]['lock_owner'] === $m[4] && !empty($this->tables[$tbl][$id]['lease_expires_at']) && $this->tables[$tbl][$id]['lease_expires_at'] >= $m[5]) {
 				$this->tables[$tbl][$id]['status'] = 'COMPLETED';
 				$this->tables[$tbl][$id]['lock_owner'] = null;
 				$this->tables[$tbl][$id]['lease_expires_at'] = null;

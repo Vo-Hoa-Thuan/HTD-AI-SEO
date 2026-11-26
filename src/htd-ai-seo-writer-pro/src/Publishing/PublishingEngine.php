@@ -108,6 +108,12 @@ final class PublishingEngine {
 		if ($approvalRow !== null && ($approvalRow['action_type'] ?? '') === 'create_draft_post' && $targetStatus !== 'draft') {
 			throw new \RuntimeException('Draft approval (create_draft_post) cannot authorize publish or future status.', 403);
 		}
+		if (isset($draft['approval_id']) && (int) $draft['approval_id'] > 0 && (int) $draft['approval_id'] !== $approvalId) {
+			throw new \RuntimeException("Stale approval #{$approvalId}; draft #{$draftId} is bound to approval #{$draft['approval_id']}.", 403);
+		}
+		if (($draft['status'] ?? '') === 'DRAFT' && ($draft['approval_id'] ?? null) === null) {
+			throw new \RuntimeException("Draft #{$draftId} has no active approval (edited or failed QA).", 403);
+		}
 
 		$targetPostId = (int) ($draft['target_post_id'] ?? 0);
 		$cleanHtml = Sanitizer::sanitizeAiHtml((string) $draft['html_content']);

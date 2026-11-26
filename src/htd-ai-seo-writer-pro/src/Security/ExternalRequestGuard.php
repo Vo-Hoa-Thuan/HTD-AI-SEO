@@ -177,7 +177,8 @@ final class ExternalRequestGuard {
 	public function request(string $url, array $args = []): array {
 		$start = microtime(true);
 		try {
-			$this->validateUrl($url, true);
+			$resolvedIps = $this->validateUrl($url, true);
+			$host = strtolower((string) parse_url($url, PHP_URL_HOST));
 
 			$timeout = min(self::MAX_TIMEOUT_SECONDS, max(1, (int) ($args['timeout'] ?? 30)));
 			$wpArgs = [
@@ -195,7 +196,25 @@ final class ExternalRequestGuard {
 				throw new \RuntimeException('WordPress HTTP API unavailable.');
 			}
 
-			$response = wp_remote_request($url, $wpArgs);
+			// Pin validated public IP at cURL transport layer (DNS rebinding mitigation) while preserving TLS SNI & cert verification
+			$pinCallback = null;
+			if ($resolvedIps !== [] && $host !== '' && function_exists('add_action') && defined('CURLOPT_RESOLVE')) {
+				$pinnedIp = $resolvedIps[0];
+				$pinCallback = static function ($handle) use ($host, $pinnedIp): void {
+					if (is_resource($handle) || (class_exists('CurlHandle', false) && $handle instanceof \CurlHandle)) {
+						@curl_setopt($handle, CURLOPT_RESOLVE, ["{$host}:443:{$pinnedIp}"]);
+					}
+				};
+				add_action('http_api_curl', $pinCallback, 10, 1);
+			}
+
+			try {
+				$response = wp_remote_request($url, $wpArgs);
+			} finally {
+				if ($pinCallback !== null && function_exists('remove_action')) {
+					remove_action('http_api_curl', $pinCallback, 10);
+				}
+			}
 			if (is_wp_error($response)) {
 				throw new \RuntimeException($response->get_error_message(), 502);
 			}

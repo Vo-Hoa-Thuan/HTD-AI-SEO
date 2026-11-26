@@ -165,6 +165,11 @@ rem_test('REM_04_HtdSeoAuditJobExecution', 'UNIT', function () use ($c): void {
 	$audit = $c->get(OneClickAuditWorkflow::class);
 	/** @var WorkerEngine $worker */
 	$worker = $c->get(WorkerEngine::class);
+	/** @var SEODataRepository $seoRepo */
+	$seoRepo = $c->get(SEODataRepository::class);
+	$seoRepo->saveSnapshot('gsc_import', 'https://htd.net.vn/', 'queries', '28d', SEODataRepository::PROVENANCE_IMPORTED_VERIFIED, [
+		['query' => 'camera hanh trinh htd', 'page' => 'https://htd.net.vn/', 'clicks' => 10, 'impressions' => 800, 'ctr' => 0.012, 'position' => 5.5],
+	]);
 
 	$jobId = $audit->enqueueAuditJob('rem-audit-job-1');
 	rem_assert($jobId > 0, 'Audit job enqueued');
@@ -309,12 +314,11 @@ rem_test('REM_09_DnsDestinationSafety', 'UNIT', function () use ($c, $settings):
 	$settings->update(['allow_external_ai_requests' => false]);
 }, $results);
 
-// 10. TASK 09: Atomic budget reservation & unknown pricing non-free
+// 10. TASK 09: Atomic budget reservation & unknown pricing blocked until confirmed
 rem_test('REM_10_BudgetReservationAndUnknownPricing', 'UNIT', function () use ($c): void {
 	/** @var TokenBudgetManager $tokens */
 	$tokens = $c->get(TokenBudgetManager::class);
-	$est = $tokens->estimateRequestCostUsd('unknown_provider', 'unknown-model', 1000, 1000);
-	rem_assert($est > 0.0, 'Unknown pricing is NOT treated as free');
+	rem_throws(fn() => $tokens->estimateRequestCostUsd('unknown_provider', 'unknown-model', 1000, 1000), 'Unknown pricing must be blocked until confirmed');
 
 	$resId = $tokens->reserveBudget('custom', 1.5);
 	rem_throws(fn() => $tokens->reserveBudget('custom', 1.0), 'Concurrent reservation exceeding $2.00 daily cap blocked');

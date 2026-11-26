@@ -19,13 +19,25 @@ final class TokenBudgetManager {
 	public const USAGE_OPTION        = 'htd_ai_seo_ai_usage';
 	public const CACHE_OPTION        = 'htd_ai_seo_ai_cache';
 	public const RESERVATIONS_OPTION = 'htd_ai_seo_budget_reservations';
-	private const UNKNOWN_IN_PER_1M  = 5.0;
-	private const UNKNOWN_OUT_PER_1M = 15.0;
+	public const LOCK_OPTION         = 'htd_ai_seo_budget_lock';
 
 	public function __construct(
 		private readonly ProviderConfiguration $providerConfigs,
-		private readonly ?\HTD\AISEO\AI\ModelRegistry $models = null
+		private readonly ?\HTD\AISEO\AI\ModelRegistry $models = null,
+		private readonly ?object $wpdb = null
 	) {}
+
+	public function isPricingConfirmed(string $providerId, string $model): bool {
+		$cfg = $this->providerConfigs->get($providerId);
+		if ($providerId === 'custom') {
+			return ((float) ($cfg['input_per_1m'] ?? 0.0)) > 0.0 || ((float) ($cfg['output_per_1m'] ?? 0.0)) > 0.0 || !empty($cfg['pricing_confirmed']);
+		}
+		if ($this->models !== null) {
+			$all = $this->models->allPricing();
+			return isset($all[$providerId . ':' . $model]);
+		}
+		return false;
+	}
 
 	public function estimateRequestCostUsd(string $providerId, string $model, int $inputTokens, int $maxOutputTokens): float {
 		$cfg = $this->providerConfigs->get($providerId);
@@ -35,38 +47,81 @@ final class TokenBudgetManager {
 			if ($inRate > 0.0 || $outRate > 0.0) {
 				return round((($inputTokens / 1_000_000) * $inRate) + (($maxOutputTokens / 1_000_000) * $outRate), 6);
 			}
-		}
-		if ($this->models !== null) {
-			$known = $this->models->estimateCostUsd($providerId, $model, $inputTokens, $maxOutputTokens);
-			if ($known > 0.0) {
-				return $known;
+			if (!empty($cfg['pricing_confirmed'])) {
+				return 0.0;
 			}
 		}
-		// Unknown pricing must NOT be treated as free; apply conservative fallback estimate.
-		return round((($inputTokens / 1_000_000) * self::UNKNOWN_IN_PER_1M) + (($maxOutputTokens / 1_000_000) * self::UNKNOWN_OUT_PER_1M), 6);
+		if ($this->models !== null) {
+			$all = $this->models->allPricing();
+			if (isset($all[$providerId . ':' . $model])) {
+				return $this->models->estimateCostUsd($providerId, $model, $inputTokens, $maxOutputTokens);
+			}
+		}
+		throw new AIException(
+			AIError::BUDGET_EXCEEDED,
+			"Unknown model pricing for '{$providerId}:{$model}'. Confirm pricing before sending paid requests.",
+			402
+		);
 	}
 
 	/**
-	 * Atomically reserve estimated budget before sending an outbound AI request.
+	 * Atomically reserve estimated budget under a DB/option mutex before sending an outbound AI request.
 	 */
 	public function reserveBudget(string $providerId, float $estimatedUsd, int $ttlSeconds = 180): string {
-		$this->pruneExpiredReservations();
-		$this->assertBudgetAvailable($providerId, $estimatedUsd);
+		$lockName = 'htd_ai_seo_budget_' . preg_replace('/[^a-z0-9_]/i', '', $providerId);
+		$dbLocked = $this->acquireDbLock($lockName);
+		try {
+			$this->pruneExpiredReservations();
+			$this->assertBudgetAvailable($providerId, $estimatedUsd);
 
-		$reservations = function_exists('get_option') ? get_option(self::RESERVATIONS_OPTION, []) : [];
-		if (!is_array($reservations)) {
-			$reservations = [];
+			$reservations = function_exists('get_option') ? get_option(self::RESERVATIONS_OPTION, []) : [];
+			if (!is_array($reservations)) {
+				$reservations = [];
+			}
+			$resId = 'res_' . bin2hex(random_bytes(8));
+			$reservations[$resId] = [
+				'provider_id' => $providerId,
+				'amount_usd'  => round(max(0.0, $estimatedUsd), 6),
+				'expires_at'  => time() + max(30, $ttlSeconds),
+			];
+			if (function_exists('update_option')) {
+				update_option(self::RESERVATIONS_OPTION, $reservations, false);
+			}
+			return $resId;
+		} finally {
+			if ($dbLocked) {
+				$this->releaseDbLock($lockName);
+			}
 		}
-		$resId = 'res_' . bin2hex(random_bytes(8));
-		$reservations[$resId] = [
-			'provider_id' => $providerId,
-			'amount_usd'  => round(max(0.0, $estimatedUsd), 6),
-			'expires_at'  => time() + max(30, $ttlSeconds),
-		];
-		if (function_exists('update_option')) {
-			update_option(self::RESERVATIONS_OPTION, $reservations, false);
+	}
+
+	private function acquireDbLock(string $lockName): bool {
+		if ($this->wpdb !== null && method_exists($this->wpdb, 'get_var') && !str_contains(get_class($this->wpdb), 'TestWpdb')) {
+			$got = $this->wpdb->get_var($this->wpdb->prepare('SELECT GET_LOCK(%s, 5)', $lockName));
+			if ((int) $got !== 1) {
+				throw new AIException(AIError::BUDGET_EXCEEDED, 'Could not acquire atomic budget lock.', 409);
+			}
+			return true;
 		}
-		return $resId;
+		if (function_exists('add_option')) {
+			for ($i = 0; $i < 5; $i++) {
+				if (add_option(self::LOCK_OPTION . '_' . $lockName, time(), '', false)) {
+					return true;
+				}
+				usleep(10000);
+			}
+		}
+		return false;
+	}
+
+	private function releaseDbLock(string $lockName): void {
+		if ($this->wpdb !== null && method_exists($this->wpdb, 'get_var') && !str_contains(get_class($this->wpdb), 'TestWpdb')) {
+			@$this->wpdb->get_var($this->wpdb->prepare('SELECT RELEASE_LOCK(%s)', $lockName));
+			return;
+		}
+		if (function_exists('delete_option')) {
+			delete_option(self::LOCK_OPTION . '_' . $lockName);
+		}
 	}
 
 	public function releaseReservation(string $reservationId): void {

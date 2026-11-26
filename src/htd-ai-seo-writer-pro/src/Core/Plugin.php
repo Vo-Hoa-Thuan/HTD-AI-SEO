@@ -156,10 +156,14 @@ final class Plugin {
 		$this->container->singleton(PromptRenderer::class, static fn(): PromptRenderer => new PromptRenderer());
 		$this->container->singleton(PromptRegistry::class, static fn(Container $c): PromptRegistry => new PromptRegistry($c->get(PromptRenderer::class)));
 		$this->container->singleton(BrandProfile::class, static fn(): BrandProfile => new BrandProfile());
-		$this->container->singleton(TokenBudgetManager::class, static fn(Container $c): TokenBudgetManager => new TokenBudgetManager(
-			$c->get(ProviderConfiguration::class),
-			$c->get(ModelRegistry::class)
-		));
+		$this->container->singleton(TokenBudgetManager::class, static function (Container $c): TokenBudgetManager {
+			global $wpdb;
+			return new TokenBudgetManager(
+				$c->get(ProviderConfiguration::class),
+				$c->get(ModelRegistry::class),
+				$wpdb
+			);
+		});
 		$this->container->singleton(OutputValidator::class, static fn(): OutputValidator => new OutputValidator());
 		$this->container->singleton(AIOrchestrator::class, static function (Container $c): AIOrchestrator {
 			return new AIOrchestrator(
@@ -218,7 +222,9 @@ final class Plugin {
 				$c->get(CredentialVault::class),
 				$c->get(ExternalRequestGuard::class),
 				$c->get(ImageValidator::class),
-				$c->get(Logger::class)
+				$c->get(Logger::class),
+				$c->get(TokenBudgetManager::class),
+				$c->get(MediaProposalService::class)
 			);
 		});
 		$this->container->singleton(MediaLibraryReader::class, static fn(): MediaLibraryReader => new MediaLibraryReader());
@@ -264,65 +270,140 @@ final class Plugin {
 		});
 		$this->container->singleton(WorkerEngine::class, static function (Container $c): WorkerEngine {
 			$worker = new WorkerEngine($c->get(QueueEngine::class), $c->get(SettingsRegistry::class), $c->get(Logger::class));
-			$worker->registerHandler('KEYWORD_ANALYSIS', static function (array $payload) use ($c): void {
+			$worker->registerHandler('KEYWORD_ANALYSIS', static function (array $payload) use ($c): array {
 				$kw = trim((string) ($payload['keyword'] ?? $payload['primary_keyword'] ?? ''));
 				if ($kw === '') {
 					throw new \InvalidArgumentException('KEYWORD_ANALYSIS requires keyword.');
 				}
-				$c->get(KeywordIntelligence::class)->classifyIntentHeuristic($kw);
+				$intel = $c->get(KeywordIntelligence::class);
+				$repo = $c->get(KeywordRepository::class);
+				$res = $intel->classifyIntentHeuristic($kw);
+				$intentSrc = (string) ($res['source'] ?? 'HEURISTIC');
+				$kwId = (int) ($payload['keyword_id'] ?? 0);
+				if ($kwId > 0) {
+					$repo->update($kwId, ['search_intent' => $res['intent'], 'intent_source' => $intentSrc]);
+				} else {
+					$existing = $repo->findByKeyword($kw);
+					if ($existing !== null) {
+						$kwId = (int) $existing['id'];
+						$repo->update($kwId, ['search_intent' => $res['intent'], 'intent_source' => $intentSrc]);
+					} else {
+						$kwId = $repo->add(['keyword' => $kw, 'search_intent' => $res['intent'], 'intent_source' => $intentSrc]);
+					}
+				}
+				return ['status' => 'COMPLETED', 'keyword_id' => $kwId, 'intent' => $res['intent'], 'intent_source' => $intentSrc];
 			});
-			$worker->registerHandler('KEYWORD_CLUSTER', static function (array $payload) use ($c): void {
+			$worker->registerHandler('KEYWORD_CLUSTER', static function (array $payload) use ($c): array {
 				$keywords = is_array($payload['keywords'] ?? null) ? $payload['keywords'] : [];
-				$c->get(KeywordIntelligence::class)->clusterByTopic($keywords);
+				$clusters = $c->get(KeywordIntelligence::class)->clusterByTopic($keywords);
+				$repo = $c->get(KeywordRepository::class);
+				foreach ($clusters as $group => $items) {
+					foreach ($items as $kwText) {
+						$existing = $repo->findByKeyword((string) $kwText);
+						if ($existing !== null) {
+							$repo->update((int) $existing['id'], ['keyword_group' => (string) $group]);
+						}
+					}
+				}
+				if (function_exists('update_option')) {
+					update_option('htd_ai_seo_last_clusters', $clusters, false);
+				}
+				return ['status' => 'COMPLETED', 'cluster_count' => count($clusters), 'clusters' => $clusters];
 			});
-			$worker->registerHandler('CONTENT_OUTLINE', static function (array $payload) use ($c): void {
+			$worker->registerHandler('CONTENT_OUTLINE', static function (array $payload) use ($c): array {
 				$providerId = (string) ($payload['provider_id'] ?? $c->get(SettingsRegistry::class)->get('active_ai_provider', 'openai'));
-				$c->get(AIOrchestrator::class)->executeTask($providerId, 'content_outline', [
-					'keyword'            => (string) ($payload['keyword'] ?? ''),
+				$kw = trim((string) ($payload['keyword'] ?? $payload['primary_keyword'] ?? ''));
+				$aiRes = $c->get(AIOrchestrator::class)->executeTask($providerId, 'content_outline', [
+					'keyword'            => $kw,
 					'secondary_keywords' => implode(', ', (array) ($payload['secondary_keywords'] ?? [])),
 					'heading_depth'      => (string) ($payload['heading_depth'] ?? 'H2,H3'),
 				], true);
-			});
-			$worker->registerHandler('CONTENT_GENERATION', static function (array $payload) use ($c): void {
-				$payload['skip_capability_check'] = true;
-				$res = $c->get(ContentWorkflowEngine::class)->runAiWorkflow($payload);
-				if (($res['status'] ?? '') === 'BLOCKED_BY_CONFIGURATION') {
-					throw new \RuntimeException('BLOCKED_BY_CONFIGURATION: ' . ($res['reason'] ?? 'Missing AI configuration'));
+				$outline = $aiRes['validated'];
+				if (function_exists('get_option') && function_exists('update_option')) {
+					$outlines = get_option('htd_ai_seo_outlines', []);
+					if (!is_array($outlines)) {
+						$outlines = [];
+					}
+					$outlines[$kw !== '' ? $kw : ('outline_' . time())] = $outline;
+					update_option('htd_ai_seo_outlines', array_slice($outlines, -50, null, true), false);
 				}
+				return ['status' => 'COMPLETED', 'outline' => $outline];
 			});
-			$worker->registerHandler('CONTENT_REWRITE', static function (array $payload) use ($c): void {
-				$c->get(RewriteEngine::class)->proposeRewrite(
-					(array) ($payload['original_post'] ?? []),
-					(array) ($payload['proposed'] ?? []),
-					(int) ($payload['actor_id'] ?? 0)
-				);
+			$worker->registerHandler('CONTENT_GENERATION', static function (array $payload) use ($c): array {
+				$payload['skip_capability_check'] = true;
+				return $c->get(ContentWorkflowEngine::class)->runAiWorkflow($payload);
 			});
-			$worker->registerHandler('PRODUCT_CONTENT', static function (array $payload) use ($c): void {
-				$c->get(ProductEngine::class)->proposeProductUpdate(
-					(array) ($payload['wc_product'] ?? []),
-					(array) ($payload['proposed'] ?? []),
-					(int) ($payload['actor_id'] ?? 0)
-				);
+			$worker->registerHandler('CONTENT_REWRITE', static function (array $payload) use ($c): array {
+				$orig = (array) ($payload['original_post'] ?? []);
+				$proposed = (array) ($payload['proposed'] ?? []);
+				if ($proposed === [] && !empty($orig['html'])) {
+					$providerId = (string) ($payload['provider_id'] ?? $c->get(SettingsRegistry::class)->get('active_ai_provider', 'openai'));
+					$aiRes = $c->get(AIOrchestrator::class)->executeTask($providerId, 'article_rewrite', [
+						'keyword'          => (string) ($payload['keyword'] ?? ($orig['title'] ?? '')),
+						'existing_content' => (string) $orig['html'],
+						'target_url'       => (string) ($orig['url'] ?? ''),
+					], true);
+					$proposed = [
+						'title' => (string) ($aiRes['validated']['title'] ?? ($orig['title'] ?? '')),
+						'html'  => (string) ($aiRes['validated']['html_content'] ?? ''),
+					];
+				}
+				$res = $c->get(RewriteEngine::class)->proposeRewrite($orig, $proposed, (int) ($payload['actor_id'] ?? 0));
+				return array_merge(['status' => 'COMPLETED'], $res);
 			});
-			$worker->registerHandler('IMAGE_GENERATION', static function (array $payload) use ($c): void {
-				$c->get(ImageGenerationService::class)->generateImage(
+			$worker->registerHandler('PRODUCT_CONTENT', static function (array $payload) use ($c): array {
+				$wcProd = (array) ($payload['wc_product'] ?? []);
+				$proposed = (array) ($payload['proposed'] ?? []);
+				if ($proposed === [] && !empty($wcProd['name'])) {
+					$providerId = (string) ($payload['provider_id'] ?? $c->get(SettingsRegistry::class)->get('active_ai_provider', 'openai'));
+					$specs = (string) json_encode($payload['verified_specs'] ?? ($wcProd['attributes'] ?? []), JSON_UNESCAPED_UNICODE);
+					$descRes = $c->get(AIOrchestrator::class)->executeTask($providerId, 'product_description', [
+						'product_name'   => (string) $wcProd['name'],
+						'verified_specs' => $specs,
+						'category_url'   => (string) ($payload['category_url'] ?? ''),
+					], true);
+					$shortRes = $c->get(AIOrchestrator::class)->executeTask($providerId, 'product_short_desc', [
+						'product_name'   => (string) $wcProd['name'],
+						'verified_specs' => $specs,
+					], true);
+					$proposed = [
+						'description'       => (string) ($descRes['validated']['html_description'] ?? ''),
+						'short_description' => (string) ($shortRes['validated']['short_description'] ?? ''),
+					];
+				}
+				$res = $c->get(ProductEngine::class)->proposeProductUpdate($wcProd, $proposed, (int) ($payload['actor_id'] ?? 0));
+				return array_merge(['status' => 'COMPLETED'], $res);
+			});
+			$worker->registerHandler('IMAGE_GENERATION', static function (array $payload) use ($c): array {
+				$res = $c->get(ImageGenerationService::class)->generateImage(
 					(string) ($payload['provider_id'] ?? 'openai'),
 					(string) ($payload['prompt'] ?? ''),
-					(string) ($payload['size'] ?? '1024x1024')
+					(string) ($payload['size'] ?? '1024x1024'),
+					(int) ($payload['draft_id'] ?? 0),
+					(string) ($payload['alt_text'] ?? '')
 				);
+				return [
+					'status'       => 'COMPLETED',
+					'proposal_id'  => $res['proposal_id'],
+					'file_path'    => $res['file_path'],
+					'url'          => $res['url'],
+					'bytes_sha256' => $res['bytes_sha256'],
+				];
 			});
-			$worker->registerHandler('CONTENT_QA', static function (array $payload) use ($c): void {
-				$c->get(ContentQAEngine::class)->evaluate($payload);
+			$worker->registerHandler('CONTENT_QA', static function (array $payload) use ($c): array {
+				$qaRes = $c->get(ContentQAEngine::class)->evaluate($payload);
+				return ['status' => 'COMPLETED', 'qa' => $qaRes];
 			});
-			$worker->registerHandler('INTERNAL_LINK_ANALYSIS', static function (array $payload) use ($c): void {
-				$c->get(InternalLinkProposalEngine::class)->propose(
-					(string) ($payload['html'] ?? ''),
-					(string) ($payload['keyword'] ?? ''),
-					(array) ($payload['candidates'] ?? [])
-				);
+			$worker->registerHandler('INTERNAL_LINK_ANALYSIS', static function (array $payload) use ($c): array {
+				$postId = max(1, (int) ($payload['post_id'] ?? ($payload['draft_id'] ?? 1)));
+				$kw = trim((string) ($payload['keyword'] ?? $payload['primary_keyword'] ?? ''));
+				$sourceUrl = trim((string) ($payload['source_url'] ?? 'https://htd.net.vn/'));
+				$linkEngine = $c->get(InternalLinkEngine::class);
+				$res = $linkEngine->createProposal($postId, $sourceUrl, $kw !== '' ? $kw : 'HTD', (int) ($payload['max_links'] ?? 3), (int) ($payload['actor_id'] ?? 0));
+				return array_merge(['status' => 'COMPLETED'], $res);
 			});
-			$worker->registerHandler('PUBLISH_APPROVED_CONTENT', static function (array $payload) use ($c): void {
-				$c->get(PublishingEngine::class)->execute(
+			$worker->registerHandler('PUBLISH_APPROVED_CONTENT', static function (array $payload) use ($c): array {
+				$res = $c->get(PublishingEngine::class)->execute(
 					(int) ($payload['draft_id'] ?? 0),
 					(int) ($payload['approval_id'] ?? 0),
 					(string) ($payload['target_status'] ?? 'draft'),
@@ -330,9 +411,10 @@ final class Plugin {
 					!empty($payload['is_auto_publish']),
 					isset($payload['scheduled_date_gmt']) ? (string) $payload['scheduled_date_gmt'] : null
 				);
+				return array_merge(['status' => 'COMPLETED'], $res);
 			});
-			$worker->registerHandler('HTD_SEO_AUDIT', static function (array $payload) use ($c): void {
-				$c->get(OneClickAuditWorkflow::class)->runAudit(
+			$worker->registerHandler('HTD_SEO_AUDIT', static function (array $payload) use ($c): array {
+				return $c->get(OneClickAuditWorkflow::class)->runAudit(
 					(array) ($payload['category_snapshots'] ?? []),
 					(array) ($payload['page_snapshots'] ?? [])
 				);
@@ -377,7 +459,11 @@ final class Plugin {
 				$c->get(CategorySEOEngine::class),
 				$c->get(OpportunityAndRoadmapEngine::class),
 				$c->get(TechnicalAuditAndTrafficGuard::class),
-				$c->get(Logger::class)
+				$c->get(Logger::class),
+				$c->get(KeywordIntelligence::class),
+				$c->get(CompetitorAndAISearchEngine::class),
+				$c->get(GrowthAnalyticsEngine::class),
+				$c->get(InternalLinkProposalEngine::class)
 			);
 		});
 		$this->container->singleton(AdminMenu::class, function (Container $c): AdminMenu {

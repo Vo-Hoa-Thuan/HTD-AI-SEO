@@ -140,29 +140,32 @@ final class QueueEngine {
 		$leaseUntil = gmdate('Y-m-d H:i:s', time() + max(10, $extendSeconds));
 		$affected = $this->wpdb->query(
 			$this->wpdb->prepare(
-				"UPDATE {$table} SET heartbeat_at = %s, lease_expires_at = %s, updated_at_utc = %s WHERE id = %d AND status = %s AND lock_owner = %s",
+				"UPDATE {$table} SET heartbeat_at = %s, lease_expires_at = %s, updated_at_utc = %s WHERE id = %d AND status = %s AND lock_owner = %s AND lease_expires_at >= %s",
 				$now,
 				$leaseUntil,
 				$now,
 				$jobId,
 				self::STATUS_RUNNING,
-				$workerId
+				$workerId,
+				$now
 			)
 		);
 		return $affected === 1;
 	}
 
 	public function complete(int $jobId, string $workerId): bool {
+		$this->assertActiveLease($jobId, $workerId);
 		$table = Schema::table($this->wpdb, 'queue');
 		$now = gmdate('Y-m-d H:i:s');
 		$affected = $this->wpdb->query(
 			$this->wpdb->prepare(
-				"UPDATE {$table} SET status = %s, lock_owner = NULL, lease_expires_at = NULL, updated_at_utc = %s WHERE id = %d AND status = %s AND lock_owner = %s",
+				"UPDATE {$table} SET status = %s, lock_owner = NULL, lease_expires_at = NULL, updated_at_utc = %s WHERE id = %d AND status = %s AND lock_owner = %s AND lease_expires_at >= %s",
 				self::STATUS_COMPLETED,
 				$now,
 				$jobId,
 				self::STATUS_RUNNING,
-				$workerId
+				$workerId,
+				$now
 			)
 		);
 		if ($affected === 1) {
@@ -170,6 +173,48 @@ final class QueueEngine {
 			return true;
 		}
 		return false;
+	}
+
+	public function assertActiveLease(int $jobId, string $workerId): void {
+		$job = $this->find($jobId);
+		if ($job === null || ($job['status'] ?? '') !== self::STATUS_RUNNING || ($job['lock_owner'] ?? '') !== $workerId) {
+			throw new \RuntimeException("Worker '{$workerId}' does not hold active lease for job #{$jobId}.", 409);
+		}
+		$exp = !empty($job['lease_expires_at']) ? strtotime((string) $job['lease_expires_at']) : 0;
+		if ($exp <= 0 || $exp < time()) {
+			throw new \RuntimeException("Lease expired for worker '{$workerId}' on job #{$jobId}; resurrection blocked.", 409);
+		}
+	}
+
+	/**
+	 * Persist structured worker execution outcome (COMPLETED, FAILED, BLOCKED, PARTIAL, CANCELLED).
+	 *
+	 * @param array<string, mixed> $result
+	 */
+	public function recordResult(int $jobId, string $outcomeStatus, array $result): void {
+		$results = function_exists('get_option') ? get_option('htd_ai_seo_job_results', []) : [];
+		if (!is_array($results)) {
+			$results = [];
+		}
+		$results[$jobId] = [
+			'status'      => $outcomeStatus,
+			'result'      => $result,
+			'recorded_at' => gmdate('Y-m-d H:i:s'),
+		];
+		if (count($results) > 100) {
+			$results = array_slice($results, -100, null, true);
+		}
+		if (function_exists('update_option')) {
+			update_option('htd_ai_seo_job_results', $results, false);
+		}
+	}
+
+	/**
+	 * @return array<string, mixed>|null
+	 */
+	public function getResult(int $jobId): ?array {
+		$results = function_exists('get_option') ? get_option('htd_ai_seo_job_results', []) : [];
+		return is_array($results[$jobId] ?? null) ? $results[$jobId] : null;
 	}
 
 	public function fail(int $jobId, string $workerId, string $error, int $baseBackoffSeconds = 30): string {

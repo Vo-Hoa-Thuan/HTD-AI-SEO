@@ -64,6 +64,28 @@ final class MediaProposalService {
 	}
 
 	/**
+	 * Persist a validated AI-generated image proposal with file path, SHA-256, and preview data URI.
+	 *
+	 * @param array<string, mixed> $extraMeta
+	 */
+	public function proposeGeneratedImage(
+		int $draftId,
+		string $filePath,
+		string $previewUrl,
+		string $mime,
+		string $altText,
+		string $prompt,
+		array $extraMeta = []
+	): int {
+		$meta = array_merge($extraMeta, [
+			'file_path' => $filePath,
+			'mime'      => $mime,
+			'prompt'    => $prompt,
+		]);
+		return $this->saveProposal($draftId, 'ai_generated', 0, $previewUrl, $altText, '', $altText, 'featured', 'VALIDATED', $meta);
+	}
+
+	/**
 	 * @param array<string, mixed> $meta
 	 */
 	private function saveProposal(

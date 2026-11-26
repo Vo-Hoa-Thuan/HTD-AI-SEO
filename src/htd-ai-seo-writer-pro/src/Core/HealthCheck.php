@@ -26,13 +26,15 @@ final class HealthCheck {
 	public function summary(): array {
 		$allSettings = $this->settings->all();
 		return [
-			'plugin_version'     => defined('HTD_AI_SEO_VERSION') ? HTD_AI_SEO_VERSION : '0.9.0-dev',
+			'plugin_version'     => defined('HTD_AI_SEO_VERSION') ? HTD_AI_SEO_VERSION : '0.9.1-dev',
 			'php_version'        => PHP_VERSION,
 			'php_compatible'     => Environment::isPhpCompatible(),
 			'wp_version'         => Environment::wpVersion(),
 			'db_schema_version'  => $this->migrator->currentVersion(),
 			'db_target_version'  => defined('HTD_AI_SEO_DB_VERSION') ? HTD_AI_SEO_DB_VERSION : '0.6.0',
 			'openssl_available'  => Environment::hasOpenSsl(),
+			'mbstring_available' => Environment::hasMbstring(),
+			'missing_extensions' => Environment::missingRequiredExtensions(),
 			'woocommerce_active' => Environment::isWooCommerceActive(),
 			'rank_math_active'   => Environment::isRankMathActive(),
 			'litespeed_detected' => Environment::isLiteSpeed(),

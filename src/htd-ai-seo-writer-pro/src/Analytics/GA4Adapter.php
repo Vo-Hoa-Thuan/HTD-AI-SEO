@@ -50,7 +50,63 @@ final class GA4Adapter {
 		];
 	}
 
+	public function buildAuthUrl(string $clientId, string $redirectUri, string $state): string {
+		return 'https://accounts.google.com/o/oauth2/v2/auth?' . http_build_query([
+			'client_id'     => $clientId,
+			'redirect_uri'  => $redirectUri,
+			'response_type' => 'code',
+			'scope'         => self::SCOPE_READONLY,
+			'access_type'   => 'offline',
+			'prompt'        => 'consent',
+			'state'         => $state,
+		], '', '&', PHP_QUERY_RFC3986);
+	}
+
+	/**
+	 * @return array<string, mixed>
+	 */
+	public function exchangeAuthCode(string $code, string $clientId, string $clientSecret, string $redirectUri): array {
+		$res = $this->httpGuard->request('https://oauth2.googleapis.com/token', [
+			'method'  => 'POST',
+			'headers' => ['Content-Type' => 'application/x-www-form-urlencoded'],
+			'body'    => http_build_query([
+				'code'          => $code,
+				'client_id'     => $clientId,
+				'client_secret' => $clientSecret,
+				'redirect_uri'  => $redirectUri,
+				'grant_type'    => 'authorization_code',
+			]),
+		]);
+		$data = json_decode((string) ($res['body'] ?? ''), true);
+		if ((int) ($res['status'] ?? 0) !== 200 || !is_array($data) || empty($data['access_token'])) {
+			throw new \RuntimeException('GA4 OAuth token exchange failed.', 401);
+		}
+		$tokens = [
+			'access_token'  => (string) $data['access_token'],
+			'refresh_token' => (string) ($data['refresh_token'] ?? ''),
+			'expires_at'    => time() + max(60, (int) ($data['expires_in'] ?? 3600)),
+			'scope'         => self::SCOPE_READONLY,
+		];
+		$this->vault->storeSecret(self::CRED_TOKENS, (string) json_encode($tokens));
+		$this->updateState(['connected' => true, 'last_error' => null]);
+		return $tokens;
+	}
+
 	public function disconnect(): void {
+		$raw = $this->vault->getSecret(self::CRED_TOKENS);
+		$tokens = is_string($raw) ? json_decode($raw, true) : null;
+		$tok = is_array($tokens) ? (string) ($tokens['refresh_token'] ?: ($tokens['access_token'] ?? '')) : '';
+		if ($tok !== '') {
+			try {
+				$this->httpGuard->request('https://oauth2.googleapis.com/revoke', [
+					'method'  => 'POST',
+					'headers' => ['Content-Type' => 'application/x-www-form-urlencoded'],
+					'body'    => http_build_query(['token' => $tok]),
+				]);
+			} catch (\Throwable) {
+				// Local disconnect still proceeds even if remote revocation is disabled/offline
+			}
+		}
 		$this->vault->deleteSecret(self::CRED_TOKENS);
 		if (function_exists('delete_option')) {
 			delete_option(self::STATE_OPTION);
@@ -108,6 +164,15 @@ final class GA4Adapter {
 		$accessToken = is_array($tokens) ? (string) ($tokens['access_token'] ?? '') : '';
 		if ($accessToken === '') {
 			throw new \RuntimeException('BLOCKED_BY_CONFIGURATION: GA4 OAuth access token missing.', 401);
+		}
+		$expiresAt = is_array($tokens) ? (int) ($tokens['expires_at'] ?? 0) : 0;
+		if ($expiresAt > 0 && $expiresAt <= (time() + 60)) {
+			$oauthCfg = function_exists('get_option') ? get_option('htd_ai_seo_google_oauth_cfg', []) : [];
+			$cid = is_array($oauthCfg) ? (string) ($oauthCfg['client_id'] ?? '') : '';
+			$csec = (string) ($this->vault->getSecret('google_oauth_client_secret') ?? '');
+			if ($cid !== '' && $csec !== '') {
+				$accessToken = $this->refreshAccessToken($cid, $csec);
+			}
 		}
 
 		$end = $endDate !== '' ? $endDate : gmdate('Y-m-d', strtotime('-1 day'));

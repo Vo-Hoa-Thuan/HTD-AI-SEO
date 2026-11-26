@@ -9,8 +9,23 @@
 	</form>
 	<div class="htd-grid">
 		<div class="htd-card">
-			<h3>GSC &amp; GA4 Sync (Read-Only Scopes)</h3>
+			<h3>GSC &amp; GA4 OAuth &amp; Sync (Read-Only Scopes)</h3>
 			<p>GSC Snapshots: <strong><?php echo esc_html((string) ($gscCount ?? 0)); ?></strong> | GA4 Snapshots: <strong><?php echo esc_html((string) ($ga4Count ?? 0)); ?></strong></p>
+			<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="margin-bottom:8px;">
+				<?php wp_nonce_field('htd_ai_seo_google_config'); ?>
+				<input type="hidden" name="action" value="htd_ai_seo_google_config">
+				<p><input type="text" name="google_client_id" placeholder="Google OAuth Client ID" class="regular-text">
+				<input type="password" name="google_client_secret" placeholder="Client Secret (Vault)" class="regular-text"></p>
+				<p><input type="text" name="gsc_property" placeholder="GSC Site URL (e.g. https://htd.net.vn/)" class="regular-text">
+				<input type="text" name="ga4_property" placeholder="GA4 Property ID (numeric)" class="regular-text"></p>
+				<button type="submit" class="button button-small">Save OAuth &amp; Properties</button>
+			</form>
+			<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="margin-bottom:8px;">
+				<?php wp_nonce_field('htd_ai_seo_google_connect'); ?>
+				<input type="hidden" name="action" value="htd_ai_seo_google_connect">
+				<button type="submit" name="service" value="gsc" class="button button-secondary">Connect GSC</button>
+				<button type="submit" name="service" value="ga4" class="button button-secondary">Connect GA4</button>
+			</form>
 			<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="margin-bottom:8px;">
 				<?php wp_nonce_field('htd_ai_seo_google_sync'); ?>
 				<input type="hidden" name="action" value="htd_ai_seo_google_sync">

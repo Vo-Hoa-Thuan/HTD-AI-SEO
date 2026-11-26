@@ -72,11 +72,17 @@ final class ContentDraftRepository {
 	}
 
 	/**
-	 * Update draft content/SEO fields and invalidate any prior approval link.
+	 * Update draft content/SEO fields, supersede old approval, re-evaluate Content QA, and optionally create a new approval.
 	 *
 	 * @param array<string, mixed> $fields
 	 */
-	public function updateDraftContent(int $draftId, array $fields, int $actorId = 0): bool {
+	public function updateDraftContent(
+		int $draftId,
+		array $fields,
+		int $actorId = 0,
+		?\HTD\AISEO\Approval\ApprovalEngine $approvals = null,
+		?ContentQAEngine $qa = null
+	): bool {
 		$existing = $this->find($draftId);
 		if ($existing === null) {
 			throw new \RuntimeException("Draft #{$draftId} not found.", 404);
@@ -86,27 +92,87 @@ final class ContentDraftRepository {
 			? Sanitizer::sanitizeAiHtml((string) $fields['html_content'])
 			: (string) $existing['html_content'];
 		$title = isset($fields['title']) ? trim((string) $fields['title']) : (string) $existing['title'];
+		$metaTitle = isset($fields['meta_title']) ? trim((string) $fields['meta_title']) : (string) ($existing['meta_title'] ?? '');
+		$metaDesc = isset($fields['meta_description']) ? trim((string) $fields['meta_description']) : (string) ($existing['meta_description'] ?? '');
+		$excerpt = isset($fields['excerpt']) ? trim((string) $fields['excerpt']) : (string) ($existing['excerpt'] ?? '');
+
+		// Supersede/cancel old approval if present
+		$oldApprovalId = (int) ($existing['approval_id'] ?? 0);
+		if ($oldApprovalId > 0 && $approvals !== null) {
+			try {
+				$approvals->cancel($oldApprovalId, $actorId, 'Superseded by draft content edit');
+			} catch (\Throwable) {
+				// Already executed/rejected/cancelled
+			}
+		}
+
+		// Re-evaluate Content QA when ContentQAEngine is provided, otherwise invalidate previous QA
+		$qaStatus = 'NOT_RUN';
+		$qaResultJson = '[]';
+		$newStatus = 'DRAFT';
+		if ($qa !== null) {
+			$qaRes = $qa->evaluate([
+				'primary_keyword'  => (string) ($fields['primary_keyword'] ?? $title),
+				'suggested_title'  => $title,
+				'meta_description' => $metaDesc,
+				'article_html'     => $html,
+			]);
+			$qaStatus = $qaRes['status'];
+			$qaResultJson = (string) json_encode($qaRes, JSON_UNESCAPED_UNICODE);
+			$newStatus = ($qaStatus === 'FAIL') ? 'DRAFT' : 'REVIEW_PENDING';
+		}
+
+		$revTable = Schema::table($this->wpdb, 'content_revisions');
+		$revRows = $this->wpdb->get_results($this->wpdb->prepare("SELECT id FROM {$revTable} WHERE draft_id = %d", $draftId), ARRAY_A);
+		$nextRev = (is_array($revRows) ? count($revRows) : 0) + 1;
 
 		$updateData = [
 			'title'            => $title,
 			'h1'               => isset($fields['h1']) ? trim((string) $fields['h1']) : $existing['h1'],
-			'meta_title'       => isset($fields['meta_title']) ? trim((string) $fields['meta_title']) : $existing['meta_title'],
-			'meta_description' => isset($fields['meta_description']) ? trim((string) $fields['meta_description']) : $existing['meta_description'],
-			'excerpt'          => isset($fields['excerpt']) ? trim((string) $fields['excerpt']) : $existing['excerpt'],
+			'meta_title'       => $metaTitle,
+			'meta_description' => $metaDesc,
+			'excerpt'          => $excerpt,
 			'html_content'     => $html,
+			'qa_status'        => $qaStatus,
+			'qa_result_json'   => $qaResultJson,
 			'approval_id'      => null,
-			'status'           => 'DRAFT',
+			'status'           => $newStatus,
 			'updated_at_utc'   => gmdate('Y-m-d H:i:s'),
 		];
 		$res = $this->wpdb->update($table, $updateData, ['id' => $draftId]);
 		if ($res === false) {
-			return false;
+			throw new \RuntimeException("Failed to persist draft #{$draftId} update.", 500);
 		}
-		$revTable = Schema::table($this->wpdb, 'content_revisions');
-		$revRows = $this->wpdb->get_results($this->wpdb->prepare("SELECT id FROM {$revTable} WHERE draft_id = %d", $draftId), ARRAY_A);
-		$nextRev = (is_array($revRows) ? count($revRows) : 0) + 1;
+
 		$this->addRevision($draftId, $nextRev, $title, $html, $updateData, 'Manual draft edit', $actorId);
-		$this->logger->log('content', 'draft_updated', 'AUDIT', 'OK', ['draft_id' => $draftId, 'revision' => $nextRev]);
+
+		if ($approvals !== null && $qa !== null && $qaStatus !== 'FAIL') {
+			$jobType = (string) ($existing['job_type'] ?? 'new');
+			$targetPostId = (int) ($existing['target_post_id'] ?? 0);
+			$isRewrite = $jobType === 'rewrite';
+			$newApprovalId = $approvals->createRequest(
+				actionType: $isRewrite ? 'rewrite_post' : 'create_draft_post',
+				targetType: 'post',
+				targetId: $targetPostId,
+				payload: [
+					'draft_id'           => $draftId,
+					'target_id'          => $targetPostId,
+					'target_status'      => $isRewrite ? 'publish' : 'draft',
+					'scheduled_date_gmt' => null,
+					'mutation_scope'     => $isRewrite ? 'wp_post_rewrite' : 'wp_post_draft',
+					'title'              => $title,
+					'slug'               => trim((string) ($existing['slug'] ?? '')),
+					'excerpt'            => $excerpt,
+					'meta_title'         => $metaTitle,
+					'meta_description'   => $metaDesc,
+					'html_sha256'        => hash('sha256', $html),
+				],
+				requestedBy: $actorId
+			);
+			$this->updateApprovalLink($draftId, $newApprovalId, 'REVIEW_PENDING');
+		}
+
+		$this->logger->log('content', 'draft_updated', 'AUDIT', 'OK', ['draft_id' => $draftId, 'revision' => $nextRev, 'qa_status' => $qaStatus]);
 		return true;
 	}
 

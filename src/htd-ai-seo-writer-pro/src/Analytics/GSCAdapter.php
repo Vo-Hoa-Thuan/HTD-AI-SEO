@@ -121,6 +121,20 @@ final class GSCAdapter {
 	}
 
 	public function disconnect(): void {
+		$raw = $this->vault->getSecret(self::CRED_TOKENS);
+		$tokens = is_string($raw) ? json_decode($raw, true) : null;
+		$tok = is_array($tokens) ? (string) ($tokens['refresh_token'] ?: ($tokens['access_token'] ?? '')) : '';
+		if ($tok !== '') {
+			try {
+				$this->httpGuard->request('https://oauth2.googleapis.com/revoke', [
+					'method'  => 'POST',
+					'headers' => ['Content-Type' => 'application/x-www-form-urlencoded'],
+					'body'    => http_build_query(['token' => $tok]),
+				]);
+			} catch (\Throwable) {
+				// Local disconnect still proceeds even if remote revocation is disabled/offline
+			}
+		}
 		$this->vault->deleteSecret(self::CRED_TOKENS);
 		if (function_exists('delete_option')) {
 			delete_option(self::STATE_OPTION);
@@ -149,6 +163,15 @@ final class GSCAdapter {
 		$accessToken = is_array($tokens) ? (string) ($tokens['access_token'] ?? '') : '';
 		if ($accessToken === '') {
 			throw new \RuntimeException('BLOCKED_BY_CONFIGURATION: GSC OAuth access token missing.', 401);
+		}
+		$expiresAt = is_array($tokens) ? (int) ($tokens['expires_at'] ?? 0) : 0;
+		if ($expiresAt > 0 && $expiresAt <= (time() + 60)) {
+			$oauthCfg = function_exists('get_option') ? get_option('htd_ai_seo_google_oauth_cfg', []) : [];
+			$cid = is_array($oauthCfg) ? (string) ($oauthCfg['client_id'] ?? '') : '';
+			$csec = (string) ($this->vault->getSecret('google_oauth_client_secret') ?? '');
+			if ($cid !== '' && $csec !== '') {
+				$accessToken = $this->refreshAccessToken($cid, $csec);
+			}
 		}
 
 		$end = $endDate !== '' ? $endDate : gmdate('Y-m-d', strtotime('-2 days'));

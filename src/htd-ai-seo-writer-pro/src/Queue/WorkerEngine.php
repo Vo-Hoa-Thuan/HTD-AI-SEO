@@ -79,22 +79,28 @@ final class WorkerEngine {
 				if (!isset($this->handlers[$jobType])) {
 					throw new \RuntimeException("No handler registered for job type: {$jobType}");
 				}
-				// Verify lease ownership and expiry right before executing
-				$fresh = $this->queue->find($jobId);
-				$leaseExp = !empty($fresh['lease_expires_at']) ? strtotime((string) $fresh['lease_expires_at']) : 0;
-				if ($fresh === null || ($fresh['lock_owner'] ?? '') !== $workerId || ($leaseExp > 0 && $leaseExp < time())) {
-					throw new \RuntimeException("Stale worker '{$workerId}' lost ownership or lease expired for job #{$jobId}.");
+				$this->queue->assertActiveLease($jobId, $workerId);
+
+				$handlerResult = ($this->handlers[$jobType])($payload, $job);
+				$resultArr = is_array($handlerResult) ? $handlerResult : ['ok' => true];
+				$outcome = strtoupper((string) ($resultArr['status'] ?? 'COMPLETED'));
+				if ($outcome === 'BLOCKED' || $outcome === 'BLOCKED_BY_CONFIGURATION' || $outcome === 'BLOCKED_BY_EMERGENCY_STOP') {
+					$this->queue->recordResult($jobId, 'BLOCKED', $resultArr);
+					throw new \RuntimeException((string) ($resultArr['reason'] ?? "Job #{$jobId} blocked by configuration."));
 				}
 
-				($this->handlers[$jobType])($payload, $job);
-
-				// Re-check ownership before marking completed
+				$this->queue->assertActiveLease($jobId, $workerId);
 				if (!$this->queue->complete($jobId, $workerId)) {
 					throw new \RuntimeException("Failed to complete job #{$jobId}; lease lost.");
 				}
+				$finalStatus = ($outcome === 'PARTIAL' || ($resultArr['audit_completeness'] ?? '') === 'PARTIAL') ? 'PARTIAL' : 'COMPLETED';
+				$this->queue->recordResult($jobId, $finalStatus, $resultArr);
 				$completed++;
 			} catch (\Throwable $e) {
 				$this->queue->fail($jobId, $workerId, $e->getMessage());
+				if ($this->queue->getResult($jobId) === null) {
+					$this->queue->recordResult($jobId, 'FAILED', ['error' => $e->getMessage()]);
+				}
 				$this->logger->log('worker', 'job_failed', 'ERROR', 'FAILED', [
 					'job_id'   => $jobId,
 					'job_type' => $jobType,

@@ -71,6 +71,19 @@
 							<button type="submit" class="button button-primary button-small">Execute Approved</button>
 						</form>
 					<?php endif; ?>
+					<?php if (($d['qa_status'] ?? '') !== 'FAIL') : ?>
+						<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="display:inline-block;margin-top:4px;">
+							<?php wp_nonce_field('htd_ai_seo_request_publish'); ?>
+							<input type="hidden" name="action" value="htd_ai_seo_request_publish">
+							<input type="hidden" name="draft_id" value="<?php echo esc_attr((string) $d['id']); ?>">
+							<select name="target_status">
+								<option value="publish">Publish Approval</option>
+								<option value="future">Schedule Approval</option>
+							</select>
+							<input type="text" name="scheduled_date_gmt" placeholder="YYYY-MM-DD HH:MM:SS" style="width:140px;">
+							<button type="submit" class="button button-small">Request Publish</button>
+						</form>
+					<?php endif; ?>
 				</td>
 			</tr>
 		<?php endforeach; endif; ?>

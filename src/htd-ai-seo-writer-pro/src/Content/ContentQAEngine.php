@@ -30,7 +30,13 @@ final class ContentQAEngine {
 		$metaDesc = (string) ($contract['meta_description'] ?? '');
 		$title = (string) ($contract['suggested_title'] ?? '');
 
-		// 1. HTML Safety & Prompt Injection Residual
+		// 1. Non-empty content & HTML Safety & Prompt Injection Residual
+		if (trim(strip_tags($html)) === '') {
+			$errors[] = 'Article HTML content cannot be empty.';
+			$checks['content_non_empty'] = 'FAIL';
+		} else {
+			$checks['content_non_empty'] = 'PASS';
+		}
 		if (preg_match('/<script\b|<iframe\b|<\?php|on[a-z]+\s*=/i', $html)) {
 			$errors[] = 'Unsafe HTML or executable tag detected.';
 			$checks['html_safety'] = 'FAIL';

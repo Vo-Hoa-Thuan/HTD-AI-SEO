@@ -47,6 +47,9 @@ final class ContentWorkflowEngine implements ContentGeneratorInterface {
 	 * @return array<string, mixed>
 	 */
 	public function runAiWorkflow(array $jobPayload): array {
+		if (!\HTD\AISEO\Support\Environment::isPhpCompatible()) {
+			return ['status' => 'BLOCKED_BY_CONFIGURATION', 'reason' => 'PHP 8.1+ is required before executing paid AI workflows.'];
+		}
 		$keyword = trim((string) ($jobPayload['primary_keyword'] ?? ''));
 		if ($keyword === '') {
 			throw new \InvalidArgumentException('primary_keyword is required.');
@@ -123,7 +126,7 @@ final class ContentWorkflowEngine implements ContentGeneratorInterface {
 		], $skipCap);
 		$metaDescRes = $this->ai->executeTask($providerId, 'meta_description', [
 			'keyword' => $keyword,
-			'summary' => mb_substr(strip_tags($articleHtml), 0, 400),
+			'summary' => \HTD\AISEO\Support\Environment::safeSubstr(strip_tags($articleHtml), 0, 400),
 		], $skipCap);
 
 		$mergedPayload = array_merge($jobPayload, [
@@ -149,6 +152,9 @@ final class ContentWorkflowEngine implements ContentGeneratorInterface {
 	 * @return array<string, mixed>
 	 */
 	public function generateDraft(array $jobPayload): array {
+		if (!\HTD\AISEO\Support\Environment::isPhpCompatible()) {
+			return ['status' => 'BLOCKED_BY_CONFIGURATION', 'reason' => 'PHP 8.1+ is required before executing paid AI workflows.'];
+		}
 		$keyword = trim((string) ($jobPayload['primary_keyword'] ?? ''));
 		if ($keyword === '') {
 			throw new \InvalidArgumentException('primary_keyword is required.');

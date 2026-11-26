@@ -19,6 +19,57 @@ final class Environment {
 		return function_exists('openssl_encrypt') && function_exists('openssl_decrypt');
 	}
 
+	public static function hasMbstring(): bool {
+		return function_exists('mb_substr') && function_exists('mb_strlen');
+	}
+
+	public static function hasJson(): bool {
+		return function_exists('json_encode') && function_exists('json_decode');
+	}
+
+	public static function hasPcre(): bool {
+		return function_exists('preg_match');
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public static function missingRequiredExtensions(): array {
+		$missing = [];
+		if (!self::hasOpenSsl()) {
+			$missing[] = 'openssl';
+		}
+		if (!self::hasJson()) {
+			$missing[] = 'json';
+		}
+		if (!self::hasMbstring()) {
+			$missing[] = 'mbstring';
+		}
+		if (!self::hasPcre()) {
+			$missing[] = 'pcre';
+		}
+		return $missing;
+	}
+
+	public static function safeSubstr(string $text, int $start, ?int $length = null): string {
+		if (function_exists('mb_substr')) {
+			return $length === null ? mb_substr($text, $start, null, 'UTF-8') : mb_substr($text, $start, $length, 'UTF-8');
+		}
+		$chars = preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY);
+		if (is_array($chars)) {
+			return implode('', array_slice($chars, $start, $length));
+		}
+		return $length === null ? substr($text, $start) : substr($text, $start, $length);
+	}
+
+	public static function safeStrlen(string $text): int {
+		if (function_exists('mb_strlen')) {
+			return mb_strlen($text, 'UTF-8');
+		}
+		$chars = preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY);
+		return is_array($chars) ? count($chars) : strlen($text);
+	}
+
 	public static function isWooCommerceActive(): bool {
 		return class_exists('WooCommerce');
 	}

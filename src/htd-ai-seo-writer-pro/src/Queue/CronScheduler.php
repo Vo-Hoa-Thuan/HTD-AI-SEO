@@ -79,11 +79,23 @@ final class CronScheduler {
 			return $this->recordState('SKIPPED', 'ALLOW_BACKGROUND_CONTENT_GENERATION is false.');
 		}
 
-		if (function_exists('get_transient') && get_transient(self::LOCK_TRANSIENT)) {
-			return $this->recordState('SKIPPED', 'Cron overlap lock active.');
-		}
-		if (function_exists('set_transient')) {
-			set_transient(self::LOCK_TRANSIENT, 1, 120);
+		// Atomic overlap lock using add_option (INSERT UNIQUE option_name) with TTL recovery
+		$lockAcquired = false;
+		if (function_exists('add_option')) {
+			$now = time();
+			$lockVal = ['owner' => bin2hex(random_bytes(4)), 'expires_at' => $now + 120];
+			if (!add_option(self::LOCK_TRANSIENT, $lockVal, '', false)) {
+				$existingLock = function_exists('get_option') ? get_option(self::LOCK_TRANSIENT, null) : null;
+				if (is_array($existingLock) && (int) ($existingLock['expires_at'] ?? 0) < $now) {
+					delete_option(self::LOCK_TRANSIENT);
+					$lockAcquired = add_option(self::LOCK_TRANSIENT, $lockVal, '', false);
+				}
+			} else {
+				$lockAcquired = true;
+			}
+			if (!$lockAcquired) {
+				return $this->recordState('SKIPPED', 'Cron atomic overlap lock active.');
+			}
 		}
 
 		try {
@@ -94,8 +106,8 @@ final class CronScheduler {
 			$this->logger->log('cron', 'run_failed', 'ERROR', 'FAILED', ['error' => $e->getMessage()]);
 			return $this->recordState('ERROR', $e->getMessage());
 		} finally {
-			if (function_exists('delete_transient')) {
-				delete_transient(self::LOCK_TRANSIENT);
+			if ($lockAcquired && function_exists('delete_option')) {
+				delete_option(self::LOCK_TRANSIENT);
 			}
 		}
 	}

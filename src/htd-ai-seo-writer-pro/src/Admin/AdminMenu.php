@@ -67,7 +67,11 @@ final class AdminMenu {
 		add_action('admin_post_htd_ai_seo_media_action', [$this, 'handleMediaAction']);
 		add_action('admin_post_htd_ai_seo_internal_links', [$this, 'handleInternalLinks']);
 		add_action('admin_post_htd_ai_seo_execute_approval', [$this, 'handleExecuteApproval']);
+		add_action('admin_post_htd_ai_seo_request_publish', [$this, 'handleRequestPublish']);
 		add_action('admin_post_htd_ai_seo_queue_action', [$this, 'handleQueueAction']);
+		add_action('admin_post_htd_ai_seo_google_config', [$this, 'handleGoogleConfig']);
+		add_action('admin_post_htd_ai_seo_google_connect', [$this, 'handleGoogleConnect']);
+		add_action('admin_post_htd_ai_seo_google_callback', [$this, 'handleGoogleCallback']);
 		add_action('admin_post_htd_ai_seo_google_sync', [$this, 'handleGoogleSync']);
 		add_action('admin_post_htd_ai_seo_gsc_import', [$this, 'handleGscImport']);
 	}
@@ -480,13 +484,19 @@ final class AdminMenu {
 		RequestVerifier::verifyAdminAction('htd_ai_seo_edit_draft', Capabilities::MANAGE);
 		$draftId = absint($_POST['draft_id'] ?? 0);
 		try {
-			$this->container->get(ContentDraftRepository::class)->updateDraftContent($draftId, [
-				'title'            => sanitize_text_field((string) wp_unslash($_POST['title'] ?? '')),
-				'meta_title'       => sanitize_text_field((string) wp_unslash($_POST['meta_title'] ?? '')),
-				'meta_description' => sanitize_text_field((string) wp_unslash($_POST['meta_description'] ?? '')),
-				'html_content'     => (string) wp_unslash($_POST['html_content'] ?? ''),
-			], get_current_user_id());
-			$this->setNotice('success', "Draft #{$draftId} updated (prior approval cleared; re-approval required).");
+			$this->container->get(ContentDraftRepository::class)->updateDraftContent(
+				$draftId,
+				[
+					'title'            => sanitize_text_field((string) wp_unslash($_POST['title'] ?? '')),
+					'meta_title'       => sanitize_text_field((string) wp_unslash($_POST['meta_title'] ?? '')),
+					'meta_description' => sanitize_text_field((string) wp_unslash($_POST['meta_description'] ?? '')),
+					'html_content'     => (string) wp_unslash($_POST['html_content'] ?? ''),
+				],
+				get_current_user_id(),
+				$this->container->get(ApprovalEngine::class),
+				$this->container->get(\HTD\AISEO\Content\ContentQAEngine::class)
+			);
+			$this->setNotice('success', "Draft #{$draftId} updated, QA re-evaluated, and prior approval superseded.");
 		} catch (\Throwable $e) {
 			$this->setNotice('error', $e->getMessage());
 		}
@@ -579,9 +589,10 @@ final class AdminMenu {
 		RequestVerifier::verifyAdminAction('htd_ai_seo_media_action', Capabilities::MANAGE);
 		$prompt = sanitize_text_field((string) wp_unslash($_POST['image_prompt'] ?? ''));
 		$providerId = Sanitizer::sanitizeIdentifier((string) wp_unslash($_POST['provider_id'] ?? 'openai'));
+		$draftId = absint($_POST['draft_id'] ?? 0);
 		try {
-			$res = $this->container->get(\HTD\AISEO\Media\ImageGenerationService::class)->generateImage($providerId, $prompt);
-			$this->setNotice('success', 'Image generated: ' . ($res['url'] ?? 'OK'));
+			$res = $this->container->get(\HTD\AISEO\Media\ImageGenerationService::class)->generateImage($providerId, $prompt, '1024x1024', $draftId, $prompt);
+			$this->setNotice('success', "Image generated and saved (Proposal #{$res['proposal_id']}): {$res['url']}");
 		} catch (\Throwable $e) {
 			$this->setNotice('error', $e->getMessage());
 		}
@@ -593,20 +604,136 @@ final class AdminMenu {
 		RequestVerifier::verifyAdminAction('htd_ai_seo_internal_links', Capabilities::MANAGE);
 		$draftId = absint($_POST['draft_id'] ?? 0);
 		try {
-			$draft = $this->container->get(ContentDraftRepository::class)->find($draftId);
+			$repo = $this->container->get(ContentDraftRepository::class);
+			$draft = $repo->find($draftId);
 			if ($draft === null) {
 				throw new \RuntimeException("Draft #{$draftId} not found.");
 			}
-			$links = $this->container->get(\HTD\AISEO\SEO\InternalLinkProposalEngine::class)->propose(
-				(string) $draft['html_content'],
-				(string) $draft['title'],
-				[]
+			$candidates = [];
+			foreach ($repo->listRecent(20) as $d) {
+				if ((int) $d['id'] !== $draftId) {
+					$candidates[] = ['id' => (int) $d['id'], 'url' => 'https://htd.net.vn/' . ltrim((string) ($d['slug'] ?? ''), '/') . '/', 'title' => (string) $d['title']];
+				}
+			}
+			$structured = json_decode((string) ($draft['structured_json'] ?? '{}'), true);
+			$kw = is_array($structured) && !empty($structured['primary_keyword']) ? (string) $structured['primary_keyword'] : (string) $draft['title'];
+			$sourceUrl = 'https://htd.net.vn/' . ltrim((string) ($draft['slug'] ?? ''), '/') . '/';
+			$res = $this->container->get(\HTD\AISEO\SEO\InternalLinkEngine::class)->createProposal(
+				$draftId,
+				$sourceUrl,
+				$kw,
+				3,
+				get_current_user_id()
 			);
-			$this->setNotice('success', 'Proposed ' . count($links) . ' internal link(s) for Draft #' . $draftId . '.');
+			$this->setNotice('success', 'Persisted ' . count((array) ($res['proposal_ids'] ?? [])) . ' internal link proposal(s) (Approval #' . ($res['approval_id'] ?? 0) . ') for Draft #' . $draftId . '.');
 		} catch (\Throwable $e) {
 			$this->setNotice('error', $e->getMessage());
 		}
 		wp_safe_redirect(admin_url('admin.php?page=htd-ai-seo-drafts'));
+		exit;
+	}
+
+	public function handleRequestPublish(): void {
+		RequestVerifier::verifyAdminAction('htd_ai_seo_request_publish', Capabilities::MANAGE);
+		$draftId = absint($_POST['draft_id'] ?? 0);
+		$targetStatus = Sanitizer::sanitizeIdentifier((string) wp_unslash($_POST['target_status'] ?? 'publish'));
+		$scheduledGmt = trim((string) wp_unslash($_POST['scheduled_date_gmt'] ?? ''));
+		try {
+			$apprId = $this->container->get(\HTD\AISEO\Publishing\PublishingEngine::class)->createPublishApproval(
+				$draftId,
+				$targetStatus,
+				$scheduledGmt !== '' ? $scheduledGmt : null,
+				get_current_user_id()
+			);
+			$this->setNotice('success', "Created {$targetStatus} approval request #{$apprId} for Draft #{$draftId}.");
+		} catch (\Throwable $e) {
+			$this->setNotice('error', $e->getMessage());
+		}
+		wp_safe_redirect(admin_url('admin.php?page=htd-ai-seo-drafts'));
+		exit;
+	}
+
+	public function handleGoogleConfig(): void {
+		RequestVerifier::verifyAdminAction('htd_ai_seo_google_config', Capabilities::MANAGE_SETTINGS);
+		$clientId = trim((string) wp_unslash($_POST['google_client_id'] ?? ''));
+		$clientSecret = trim((string) wp_unslash($_POST['google_client_secret'] ?? ''));
+		$gscProp = trim((string) wp_unslash($_POST['gsc_property'] ?? ''));
+		$ga4Prop = trim((string) wp_unslash($_POST['ga4_property'] ?? ''));
+		try {
+			if (function_exists('update_option')) {
+				update_option('htd_ai_seo_google_oauth_cfg', [
+					'client_id'    => $clientId,
+					'redirect_uri' => admin_url('admin-post.php?action=htd_ai_seo_google_callback'),
+				], false);
+			}
+			if ($clientSecret !== '') {
+				$this->container->get(CredentialVault::class)->storeSecret('google_oauth_client_secret', $clientSecret);
+			}
+			if ($gscProp !== '') {
+				$this->container->get(\HTD\AISEO\Analytics\GSCAdapter::class)->selectProperty($gscProp);
+			}
+			if ($ga4Prop !== '') {
+				$this->container->get(\HTD\AISEO\Analytics\GA4Adapter::class)->selectProperty($ga4Prop);
+			}
+			$this->setNotice('success', 'Google OAuth configuration & properties saved.');
+		} catch (\Throwable $e) {
+			$this->setNotice('error', $e->getMessage());
+		}
+		wp_safe_redirect(admin_url('admin.php?page=htd-ai-seo-growth'));
+		exit;
+	}
+
+	public function handleGoogleConnect(): void {
+		RequestVerifier::verifyAdminAction('htd_ai_seo_google_connect', Capabilities::MANAGE_CREDENTIALS);
+		$service = Sanitizer::sanitizeIdentifier((string) wp_unslash($_POST['service'] ?? 'gsc'));
+		$cfg = function_exists('get_option') ? get_option('htd_ai_seo_google_oauth_cfg', []) : [];
+		$clientId = is_array($cfg) ? (string) ($cfg['client_id'] ?? '') : '';
+		if ($clientId === '') {
+			$this->setNotice('error', 'BLOCKED_BY_CONFIGURATION: Google OAuth client_id is not configured.');
+			wp_safe_redirect(admin_url('admin.php?page=htd-ai-seo-growth'));
+			exit;
+		}
+		$state = $service . ':' . bin2hex(random_bytes(16));
+		if (function_exists('set_transient')) {
+			set_transient('htd_ai_seo_google_state_' . get_current_user_id(), $state, 600);
+		}
+		$redirectUri = admin_url('admin-post.php?action=htd_ai_seo_google_callback');
+		$url = $service === 'ga4'
+			? $this->container->get(\HTD\AISEO\Analytics\GA4Adapter::class)->buildAuthUrl($clientId, $redirectUri, $state)
+			: $this->container->get(\HTD\AISEO\Analytics\GSCAdapter::class)->buildAuthUrl($clientId, $redirectUri, $state);
+		wp_redirect($url);
+		exit;
+	}
+
+	public function handleGoogleCallback(): void {
+		if (!Capabilities::currentUserCan(Capabilities::MANAGE_CREDENTIALS)) {
+			wp_die('Forbidden', 403);
+		}
+		$state = (string) wp_unslash($_GET['state'] ?? '');
+		$code = (string) wp_unslash($_GET['code'] ?? '');
+		$expected = function_exists('get_transient') ? get_transient('htd_ai_seo_google_state_' . get_current_user_id()) : false;
+		if (!is_string($expected) || $expected === '' || !hash_equals($expected, $state) || $code === '') {
+			$this->setNotice('error', 'Invalid or expired Google OAuth state.');
+			wp_safe_redirect(admin_url('admin.php?page=htd-ai-seo-growth'));
+			exit;
+		}
+		delete_transient('htd_ai_seo_google_state_' . get_current_user_id());
+		$service = str_starts_with($state, 'ga4:') ? 'ga4' : 'gsc';
+		$cfg = function_exists('get_option') ? get_option('htd_ai_seo_google_oauth_cfg', []) : [];
+		$clientId = is_array($cfg) ? (string) ($cfg['client_id'] ?? '') : '';
+		$clientSecret = (string) ($this->container->get(CredentialVault::class)->getSecret('google_oauth_client_secret') ?? '');
+		$redirectUri = admin_url('admin-post.php?action=htd_ai_seo_google_callback');
+		try {
+			if ($service === 'ga4') {
+				$this->container->get(\HTD\AISEO\Analytics\GA4Adapter::class)->exchangeAuthCode($code, $clientId, $clientSecret, $redirectUri);
+			} else {
+				$this->container->get(\HTD\AISEO\Analytics\GSCAdapter::class)->exchangeAuthCode($code, $clientId, $clientSecret, $redirectUri);
+			}
+			$this->setNotice('success', strtoupper($service) . ' OAuth account connected.');
+		} catch (\Throwable $e) {
+			$this->setNotice('error', $e->getMessage());
+		}
+		wp_safe_redirect(admin_url('admin.php?page=htd-ai-seo-growth'));
 		exit;
 	}
 

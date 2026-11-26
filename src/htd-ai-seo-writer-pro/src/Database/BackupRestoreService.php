@@ -19,16 +19,36 @@ final class BackupRestoreService {
 		'growth_experiments',
 	];
 
+	/** @var array<string, string> Exact documentation of all 10 excluded tables and restore consequence. */
+	public const EXCLUDED_TABLES = [
+		'migrations'          => 'Schema migration ledger; managed exclusively by Migrator.',
+		'logs'                => 'Immutable audit/security log trail; never overwritten by restore.',
+		'security_events'     => 'Security event history; preserved across restores.',
+		'queue'               => 'Active/historical job queue; restored separately to avoid re-running stale jobs.',
+		'job_attempts'        => 'Worker attempt history tied to queue IDs.',
+		'approvals'           => 'Human approval signatures; excluded so restored drafts require fresh approval.',
+		'publishing_receipts' => 'Idempotency receipts for live WP writes; preserved to prevent duplicate posts.',
+		'product_proposals'   => 'Approval-bound WooCommerce proposals; excluded to prevent stale price/spec writes.',
+		'link_index'          => 'Rebuilt from live WP posts.',
+		'link_proposals'      => 'Approval-bound internal link proposals; excluded to avoid dangling approval links.',
+	];
+
 	public function __construct(private readonly object $wpdb) {}
 
 	/**
-	 * Exact list of non-secret plugin tables covered by backup & restore.
-	 * Credentials, audit logs, queue, and approvals are intentionally excluded.
+	 * Exact list of non-secret plugin tables covered by backup & restore (13 of 23 tables).
 	 *
 	 * @return string[]
 	 */
 	public static function coveredTables(): array {
 		return self::BACKUP_TABLES;
+	}
+
+	/**
+	 * @return array<string, string>
+	 */
+	public static function excludedTables(): array {
+		return self::EXCLUDED_TABLES;
 	}
 
 	/**
@@ -82,6 +102,13 @@ final class BackupRestoreService {
 				foreach ($rows as $row) {
 					if (!is_array($row)) {
 						continue;
+					}
+					// Prevent dangling approval_id links when approvals table is excluded from backup
+					if (array_key_exists('approval_id', $row) && $row['approval_id'] !== null) {
+						$row['approval_id'] = null;
+						if (isset($row['status']) && in_array($row['status'], ['REVIEW_PENDING', 'APPROVED', 'EXECUTING'], true)) {
+							$row['status'] = ($tbl === 'content_drafts') ? 'DRAFT' : 'OPEN';
+						}
 					}
 					if ($skipDuplicates && isset($row['id'])) {
 						$exists = $this->wpdb->get_var($this->wpdb->prepare("SELECT id FROM {$full} WHERE id = %d LIMIT 1", (int) $row['id']));

@@ -27,7 +27,9 @@ final class ImageGenerationService {
 		private readonly CredentialVault $vault,
 		private readonly ExternalRequestGuard $httpGuard,
 		private readonly ImageValidator $validator,
-		private readonly Logger $logger
+		private readonly Logger $logger,
+		private readonly ?\HTD\AISEO\Token\TokenBudgetManager $tokens = null,
+		private readonly ?MediaProposalService $mediaProposals = null
 	) {}
 
 	/**
@@ -90,18 +92,85 @@ final class ImageGenerationService {
 			throw new AIException(AIError::INVALID_CREDENTIAL, 'API key missing for image generation.', 401);
 		}
 
-		$http = $this->buildOpenAiImagePayload($prompt, $apiKey);
-		$res = $this->httpGuard->request($http['url'], [
-			'method'  => $http['method'],
-			'headers' => $http['headers'],
-			'body'    => $http['body'],
-			'timeout' => 60,
-		]);
-		if ((int) $res['status'] < 200 || (int) $res['status'] >= 300) {
-			throw new AIException(AIError::PROVIDER_UNAVAILABLE, "Image API returned HTTP {$res['status']}.", (int) $res['status']);
+		$estCost = 0.04;
+		$reservationId = $this->tokens !== null ? $this->tokens->reserveBudget($providerId, $estCost) : '';
+		try {
+			$http = $this->buildOpenAiImagePayload($prompt, $apiKey);
+			$res = $this->httpGuard->request($http['url'], [
+				'method'  => $http['method'],
+				'headers' => $http['headers'],
+				'body'    => $http['body'],
+				'timeout' => 60,
+			]);
+			if ((int) $res['status'] < 200 || (int) $res['status'] >= 300) {
+				if ($this->tokens !== null && $reservationId !== '') {
+					$this->tokens->reconcileReservation($reservationId, $providerId, 'gpt-image-1', 'image_generation', 0, 0, 0.0, false);
+				}
+				throw new AIException(AIError::PROVIDER_UNAVAILABLE, "Image API returned HTTP {$res['status']}.", (int) $res['status']);
+			}
+			$parsed = $this->parseAndValidateImageResponse((string) $res['body'], $filename);
+			if ($this->tokens !== null && $reservationId !== '') {
+				$this->tokens->reconcileReservation($reservationId, $providerId, 'gpt-image-1', 'image_generation', 0, 0, $estCost, true);
+			}
+			$this->logger->log('media', 'ai_image_generated', 'INFO', 'OK', ['provider' => $providerId, 'mime' => $parsed['mime']]);
+			return $parsed;
+		} finally {
+			if ($this->tokens !== null && $reservationId !== '') {
+				$this->tokens->releaseReservation($reservationId);
+			}
 		}
-		$parsed = $this->parseAndValidateImageResponse((string) $res['body'], $filename);
-		$this->logger->log('media', 'ai_image_generated', 'INFO', 'OK', ['provider' => $providerId, 'mime' => $parsed['mime']]);
-		return $parsed;
+	}
+
+	/**
+	 * Complete workflow: Prompt -> Capability -> Budget -> Guarded API -> Validation -> Persist bytes & MediaProposal.
+	 *
+	 * @return array{mime: string, bytes: string, bytes_sha256: string, file_path: string, url: string, proposal_id: int}
+	 */
+	public function generateImage(string $providerId, string $prompt, string $size = '1024x1024', int $draftId = 0, string $altText = ''): array {
+		$filename = 'htd-img-' . gmdate('Ymd-His') . '-' . substr(hash('sha256', $prompt), 0, 8) . '.png';
+		$parsed = $this->generate($providerId, $prompt, $filename);
+		$bytes = $parsed['bytes'];
+		$sha256 = hash('sha256', $bytes);
+
+		$dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'htd-ai-seo-media';
+		$url = 'data:' . $parsed['mime'] . ';base64,' . base64_encode($bytes);
+		if (function_exists('wp_upload_dir')) {
+			$up = wp_upload_dir();
+			if (!empty($up['path'])) {
+				$dir = rtrim((string) $up['path'], '/\\') . DIRECTORY_SEPARATOR . 'htd-ai-seo-media';
+				if (!empty($up['url'])) {
+					$url = rtrim((string) $up['url'], '/') . '/htd-ai-seo-media/' . $filename;
+				}
+			}
+		}
+		if (!is_dir($dir)) {
+			@mkdir($dir, 0755, true);
+		}
+		$filePath = $dir . DIRECTORY_SEPARATOR . $filename;
+		if (@file_put_contents($filePath, $bytes) === false) {
+			throw new \RuntimeException('Failed to persist generated image bytes to storage.', 500);
+		}
+
+		$proposalId = 0;
+		if ($this->mediaProposals !== null) {
+			$proposalId = $this->mediaProposals->proposeGeneratedImage(
+				$draftId,
+				$filePath,
+				$url,
+				$parsed['mime'],
+				$altText !== '' ? $altText : $prompt,
+				$prompt,
+				['bytes_sha256' => $sha256, 'size' => $size]
+			);
+		}
+
+		return [
+			'mime'         => $parsed['mime'],
+			'bytes'        => $bytes,
+			'bytes_sha256' => $sha256,
+			'file_path'    => $filePath,
+			'url'          => $url,
+			'proposal_id'  => $proposalId,
+		];
 	}
 }
